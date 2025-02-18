@@ -47,7 +47,19 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> findAll() {
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productService.findAllProducts());
+                .ok(productService.findAllProducts());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        try {
+            productService.deleteByIdProduct(id);
+            return ResponseEntity
+                    .ok("Se eliminó el producto con ID: " + id + " exitosamente.");
+        } catch (Exception ex) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(ex.getMessage());
+        }
     }
 }

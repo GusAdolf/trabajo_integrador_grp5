@@ -28,7 +28,7 @@ public class Product {
     private Double price;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt; //formato
+    private LocalDateTime createdAt; // TODO: formato?
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @Column(nullable = false)

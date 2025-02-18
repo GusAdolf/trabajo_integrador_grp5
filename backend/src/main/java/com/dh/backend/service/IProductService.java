@@ -8,4 +8,5 @@ public interface IProductService {
     Product saveProduct(Product product) throws Exception;
     Product findByIdProduct(Long id);
     List<Product> findAllProducts();
+    void deleteByIdProduct(Long id);
 }

@@ -48,8 +48,17 @@ public class ProductServiceImpl implements IProductService {
         if (products.isEmpty()) {
             System.out.println("No se encontraron productos.");
         } else {
-            System.out.println(products.size() + " productos encontrados."); // -> "logger"
+            System.out.println(products.size() + " producto(s) encontrado(s)."); // TODO: "logger"
         }
         return products;
+    }
+
+    @Override
+    public void deleteByIdProduct(Long id) throws IllegalStateException {
+        if (!iProductRepository.existsById(id)) {
+            throw new IllegalStateException("No se pudo eliminar el producto, el ID: " + id + " no existe.");
+        }
+        // TODO: Si producto tiene usuarios, no se debe poder eliminar
+        iProductRepository.deleteById(id);
     }
 }
