@@ -4,8 +4,14 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import { Link } from "react-scroll";
 
-const pages = ["Home", "Recomendaciones", "Explora"];
+// const pages = ["Home", "Recomendaciones", "Explora"];
+const pages = [
+  { name: "Home", id: "home" },
+  { name: "Recomendaciones", id: "recomendaciones" },
+  { name: "Explora", id: "explora" },
+];
 
 export const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -26,8 +32,15 @@ export const Header = () => {
     setAnchorElUser(null);
   };
 
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#F3F4F6" }}>
+    <AppBar position="static" elevation="0" sx={{ backgroundColor: "#F3F4F6" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img
@@ -42,9 +55,9 @@ export const Header = () => {
               display: { xs: "none", md: "flex", justifyContent: "center" },
             }}
           >
-            {pages.map((page) => (
+            {pages.map(({name, id}) => (
               <Box
-                key={page}
+                key={id}
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -54,20 +67,22 @@ export const Header = () => {
                   },
                 }}
               >
-                <Button
-                  onClick={handleCloseNavMenu}
-                  sx={{
-                    my: 2,
-                    color: "#A39A9A",
-                    display: "block",
-                    textAlign: "center",
-                    "&:hover": {
-                      backgroundColor: "transparent",
-                    },
-                  }}
-                >
-                  {page}
-                </Button>
+                <Link to={id} smooth={true} duration={500}>
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                      my: 2,
+                      color: "#A39A9A",
+                      display: "block",
+                      textAlign: "center",
+                      "&:hover": {
+                        backgroundColor: "transparent",
+                      },
+                    }}
+                  >
+                    {name}
+                  </Button>
+                </Link>
 
                 <Box
                   className="line"
