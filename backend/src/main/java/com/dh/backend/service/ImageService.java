@@ -3,25 +3,22 @@ package com.dh.backend.service;
 import com.dh.backend.model.Image;
 import com.dh.backend.model.Product;
 import com.dh.backend.repository.ImageRepository;
-import com.dh.backend.repository.ProductRepository;
+import com.dh.backend.repository.IProductRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ImageService {
     private final ImageRepository imageRepository;
-    private final ProductRepository productRepository;
+    private final IProductRepository productRepository;
 
-    public ImageService(ImageRepository imageRepository, ProductRepository productRepository) {
+    public ImageService(ImageRepository imageRepository, IProductRepository productRepository) {
         this.imageRepository = imageRepository;
         this.productRepository = productRepository;
     }
 
-    public Image saveImage(Long productId, MultipartFile file) throws IOException {
+    public Image saveImage(Long productId, String imageUrl, Integer displayOrder) {
         Optional<Product> productOptional = productRepository.findById(productId);
 
         if (productOptional.isEmpty()) {
@@ -30,8 +27,8 @@ public class ImageService {
 
         Image image = new Image();
         image.setProduct(productOptional.get());
-        image.setImageData(file.getBytes());
-        image.setImageType(file.getContentType());
+        image.setImageUrl(imageUrl);
+        image.setDisplayOrder(displayOrder);
 
         return imageRepository.save(image);
     }
@@ -39,9 +36,6 @@ public class ImageService {
     public List<Image> getImagesByProduct(Long productId) {
         return imageRepository.findByProductId(productId);
     }
-
-    public byte[] getImage(Long imageId) {
-        Optional<Image> imageOptional = imageRepository.findById(imageId);
-        return imageOptional.map(Image::getImageData).orElse(null);
-    }
 }
+
+

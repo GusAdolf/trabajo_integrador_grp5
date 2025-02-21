@@ -1,0 +1,47 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: ["develop"]
+  pull_request:
+    branches: ["develop"]
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Build & Test Backend
+        run: mvn -f backend/pom.xml clean verify
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Lint Frontend (non-blocking)
+        working-directory: frontend
+        run: npm run lint || echo "Lint failed, but continuing..."
+
+      - name: Build Frontend
+        working-directory: frontend
+        run: npm run build
