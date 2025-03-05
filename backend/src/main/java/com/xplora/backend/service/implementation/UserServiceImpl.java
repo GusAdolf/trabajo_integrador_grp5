@@ -36,26 +36,18 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User changeRoleUser(Long id, UserRoleRequestDto request) {
-        String newRole = request.getRole();
-        if (newRole == null) {
-            throw new RuntimeException("No se pudo cambiar rol al usuario, el rol no debe ser nulo.");
-        }
-
-        if (newRole.equals("SUPERADMIN")) {
-            throw new RuntimeException("No puedes cambiar el rol de un usuario a SUPERADMIN.");
-        }
-
-        Role roleFound = Arrays.stream(Role.values())
-                .filter(r -> r.name().equals(newRole))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No se pudo cambiar rol al usuario, rol " + newRole + " no existe."));
-
         User userFound = iUserRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se pudo cambiar rol al usuario, el ID: " + id + " no existe."));
 
-        if (userFound.getRole() == Role.SUPERADMIN) {
-            throw new RuntimeException("No puedes cambiar el rol al SUPERADMIN");
+        String role = request.getRole();
+        if (role == null) {
+            throw new RuntimeException("No se pudo cambiar rol al usuario, el rol no debe ser nulo.");
         }
+
+        Role roleFound = Arrays.stream(Role.values())
+                .filter(r -> r.name().equals(role))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No se pudo cambiar rol al usuario, rol " + role + " no existe."));
 
         userFound.setRole(roleFound);
         return iUserRepository.save(userFound);

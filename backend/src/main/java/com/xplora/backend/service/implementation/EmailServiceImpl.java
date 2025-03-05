@@ -4,21 +4,16 @@ import com.xplora.backend.entity.User;
 import com.xplora.backend.service.IEmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.springframework.core.io.Resource;
 
 @Service
 public class EmailServiceImpl implements IEmailService {
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
-
-    @Value("classpath:templates/xplora-logo.png")
-    private Resource resourceFile;
 
     public EmailServiceImpl(JavaMailSender javaMailSender, TemplateEngine templateEngine) {
         this.javaMailSender = javaMailSender;
@@ -38,7 +33,6 @@ public class EmailServiceImpl implements IEmailService {
         String contentHTML = templateEngine.process("email", context);
 
         helper.setText(contentHTML, true);
-        helper.addInline("attachment.png", resourceFile);
 
         javaMailSender.send(message);
     }
