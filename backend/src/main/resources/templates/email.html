@@ -1,10 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Correo de bienevida</title>
+        <title th:remove="all">Mensaje de Xplora+ - Registro exitoso</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
-    <body>
-        <h1 style="color: #007bff;">Hello!</h1>
-        <p style="color:#f00;" th:text="${firstname}"></p>
+
+    <body style="box-sizing: border-box;margin: 0;padding: 30px 10.4vw;font-family: Roboto, sans-serif;">
+        <header style="box-sizing: border-box;margin: 0;padding: 100px 0px 0px;font-family: Roboto, sans-serif;display: inline-block;width: 100%">
+            <p style="color: black;box-sizing: border-box;margin: 0;padding: 0;font-family: Roboto, sans-serif;">¡Bienvenido a Xplora+! Tu registro fue exitoso.</p>
+
+            <div style="box-sizing: border-box;margin: 0;padding: 0 30%;width: 100%">
+                <img class="logo" src="cid:attachment.png" alt="Logo de Xplora+" style="box-sizing: border-box;margin: 0;padding: 0;font-family: Roboto, sans-serif;height: 100%;max-width: 300px;width: 100%;" />
+            </div>
+        </header>
+
+        <main style="box-sizing: border-box;margin: 0;padding: 30px 0px;font-family: Roboto, sans-serif;">
+            <p style="color: black;box-sizing: border-box;margin: 0;padding: 0;font-family: Roboto, sans-serif;">Hola <span th:text="${firstname}" style="box-sizing: border-box;margin: 0;padding: 0;font-family: Roboto, sans-serif;"></span>,</p>
+            <p style="color: black;box-sizing: border-box;margin: 0;padding: 0;font-family: Roboto, sans-serif;">¡Bienvenido/a a nuestra comunidad de exploradores!  Nos emociona tenerte a bordo. <strong style="box-sizing: border-box;margin: 0;padding: 0;font-family: Roboto, sans-serif;">¡Tu registro ha sido exitoso! </strong>Ahora podrás descubrir y reservar experiencias culturales, deportivas y gastronómicas únicas, tours inolvidables y mucho más. ¡Prepárate para vivir aventuras increíbles!</p>
+
+            <div style="box-sizing: border-box;margin: 0;padding: 20px 38%;font-family: Roboto, sans-serif;">
+                <a href="#" style="display: inline-block;box-sizing: border-box;margin: auto;padding: 14px 20px;font-family: Roboto, sans-serif;color: white;text-decoration: none;background-color: #FD346E;border-radius: 10px;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.25);"><strong style="display: inline-block;box-sizing: border-box;margin: 0;padding: 0;font-family: Roboto, sans-serif;">Inicio de Sesión</strong></a>
+            </div>
+        </main>
     </body>
 </html>
