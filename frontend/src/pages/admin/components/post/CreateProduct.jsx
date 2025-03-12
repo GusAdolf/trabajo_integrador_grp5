@@ -9,6 +9,8 @@ import {
   SelectInput,
   ArrayInput,
   SimpleFormIterator,
+  SelectArrayInput,
+  ReferenceArrayInput,
 } from "react-admin";
 import { createProduct } from "../../../../services/productService";
 
@@ -24,6 +26,7 @@ export const PostCreate = () => {
         imageUrl: imgUrl,
         altText: `Imagen de ${values.Nombre}`,
       })),
+      // featureIds: values.featureIds || []
     };
 
     try {
@@ -98,6 +101,15 @@ export const PostCreate = () => {
                   <TextInput label="URL de imagen" />
                 </SimpleFormIterator>
               </ArrayInput>
+            </Grid>
+            <Grid item xs={12}>
+              <ReferenceArrayInput
+                label="Características"
+                source="featureIds"
+                reference="features"
+              >
+                <SelectArrayInput optionText="name" />
+              </ReferenceArrayInput>
             </Grid>
 
             <Grid item xs={12} display="flex" justifyContent="center">
