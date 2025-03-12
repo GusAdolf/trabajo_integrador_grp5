@@ -8,8 +8,7 @@ import {
 } from "react-admin";
 import { useState, useEffect } from "react";
 import fakeDataProvider from "ra-data-fakerest";
-import { PostList, PostEdit, PostCreate, PostIcon,UsersLists } from "./components/index";
-import { FeatureList, FeatureCreate, FeatureEdit, FeatureIcon } from "./components/features";
+import { PostList, PostEdit, PostCreate, PostIcon, UsersLists, FeatureCreate, FeatureEdit, FeatureList } from "./components/index";
 import LabelIcon from "@mui/icons-material/Label";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import AutoAwesomeMotionRoundedIcon from "@mui/icons-material/AutoAwesomeMotionRounded";
