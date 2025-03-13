@@ -23,66 +23,43 @@ public class ProductController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Product product) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(productService.saveProduct(product));
-        } catch (Exception ex) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(ex.getMessage());
-        }
+    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(productService.saveProduct(product));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        try {
-            return ResponseEntity
-                    .ok(productService.findByIdProduct(id));
-        } catch (Exception ex) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(ex.getMessage());
-        }
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        return ResponseEntity
+                .ok(productService.getProductById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> findAll() {
+    public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity
-                .ok(productService.findAllProducts());
+                .ok(productService.getAllProducts());
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Product product) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(productService.updateProduct(product));
-        } catch (Exception ex) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(ex.getMessage());
-        }
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.updateProduct(product));
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        try {
-            productService.deleteByIdProduct(id);
-            return ResponseEntity
-                    .ok("Se eliminó el producto con ID: " + id + " exitosamente.");
-        } catch (Exception ex) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(ex.getMessage());
-        }
-}
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+        productService.deleteProductById(id);
+        return ResponseEntity
+                .ok("Se eliminó el producto exitosamente.");
+    }
+
     // Obtener productos por categoría
     @GetMapping("/category/{categoryId}")
     public List<Product> getProductsByCategory(@PathVariable Long categoryId) {
-    return productService.getProductsByCategory(categoryId);
-}
+        return productService.getProductsByCategory(categoryId);
+    }
 }

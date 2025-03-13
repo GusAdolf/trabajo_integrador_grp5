@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/api/auth/**").permitAll();
                     auth.requestMatchers("/h2-console/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/products/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/cities/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/images/**").permitAll();
                     // endpoints de swagger
                     auth.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
@@ -40,6 +41,7 @@ public class SecurityConfiguration {
                     auth.requestMatchers(HttpMethod.PUT, "/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.DELETE, "/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.POST, "/images/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.POST, "/cities/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers("/users").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     //auth.requestMatchers("/users/*/role/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     // protección para categorías

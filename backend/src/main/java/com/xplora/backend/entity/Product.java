@@ -15,7 +15,6 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +27,12 @@ public class Product {
 
     @Column(nullable = false)
     private Double price;
+
+    @Column(nullable = false)
+    private Integer capacity;
+
+    @ManyToOne
+    private City city;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -44,10 +49,9 @@ public class Product {
 
     @ManyToMany
     @JoinTable(
-            name = "product_feature", // Nombre de la tabla  en la BD
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "feature_id")
+            name = "products_features", // Nombre de la tabla  en la BD
+            joinColumns = @JoinColumn(name = "products_id"),
+            inverseJoinColumns = @JoinColumn(name = "features_id")
     )
     private List<Feature> features;
 }
-
