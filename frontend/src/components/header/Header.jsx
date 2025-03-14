@@ -10,9 +10,10 @@ import { AuthContext } from "../../context/AuthContext";
 import Login from "../login/Login";
 import { Avatar } from "@mui/material";
 import { Registration } from "../../components";
+import { useNavigate } from "react-router-dom";
 
 const pages = [
-  { name: "Home", id: "home" },
+  { name: "Home", id: "home", link: "/" },
   { name: "Recomendaciones", id: "recomendaciones" },
   { name: "Explora", id: "explora" },
 ];
@@ -22,6 +23,7 @@ export const Header = () => {
   const [openModal, setOpenModal] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -55,7 +57,7 @@ export const Header = () => {
                 display: { xs: "none", md: "flex", justifyContent: "center" },
               }}
             >
-              {pages.map(({ name, id }) => (
+              {pages.map(({ name, id, link }) => (
                 <Box
                   key={id}
                   sx={{
@@ -67,7 +69,7 @@ export const Header = () => {
                     },
                   }}
                 >
-                  <Link to={id} smooth={true} duration={500}>
+                  {id === "home" ? (
                     <Button
                       sx={{
                         my: 2,
@@ -78,10 +80,27 @@ export const Header = () => {
                           backgroundColor: "transparent",
                         },
                       }}
+                      onClick={() => navigate(link)}
                     >
                       {name}
                     </Button>
-                  </Link>
+                  ) : (
+                    <Link to={id} smooth={true} duration={500}>
+                      <Button
+                        sx={{
+                          my: 2,
+                          color: "#A39A9A",
+                          display: "block",
+                          textAlign: "center",
+                          "&:hover": {
+                            backgroundColor: "transparent",
+                          },
+                        }}
+                      >
+                        {name}
+                      </Button>
+                    </Link>
+                  )}
 
                   <Box
                     className="line"
@@ -138,6 +157,10 @@ export const Header = () => {
           </Toolbar>
         </Container>
       </AppBar>
+
+      {/* Espacio entre el header y el contenido */}
+      <Box sx={{ mt: 10 }} />
+
       <Registration open={open} setOpen={setOpen} handleOpen={handleOpen} />
     </>
   );

@@ -3,8 +3,17 @@ import { Facebook, Instagram, LinkedIn, Twitter, Phone, Email } from "@mui/icons
 
 export const Footer = () => {
     return (
-        <Box sx={{ bgcolor: "#00CED1", color: "white", py: 4, px: 2, textAlign: "center" }}>
-            <Grid container spacing={3} justifyContent="center">
+        <Box 
+            sx={{ 
+                bgcolor: "#00CED1", 
+                color: "white", 
+                py: 6, // Aumenta el padding vertical dentro del footer
+                px: 2, 
+                textAlign: "center", 
+                mt: 6 // Aumenta la separación entre el footer y el contenido anterior
+            }}
+        >
+            <Grid container spacing={4} justifyContent="center">
                 <Grid item xs={12} md={4}>
                     <img
                         src="src/assets/logowhite.svg"
@@ -12,11 +21,12 @@ export const Footer = () => {
                         style={{ width: "200px", height: "auto", color: "white" }}
                     />
                 </Grid>
+                
                 <Grid item xs={12} md={4}>
                     <Typography variant="subtitle1" fontWeight="bold">
                         Síguenos
                     </Typography>
-                    <Box>
+                    <Box mt={1}> {/* Añadir margen superior para separar los iconos */}
                         <IconButton sx={{ color: "white" }} href="https://facebook.com" target="_blank">
                             <Facebook />
                         </IconButton>
@@ -47,7 +57,7 @@ export const Footer = () => {
                 </Grid>
             </Grid>
 
-            <Typography variant="body2" sx={{ mt: 3 }}>
+            <Typography variant="body2" sx={{ mt: 4 }}>
                 © {new Date().getFullYear()} Empresa. Todos los derechos reservados.
             </Typography>
         </Box>
