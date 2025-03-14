@@ -1,12 +1,7 @@
 import { useState } from "react";
-import { Box, Typography, Grid, Dialog, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Grid, Dialog } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const dummyImages = [
     "https://picsum.photos/800/500?random=1",
@@ -19,38 +14,122 @@ const dummyImages = [
 
 export const Gallery = () => {
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        nextArrow: <ArrowForwardIosIcon sx={{ fontSize: 40, color: "#8B1E3F" }} />, 
-        prevArrow: <ArrowBackIosNewIcon sx={{ fontSize: 40, color: "#8B1E3F" }} />
-    };
+    const [selectedImage, setSelectedImage] = useState(null); // Estado para la imagen ampliada
 
     return (
-        <Box sx={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-            <Box sx={{ width: "100%", py: 2, px: 3, bgcolor: "white", position: "fixed", top: 0, left: 0, zIndex: 10, boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
-                <Typography variant="h6" fontWeight="bold" textAlign="center">Galería de imágenes</Typography>
-                <Typography variant="body2" onClick={() => navigate(-1)} sx={{ cursor: "pointer", color: "blue", textAlign: "center" }}>← Volver</Typography>
+        <Box 
+            sx={{ 
+                width: "100%", 
+                minHeight: "100vh", 
+                display: "flex", 
+                flexDirection: "column", 
+                alignItems: "center", 
+                overflowY: "auto", 
+                p: 2,
+                scrollBehavior: "smooth",
+                overscrollBehavior: "contain"
+            }}
+        >
+            {/* Primera imagen con botón de cerrar en la esquina superior derecha */}
+            <Box sx={{ position: "relative", width: "100%", maxWidth: 900 }}>
+                <IconButton 
+                    onClick={() => navigate(-1)}
+                    sx={{
+                        position: "absolute",
+                        top: 10,
+                        right: 10,
+                        backgroundColor: "rgba(0,0,0,0.5)",
+                        color: "white",
+                        zIndex: 10,
+                        "&:hover": { backgroundColor: "rgba(0,0,0,0.7)" }
+                    }}
+                >
+                    <CloseIcon sx={{ fontSize: 30 }} />
+                </IconButton>
+
+                <Box onClick={() => setSelectedImage(dummyImages[0])} sx={{ cursor: "pointer" }}>
+                    <img 
+                        src={dummyImages[0]} 
+                        alt="Imagen 1" 
+                        style={{ width: "100%", height: 400, objectFit: "cover", borderRadius: "12px" }} 
+                    />
+                </Box>
             </Box>
-            <Box sx={{ width: "80%", pt: 10 }}>
-                <Slider {...settings}>
-                    {dummyImages.map((image, index) => (
-                        <Box key={index} sx={{ display: "flex", justifyContent: "center" }}>
-                            <img src={image} alt={`Imagen ${index + 1}`} style={{ width: "100%", height: 500, objectFit: "cover", borderRadius: "8px" }} />
-                        </Box>
-                    ))}
-                </Slider>
+
+            {/* Scroll Vertical con Formato 1-2-1-2 */}
+            <Box sx={{ width: "100%", maxWidth: 900, display: "flex", flexDirection: "column", gap: 3, mt: 2 }}>
+                
+                {/* Dos imágenes pequeñas en fila */}
+                <Grid container spacing={2}>
+                    <Grid item xs={6} onClick={() => setSelectedImage(dummyImages[1])} sx={{ cursor: "pointer" }}>
+                        <img 
+                            src={dummyImages[1]} 
+                            alt="Imagen 2" 
+                            style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: "12px" }} 
+                        />
+                    </Grid>
+                    <Grid item xs={6} onClick={() => setSelectedImage(dummyImages[2])} sx={{ cursor: "pointer" }}>
+                        <img 
+                            src={dummyImages[2]} 
+                            alt="Imagen 3" 
+                            style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: "12px" }} 
+                        />
+                    </Grid>
+                </Grid>
+
+                {/* Otra imagen grande */}
+                <Box onClick={() => setSelectedImage(dummyImages[3])} sx={{ cursor: "pointer" }}>
+                    <img 
+                        src={dummyImages[3]} 
+                        alt="Imagen 4" 
+                        style={{ width: "100%", height: 400, objectFit: "cover", borderRadius: "12px" }} 
+                    />
+                </Box>
+
+                {/* Otra fila de dos imágenes pequeñas */}
+                <Grid container spacing={2}>
+                    <Grid item xs={6} onClick={() => setSelectedImage(dummyImages[4])} sx={{ cursor: "pointer" }}>
+                        <img 
+                            src={dummyImages[4]} 
+                            alt="Imagen 5" 
+                            style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: "12px" }} 
+                        />
+                    </Grid>
+                    <Grid item xs={6} onClick={() => setSelectedImage(dummyImages[5])} sx={{ cursor: "pointer" }}>
+                        <img 
+                            src={dummyImages[5]} 
+                            alt="Imagen 6" 
+                            style={{ width: "100%", height: 200, objectFit: "cover", borderRadius: "12px" }} 
+                        />
+                    </Grid>
+                </Grid>
             </Box>
+
+            {/* Modal para vista ampliada */}
+            <Dialog open={!!selectedImage} onClose={() => setSelectedImage(null)} maxWidth="md">
+                <Box sx={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    {/* Botón de cerrar modal */}
+                    <IconButton 
+                        onClick={() => setSelectedImage(null)}
+                        sx={{ 
+                            position: "absolute", 
+                            top: 10, 
+                            right: 10, 
+                            backgroundColor: "rgba(0,0,0,0.5)", 
+                            color: "white",
+                            "&:hover": { backgroundColor: "rgba(0,0,0,0.7)" }
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    {/* Imagen ampliada */}
+                    <img 
+                        src={selectedImage} 
+                        alt="Vista ampliada" 
+                        style={{ maxWidth: "90vw", maxHeight: "90vh", objectFit: "contain", borderRadius: "12px" }} 
+                    />
+                </Box>
+            </Dialog>
         </Box>
     );
 };
