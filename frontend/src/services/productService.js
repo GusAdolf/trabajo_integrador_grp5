@@ -1,6 +1,8 @@
 import Swal from "sweetalert2";
 
-const URL = "http://localhost:8080/products";
+//const URL = "http://localhost:8080/products";
+const URL = "https://backend-production-6e21.up.railway.app/products";
+
 
 // PRODUCTS
 
