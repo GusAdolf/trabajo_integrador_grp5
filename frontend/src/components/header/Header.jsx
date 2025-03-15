@@ -28,8 +28,8 @@ export const Header = () => {
   return (
     <>
       <AppBar
-        position="fixed"
-        elevation="0"
+        position="sticky"
+        elevation={0}
         sx={{
           backgroundColor: "#F3F4F6",
           display: {

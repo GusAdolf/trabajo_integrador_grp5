@@ -28,6 +28,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import styles from './styles.module.css';
+import { useNavigate } from 'react-router-dom';
 
 // Modify the Zod schema to work with Date objects from react-date-range
 const searchFormSchema = z.object({
@@ -48,6 +49,8 @@ const searchFormSchema = z.object({
 const HomeSearch = () => {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate= useNavigate();
+
   // Create a separate state for the calendar
   const [dateRangeState, setDateRangeState] = useState([
     {
@@ -79,12 +82,21 @@ const HomeSearch = () => {
   }, [dateRangeState, setValue]);
 
   // Format dates as DD/MM/YY
+
   const formatDate = (date) => {
     if (!date) return '';
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString().slice(-2);
     return `${day}/${month}/${year}`;
+  };
+
+  const formatDateToParam = (date) => {
+    if (!date) return '';
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
   };
 
   // Format the date range for display
@@ -99,9 +111,19 @@ const HomeSearch = () => {
     setCalendarOpen(false);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    // Navegar a  /buscar?ubicacion=Lima&desde=2015-03-15&hasta=2015-03-15&personas=2
+
     console.log('Formulario enviado:', data);
-    // Aquí iría la lógica de búsqueda
+    const searchParams = new URLSearchParams();
+    searchParams.set("location", data.location);
+    searchParams.set("from",formatDateToParam(data.dateRange.startDate))
+    searchParams.set("to",formatDateToParam(data.dateRange.endDate));
+    searchParams.set("people",data.people);
+
+    navigate("/search?"+searchParams)
+    
+    
   };
 
   const handleIncrement = () => {
