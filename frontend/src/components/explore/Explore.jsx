@@ -7,45 +7,60 @@ import {
   Pagination,
   Rating,
   InputAdornment,
-  Stack,
 } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
-const categories = ["Todos", "Aventura", "Gastronomía", "Bienestar", "Cultura"];
-
-const dummyProducts = Array.from({ length: 20 }, (_, i) => ({
-  id: i + 1,
-  name: `Experiencia ${i + 1}`,
-  description: "Una aventura única e inolvidable.",
-  price: `$${(Math.random() * 100 + 50).toFixed(2)}`,
-  category: categories[Math.floor(Math.random() * (categories.length - 1)) + 1],
-  image: `https://picsum.photos/300/200?random=${i + 1}`,
-  date: "12 de Marzo, 2025",
-  rating: (Math.random() * 2 + 3).toFixed(1),
-  location: "Bogotá, Colombia",
-}));
+const API_BASE_URL = "http://localhost:8080"; 
+const PLACEHOLDER_IMAGE = "https://picsum.photos/200/300"; // Imagen de respaldo estática
 
 export const Explore = () => {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
-  const [filteredProducts, setFilteredProducts] = useState(dummyProducts);
   const [page, setPage] = useState(1);
   const itemsPerPage = 6;
   const navigate = useNavigate();
 
   useEffect(() => {
-    let filtered = dummyProducts.filter(
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/products`);
+        const data = await response.json();
+
+        const processedProducts = data.map((product) => ({
+          ...product,
+          imageUrl: product.imageSet?.[0]?.imageUrl || PLACEHOLDER_IMAGE,
+        }));
+
+        setProducts(processedProducts);
+        setFilteredProducts(processedProducts);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    let results = products.filter(
       (product) =>
-        (selectedCategory === "Todos" ||
-          product.category === selectedCategory) &&
+        (selectedCategory === "Todos" || product.category === selectedCategory) &&
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilteredProducts(filtered);
+
+    setFilteredProducts(results);
     setPage(1);
-  }, [searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory, products]);
+
+  const categories = ["Todos", ...new Set(products.map((product) => product.category))];
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   const handleCardClick = (id) => {
     navigate(`/product/${id}`);
@@ -53,25 +68,8 @@ export const Explore = () => {
 
   return (
     <Box sx={{ width: "100%", margin: "0 auto", mt: 4 }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-          flexWrap: "wrap",
-          gap: 2,
-        }}
-      >
-        <Typography
-          sx={{
-            fontFamily: "Outfit",
-            fontWeight: 700,
-            fontSize: "40px",
-            lineHeight: "50.4px",
-            color: "#0E2880",
-          }}
-        >
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3, flexWrap: "wrap", gap: 2 }}>
+        <Typography sx={{ fontFamily: "Outfit", fontWeight: 700, fontSize: "40px", lineHeight: "50.4px", color: "#0E2880" }}>
           Explora más
         </Typography>
         <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
@@ -87,23 +85,13 @@ export const Explore = () => {
               ),
             }}
           />
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "#00CED1", color: "white" }}
-          >
+          <Button variant="contained" sx={{ bgcolor: "#00CED1", color: "white" }}>
             Buscar
           </Button>
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          overflowX: "auto",
-          mb: 3,
-          flexWrap: "wrap",
-        }}
-      >
+
+      <Box sx={{ display: "flex", gap: 1, overflowX: "auto", mb: 3, flexWrap: "wrap" }}>
         {categories.map((category) => (
           <Button
             key={category}
@@ -111,8 +99,7 @@ export const Explore = () => {
             onClick={() => setSelectedCategory(category)}
             sx={{
               borderColor: "#00CED1",
-              backgroundColor:
-                selectedCategory === category ? "#00CED1" : "#ffffff",
+              backgroundColor: selectedCategory === category ? "#00CED1" : "#ffffff",
               color: selectedCategory === category ? "#ffffff" : "#00CED1",
             }}
           >
@@ -120,6 +107,7 @@ export const Explore = () => {
           </Button>
         ))}
       </Box>
+
       <Box
         sx={{
           display: "grid",
@@ -128,76 +116,57 @@ export const Explore = () => {
             sm: "repeat(2, 1fr)",
             md: "repeat(3, 1fr)",
           },
-          padding: { xs: "" },
           gap: 3,
         }}
       >
-        {filteredProducts
-          .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-          .map((product) => (
-            <Box
-              key={product.id}
-              onClick={() => handleCardClick(product.id)}
-              sx={{
-                borderRadius: "16px",
-                boxShadow: 3,
-                overflow: "hidden",
-                cursor: "pointer",
-                transition: "transform 0.2s",
-                "&:hover": { transform: "scale(1.05)" },
-              }}
-            >
-              <img
-                src={product.image}
-                alt={product.name}
-                style={{ width: "100%", height: 220, objectFit: "cover" }}
-              />
-              <Box sx={{ p: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mb: 1,
-                  }}
-                >
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <CalendarMonthIcon sx={{ fontSize: 16, color: "gray" }} />
-                    <Typography variant="body2" color="textSecondary">
-                      {product.date}
-                    </Typography>
-                  </Box>
-                  <Rating
-                    value={parseFloat(product.rating)}
-                    precision={0.1}
-                    readOnly
-                    size="small"
-                  />
+        {paginatedProducts.map((product) => (
+          <Box
+            key={product.id}
+            onClick={() => handleCardClick(product.id)}
+            sx={{
+              borderRadius: "16px",
+              boxShadow: 3,
+              overflow: "hidden",
+              cursor: "pointer",
+              transition: "transform 0.2s",
+              "&:hover": { transform: "scale(1.05)" },
+            }}
+          >
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              style={{ width: "100%", height: 220, objectFit: "cover" }}
+              onError={(e) => { e.target.src = PLACEHOLDER_IMAGE; }}
+            />
+            <Box sx={{ p: 2 }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <CalendarMonthIcon sx={{ fontSize: 16, color: "gray" }} />
+                  <Typography variant="body2" color="textSecondary">{product.date || "Fecha no disponible"}</Typography>
                 </Box>
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  {product.name}
-                </Typography>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}
-                >
-                  <LocationOnIcon sx={{ fontSize: 16, color: "gray" }} />
-                  <Typography variant="body2" color="textSecondary">
-                    {product.location}
-                  </Typography>
-                </Box>
-                <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>
-                  {product.price}
-                </Typography>
+                <Rating value={parseFloat(product.rating) || 3.5} precision={0.1} readOnly size="small" />
               </Box>
+              <Typography variant="h6" sx={{ fontWeight: "bold" }}>{product.name}</Typography>
+
+              {/* ✅ Nueva línea: Muestra la categoría del producto */}
+              <Typography variant="body2" color="textSecondary" sx={{ fontStyle: "italic", mt: 1 }}>
+                Categoría: {product.category || "No especificada"}
+              </Typography>
+
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+                <LocationOnIcon sx={{ fontSize: 16, color: "gray" }} />
+                <Typography variant="body2" color="textSecondary">{product.location}</Typography>
+              </Box>
+              <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>
+                {product.price}
+              </Typography>
             </Box>
-          ))}
+          </Box>
+        ))}
       </Box>
+
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-        <Pagination
-          count={Math.ceil(filteredProducts.length / itemsPerPage)}
-          page={page}
-          onChange={(_, value) => setPage(value)}
-        />
+        <Pagination count={totalPages} page={page} onChange={(_, value) => setPage(value)} />
       </Box>
     </Box>
   );
