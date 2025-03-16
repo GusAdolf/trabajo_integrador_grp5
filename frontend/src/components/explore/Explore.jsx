@@ -148,7 +148,7 @@ export const Explore = () => {
               </Box>
               <Typography variant="h6" sx={{ fontWeight: "bold" }}>{product.name}</Typography>
 
-              {/* ✅ Nueva línea: Muestra la categoría del producto */}
+              {/*Nueva línea: Muestra la categoría del producto */}
               <Typography variant="body2" color="textSecondary" sx={{ fontStyle: "italic", mt: 1 }}>
                 Categoría: {product.category || "No especificada"}
               </Typography>

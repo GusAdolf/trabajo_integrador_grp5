@@ -11,7 +11,7 @@ import {
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = "http://localhost:8080"; // Reemplazar con la URL real del backend
+const API_BASE_URL = "http://localhost:8080"; 
 
 export const Recommendations = () => {
   const [products, setProducts] = useState([]);
@@ -131,3 +131,4 @@ export const Recommendations = () => {
     </Box>
   );
 };
+

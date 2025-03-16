@@ -143,6 +143,10 @@ export const Header = () => {
           </Toolbar>
         </Container>
       </AppBar>
+      
+            {/* Espacio entre el header y el contenido */}
+            <Box sx={{ mt: 10 }} />
+
       <Registration open={open} setOpen={setOpen} handleOpen={handleOpen} />
     </>
   );
