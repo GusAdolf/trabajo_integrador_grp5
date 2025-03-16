@@ -11,7 +11,7 @@ import {
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = "http://localhost:8080"; 
+const API_BASE_URL = "http://localhost:8080"; // Reemplazar con la URL real del backend
 
 export const Recommendations = () => {
   const [products, setProducts] = useState([]);
@@ -25,13 +25,11 @@ export const Recommendations = () => {
         const response = await fetch(`${API_BASE_URL}/products`);
         const data = await response.json();
 
-        // Asignar la primera imagen del producto, si no tiene imagen, se usa un placeholder
         const processedProducts = data.map((product) => ({
           ...product,
           imageUrl: product.imageSet?.[0]?.imageUrl || "https://via.placeholder.com/300",
         }));
 
-        // Mezclar productos y tomar 10 recomendados
         setProducts(processedProducts.sort(() => 0.5 - Math.random()).slice(0, 10));
       } catch (error) {
         console.error("Error al obtener productos:", error);
@@ -57,7 +55,7 @@ export const Recommendations = () => {
   };
 
   return (
-    <Box sx={{ mt: 4, width: "100%", margin: "0 auto" }}>
+    <Box sx={{ mt: 4, width: "100%", margin: "0 auto", padding: "20px" }}>
       <Typography
         variant="h4"
         sx={{
@@ -65,7 +63,7 @@ export const Recommendations = () => {
           fontWeight: 700,
           fontSize: { xs: "24px", sm: "30px", md: "40px" },
           textAlign: "left",
-          color: "#0E2880",
+          color: "#00CED1",
           mb: 3,
         }}
       >
@@ -77,7 +75,7 @@ export const Recommendations = () => {
           <ArrowBackIos />
         </IconButton>
 
-        <Box sx={{ display: "flex", overflow: "hidden", gap: 2, width: "100%", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", overflow: "hidden", gap: 2, width: "100%", justifyContent: "center", padding: "10px" }}>
           {products.slice(index, index + visibleCards).map((product) => (
             <Card
               key={product.id}
@@ -87,9 +85,11 @@ export const Recommendations = () => {
                 minWidth: { xs: "100%", sm: "48%", md: "30%" },
                 borderRadius: "16px",
                 boxShadow: 3,
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "350px",
               }}
             >
-              {/* Mostrar la imagen solo si existe */}
               <CardMedia
                 component="img"
                 sx={{ height: 220, width: "100%", objectFit: "cover" }}
@@ -97,9 +97,33 @@ export const Recommendations = () => {
                 alt={product.name}
               />
 
-              <CardContent>
-                <Typography variant="h6" align="center">{product.name}</Typography>
-                <Typography variant="body2" color="textSecondary" align="center">{product.description}</Typography>
+              <CardContent
+                sx={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  padding: "20px",
+                }}
+              >
+                <Box>
+                  <Typography variant="h6" align="center">{product.name}</Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                    sx={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    {product.description.length > 30
+                      ? `${product.description.slice(0, 30)}...`
+                      : product.description}
+                  </Typography>
+                </Box>
 
                 <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
                   <Typography variant="body2">⏳ {product.available_date || "Fecha no disponible"}</Typography>
@@ -131,4 +155,3 @@ export const Recommendations = () => {
     </Box>
   );
 };
-
