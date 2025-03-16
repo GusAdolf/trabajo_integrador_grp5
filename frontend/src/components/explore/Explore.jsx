@@ -124,6 +124,7 @@ export const Explore = () => {
             key={product.id}
             onClick={() => handleCardClick(product.id)}
             sx={{
+              background:"white",
               borderRadius: "16px",
               boxShadow: 3,
               overflow: "hidden",
