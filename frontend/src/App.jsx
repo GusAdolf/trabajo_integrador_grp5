@@ -6,7 +6,7 @@ import {
   HeaderMobile,
   ProtectedRoute,
   Restricted,
-  Profile
+  Profile,
 } from "./components/index";
 import "./App.css";
 import { ProductDetail } from "./pages/detailProduct/detailProduct";
