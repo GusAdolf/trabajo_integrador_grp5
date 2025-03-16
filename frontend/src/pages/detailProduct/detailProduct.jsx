@@ -99,7 +99,9 @@ export const ProductDetail = () => {
                                     <Button
                                         variant="contained"
                                         startIcon={<WindowIcon />}
+
                                         onClick={() => navigate("/gallery", { state: { product } })} // Modificación para enviar `product`
+
                                         sx={{
                                             position: "absolute",
                                             bottom: 10,
