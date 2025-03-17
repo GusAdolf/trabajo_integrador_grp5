@@ -1,9 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
-import { Modal, Box, Typography, Button } from "@mui/material";
+import {Modal, Box, Typography, Button, IconButton} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SendIcon from "@mui/icons-material/Send";
+import CloseIcon from "@mui/icons-material/Close";
 
 const modalStyle = {
     position: "absolute",
@@ -18,8 +19,11 @@ const modalStyle = {
     borderRadius: "10px",
 };
 
+
+
 export const ReenvioEmailRegistroExitoso = ({ open, onClose }) => {
     const navigate = useNavigate();
+
 
     const handleResend = () => {
         // Aquí se debería llamar a un servicio API para reenviar el correo
@@ -33,7 +37,7 @@ export const ReenvioEmailRegistroExitoso = ({ open, onClose }) => {
     return (
         <Modal
             open={open}
-            onClose={() => {}}
+            onClose={() => {onClose}}
             aria-labelledby="resend-modal-title"
             aria-describedby="resend-modal-description"
         >
@@ -48,6 +52,18 @@ export const ReenvioEmailRegistroExitoso = ({ open, onClose }) => {
                     }}
                 >
                     <SendIcon sx={{ fontSize: "40px", color: "#1C274C", transform: "rotate(335deg)", }} />
+                    <IconButton
+                        onClick={onClose}
+                        sx={{
+                            position: "absolute",
+                            top: 10,
+                            right: 10,
+                            backgroundColor: "#00CED1",
+                            color: "white",
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
                 </Box>
                 {/* Cuerpo del modal */}
                 <Box
