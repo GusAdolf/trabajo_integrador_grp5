@@ -96,7 +96,7 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
-    /*@Override
+    @Override
     public void updateAverageScore(Long id, Integer score) {
         Product product = getProductById(id);
         Double sumScores = product.getAverageScore() * product.getCountScores() + score;
@@ -108,5 +108,5 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public boolean existsById(Long id) {
         return productRepository.existsById(id);
-    }*/
+    }
 }
