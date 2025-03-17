@@ -4,9 +4,11 @@ import com.xplora.backend.configuration.JwtService;
 import com.xplora.backend.dto.request.UserRoleRequestDto;
 import com.xplora.backend.entity.Role;
 import com.xplora.backend.entity.User;
+import com.xplora.backend.exception.BadRequestException;
+import com.xplora.backend.exception.ResourceNotFoundException;
 import com.xplora.backend.repository.IUserRepository;
 import com.xplora.backend.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -14,57 +16,48 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    private IUserRepository iUserRepository;
+    private IUserRepository userRepository;
     private JwtService jwtService;
 
-    @Autowired
-    public UserServiceImpl(IUserRepository iUserRepository, JwtService jwtService) {
-        this.iUserRepository = iUserRepository;
+    public UserServiceImpl(IUserRepository userRepository, JwtService jwtService) {
+        this.userRepository = userRepository;
         this.jwtService = jwtService;
     }
 
     @Override
-    public List<User> findAllUsers() {
-        List<User> users = iUserRepository.findAll();
-        if (users.isEmpty()) {
-            System.out.println("No se encontraron usuarios.");
-        } else {
-            System.out.println(users.size() + " usuario(s) encontrado(s)."); // TODO: "logger"
-        }
-        return users;
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
-    public User changeRoleUser(Long id, UserRoleRequestDto request) {
-        String newRole = request.getRole();
-        if (newRole == null) {
-            throw new RuntimeException("No se pudo cambiar rol al usuario, el rol no debe ser nulo.");
-        }
-
-        if (newRole.equals("SUPERADMIN")) {
-            throw new RuntimeException("No puedes cambiar el rol de un usuario a SUPERADMIN.");
+    public User changeUserRole(Long id, UserRoleRequestDto request) {
+        if (request.getRole().equals("SUPERADMIN")) {
+            throw new DataIntegrityViolationException("No puedes cambiar el rol de un usuario a SUPERADMIN");
         }
 
         Role roleFound = Arrays.stream(Role.values())
-                .filter(r -> r.name().equals(newRole))
+                .filter(r -> r.name().equals(request.getRole()))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("No se pudo cambiar rol al usuario, rol " + newRole + " no existe."));
+                .orElseThrow(() -> new BadRequestException("El rol no existe"));
 
-        User userFound = iUserRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No se pudo cambiar rol al usuario, el ID: " + id + " no existe."));
+        if (id == null) {
+            throw new BadRequestException("El id del usuario no debe ser nulo");
+        }
+        User userFound = userRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("El usuario no existe"));
 
         if (userFound.getRole() == Role.SUPERADMIN) {
-            throw new RuntimeException("No puedes cambiar el rol al SUPERADMIN");
+            throw new DataIntegrityViolationException("No puedes cambiar el rol de un usuario que es SUPERADMIN");
         }
 
         userFound.setRole(roleFound);
-        return iUserRepository.save(userFound);
+        return userRepository.save(userFound);
     }
 
     @Override
-    public User findByTokenUser(String token) {
+    public User getUserByToken(String token) {
         String userEmail = jwtService.extractUsername(token);
-        return iUserRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
     }
 }
