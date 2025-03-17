@@ -46,7 +46,7 @@ const searchFormSchema = z.object({
   people: z.number().int().positive().min(1, { message: 'Se requiere al menos 1 persona' }).max(10, { message: 'Máximo 10 personas' })
 });
 
-const HomeSearch = () => {
+const Search = ({defaultValues}) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate= useNavigate();
@@ -62,14 +62,14 @@ const HomeSearch = () => {
 
   const { control, handleSubmit, formState: { errors }, watch, setValue } = useForm({
     resolver: zodResolver(searchFormSchema),
-    defaultValues: {
+    defaultValues: defaultValues || {
       location: '',
       dateRange: {
         startDate: new Date(),
         endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
         key: 'selection'
       },
-      people: 2
+      people: 1
     }
   });
 
@@ -307,4 +307,4 @@ const HomeSearch = () => {
   );
 };
 
-export default HomeSearch;
+export default Search;
