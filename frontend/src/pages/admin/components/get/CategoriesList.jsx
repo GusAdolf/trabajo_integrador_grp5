@@ -16,6 +16,7 @@ import {
 
 import { getCategories } from "../../../../services/categoryService";
 import "./categoryStyles.css";
+import { useAuth } from "../../../../context/AuthContext";
 
 const namespace = "list-categories";
 
@@ -40,14 +41,8 @@ const CustomListActions = () => (
 );
 
 export const CategoriesList = () => {
-  const [isDelete, setIsDelete] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const { categories } = useAuth();
 
-  useEffect(() => {
-    getCategories().then((data) => {
-      setCategories(data);
-    });
-  }, [isDelete]);
   return (
     <div className={namespace}>
       <List
