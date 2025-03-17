@@ -18,6 +18,15 @@ const dummyProducts = Array.from({ length: 20 }, (_, i) => ({
   location: "Bogotá, Colombia",
 }));
 
+const dateStringToLocalDate = (dateString)=>{
+  const [ yearStr, monthStr, dayStr] = dateString.split("-");
+  const year = +yearStr;
+  const month = +monthStr - 1;
+  const day = +dayStr;
+
+  return new Date(year,month,day)
+}
+
 export const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -26,20 +35,20 @@ export const SearchPage = () => {
     from: searchParams.get("from"),
     to: searchParams.get("to"),
     people: searchParams.get("people"),
-  };
+  };  
 
   const defaultValues = {
     location: params.location || " ",
     dateRange: {
-      startDate: new Date(params.from) || new Date(),
+      startDate: dateStringToLocalDate(params.from) || new Date(),
       endDate:
-        new Date(params.to) ||
+      dateStringToLocalDate(params.to)  ||
         new Date(new Date().setDate(new Date().getDate() + 7)),
       key: "selection",
     },
     people: +params.people || 1,
   };
-
+  
   return (
     <Box sx={{ width: "80%", mx: "auto", pb:"3rem" }}>
       <Search defaultValues={defaultValues} />

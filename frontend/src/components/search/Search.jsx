@@ -53,7 +53,7 @@ const Search = ({defaultValues}) => {
 
   // Create a separate state for the calendar
   const [dateRangeState, setDateRangeState] = useState([
-    {
+    defaultValues?.dateRange || {
       startDate: new Date(),
       endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
       key: 'selection'
