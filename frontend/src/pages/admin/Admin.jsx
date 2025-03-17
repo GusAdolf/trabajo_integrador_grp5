@@ -8,13 +8,21 @@ import {
 } from "react-admin";
 import { useState, useEffect } from "react";
 import fakeDataProvider from "ra-data-fakerest";
-import { PostList, PostEdit, PostCreate, PostIcon,UsersLists } from "./components/index";
+import {
+  PostList,
+  PostEdit,
+  PostCreate,
+  PostIcon,
+  UsersLists,
+  CreateCategory,
+} from "./components/index";
 import LabelIcon from "@mui/icons-material/Label";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import AutoAwesomeMotionRoundedIcon from "@mui/icons-material/AutoAwesomeMotionRounded";
 import { getProducts } from "../../services/productService";
 import jsonServerProvider from "ra-data-json-server";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from "@mui/icons-material/Group";
+import CategoryIcon from "@mui/icons-material/Category";
 
 const dataProvider = jsonServerProvider("http://localhost:8080");
 
@@ -41,12 +49,16 @@ export const MyMenu = () => {
         primaryText="Lista de productos"
         leftIcon={<AutoAwesomeMotionRoundedIcon />}
       />
-            <Menu.Item
+      <Menu.Item
         to="/admin/users"
         primaryText="Lista de usuarios"
         leftIcon={<GroupIcon />}
       />
-
+      <Menu.Item
+        to="/admin/categories"
+        primaryText="Agregar categoria"
+        leftIcon={<CategoryIcon />}
+      />
     </Menu>
   );
 };
@@ -54,7 +66,6 @@ export const MyMenu = () => {
 export const MyLayout = ({ children }) => (
   <Layout menu={MyMenu}>{children}</Layout>
 );
-
 
 export const AdminPage = () => {
   const [isMobile, setIsMobile] = useState(isMobileDevice());
@@ -97,10 +108,8 @@ export const AdminPage = () => {
         icon={PostIcon}
         sx={{ border: "2px solid red" }}
       />
-            <Resource
-        name="users"
-        list={UsersLists}
-      />
+      <Resource name="users" list={UsersLists} />
+      <Resource name="categories" list={CreateCategory} />
     </Admin>
   );
 };

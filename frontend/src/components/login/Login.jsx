@@ -37,11 +37,11 @@ const Login = ({ open, handleClose, handleLogin }) => {
 
         if (!passwordValue) {
             messages.push("La contraseña es obligatoria.");
-        } else if (!passwordRegex.test(passwordValue)) {
+        }/*  else if (!passwordRegex.test(passwordValue)) {
             messages.push(
                 "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número."
             );
-        }
+        } */
 
         return messages;
     };
