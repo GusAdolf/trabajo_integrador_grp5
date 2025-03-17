@@ -15,6 +15,7 @@ import {
   PostIcon,
   UsersLists,
   CreateCategory,
+  CategoriesList,
 } from "./components/index";
 import LabelIcon from "@mui/icons-material/Label";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
@@ -23,6 +24,8 @@ import { getProducts } from "../../services/productService";
 import jsonServerProvider from "ra-data-json-server";
 import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import "./styles.css";
 
 const dataProvider = jsonServerProvider("http://localhost:8080");
 
@@ -37,6 +40,7 @@ export const MyMenu = () => {
         color: "white",
         height: "100vh",
         overflowY: "auto",
+        paddingTop: "30px",
       }}
     >
       <Menu.Item
@@ -55,9 +59,14 @@ export const MyMenu = () => {
         leftIcon={<GroupIcon />}
       />
       <Menu.Item
-        to="/admin/categories"
+        to="/admin/categories/create"
         primaryText="Agregar categoria"
         leftIcon={<CategoryIcon />}
+      />
+      <Menu.Item
+        to="/admin/categories/list"
+        primaryText="Lista de categorías"
+        leftIcon={<FormatListNumberedIcon />}
       />
     </Menu>
   );
@@ -109,7 +118,11 @@ export const AdminPage = () => {
         sx={{ border: "2px solid red" }}
       />
       <Resource name="users" list={UsersLists} />
-      <Resource name="categories" list={CreateCategory} />
+      <Resource
+        name="categories"
+        list={CategoriesList}
+        create={CreateCategory}
+      />
     </Admin>
   );
 };

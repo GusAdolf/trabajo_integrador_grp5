@@ -29,3 +29,20 @@ export const createCategories = async (category) => {
       console.error(error);
     }
   };
+
+  // get categories
+  export const getCategories = async () => {
+    try {
+      const bearerToken = `Bearer ${localStorage.getItem("token")}`;
+      const response = await fetch("http://localhost:8080/categories", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearerToken,
+        },
+      });
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+    }
+  }

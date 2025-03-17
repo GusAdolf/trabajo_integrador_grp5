@@ -54,6 +54,7 @@ export const PostCreate = () => {
         justifyContent: "center",
       }}
       label="Crear producto"
+      title="Crear producto"
     >
       <Container sx={{ display: "flex", alignItems: "center" }}>
         <SimpleForm toolbar={false} onSubmit={handleSubmit}>
@@ -61,23 +62,6 @@ export const PostCreate = () => {
             <Grid item xs={12} sm={6}>
               <TextInput source="Nombre" label="Nombre" fullWidth />
             </Grid>
-
-{/*             <Grid item xs={12} sm={6}>
-              <SelectInput
-                source="Categoría"
-                label="Categoría"
-                defaultValue="todas"
-                choices={[
-                  { id: "aventura", name: "Aventura" },
-                  { id: "gastronomia", name: "Gastronomía" },
-                  { id: "bienestar", name: "Bienestar" },
-                  { id: "cultura", name: "Cultura" },
-                  { id: "todas", name: "Todas" },
-                ]}
-                fullWidth
-              />
-            </Grid> */}
-
             <Grid item xs={12}>
               <TextInput
                 source="Descripción"
@@ -92,7 +76,7 @@ export const PostCreate = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <label> Debe ingresar por lo menos cinco imagenes </label>
+              <label > Debe ingresar por lo menos cinco imagenes </label>
               <ArrayInput source="Imagenes" label="Imágenes (URLs)">
                 <SimpleFormIterator>
                   <TextInput label="URL de imagen" />

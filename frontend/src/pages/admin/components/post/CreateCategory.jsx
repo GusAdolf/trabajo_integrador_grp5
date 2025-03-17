@@ -26,8 +26,9 @@ export const CreateCategory = () => {
 
     try {
       const response = await createCategories(category);
-
-      if (!response) throw new Error("Error al crear la categoría");
+      if (!response) {
+        return;
+      }
 
       Swal.fire({
         icon: "success",
@@ -36,7 +37,9 @@ export const CreateCategory = () => {
       });
 
       setCategory({ title: "", description: "", imageUrl: "" });
+      window.location.href = "/admin/categories/list";
     } catch (error) {
+      console.log("🚀 ~ handleSubmit ~ error:", error)
       Swal.fire({
         icon: "error",
         title: "Error",
