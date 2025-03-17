@@ -1,12 +1,10 @@
 package com.xplora.backend.controller;
 
 import com.xplora.backend.entity.City;
-import com.xplora.backend.entity.Product;
 import com.xplora.backend.service.ICityService;
-import com.xplora.backend.service.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +20,9 @@ public class CityController {
         this.cityService = cityService;
     }
 
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
-    public ResponseEntity<City> saveCity(@RequestBody City city) {
+    public ResponseEntity<City> saveCity(@RequestBody @Valid City city) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(cityService.saveCity(city));

@@ -4,7 +4,7 @@ import com.xplora.backend.entity.Product;
 import com.xplora.backend.service.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,13 @@ import java.util.List;
 public class ProductController {
     private IProductService productService;
 
-    @Autowired
     public ProductController(IProductService productService) {
         this.productService = productService;
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> saveProduct(@RequestBody @Valid Product product) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(productService.saveProduct(product));
@@ -43,7 +42,7 @@ public class ProductController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping
-    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@RequestBody @Valid Product product) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.updateProduct(product));
@@ -54,7 +53,7 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
         return ResponseEntity
-                .ok("Se eliminó el producto exitosamente.");
+                .ok("Se eliminó el producto exitosamente");
     }
 
     // Obtener productos por categoría

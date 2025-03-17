@@ -2,9 +2,12 @@ package com.xplora.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "cities")
@@ -18,13 +21,17 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @NotBlank
+    @Size(min = 3, max = 100)
+    @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false)
+    @NotBlank
+    @Size(min = 3, max = 50)
+    @Column(nullable = false, length = 50)
     private String country;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL) //
+    @OneToMany(mappedBy = "city")
     @JsonIgnore
-    private List<Product> products;
+    private Set<Product> productSet = new HashSet<>();//
 }

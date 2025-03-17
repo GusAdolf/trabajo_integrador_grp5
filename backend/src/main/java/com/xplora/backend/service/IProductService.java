@@ -11,4 +11,6 @@ public interface IProductService {
     Product updateProduct(Product product);
     void deleteProductById(Long id);
     List<Product> getProductsByCategory(Long categoryId);
+    void updateAverageScore(Long id, Integer score);
+    boolean existsById(Long id);
 }
