@@ -23,8 +23,7 @@ const Login = ({ open, handleClose, handleLogin }) => {
 
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.[a-z])(?=.[A-Z])(?=.*\d).{8,}$/;
-
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
     const validateFields = (emailValue, passwordValue) => {
         const messages = [];
