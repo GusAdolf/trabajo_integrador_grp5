@@ -1,4 +1,4 @@
-package com.xplora.backend.service;
+package com.xplora.backend.service.implementation;
 
 import com.xplora.backend.entity.Image;
 import com.xplora.backend.entity.Product;

@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Modal, Box, Typography } from "@mui/material";
+import {Modal, Box, Typography, IconButton} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { useNavigate } from "react-router-dom";
+import CloseIcon from "@mui/icons-material/Close";
 
 const successModalStyle = {
     position: "absolute",
@@ -26,7 +26,8 @@ function formatTime(totalSeconds) {
     return `${minutes}:${seconds}`;
 }
 
-export const EmailConfirmTimer = ({ open, onTimerEnd }) => {
+// eslint-disable-next-line react/prop-types
+export const EmailConfirmTimer = ({ open, onClose, onTimerEnd }) => {
     const [timeLeft, setTimeLeft] = useState(60);
 
     useEffect(() => {
@@ -47,10 +48,12 @@ export const EmailConfirmTimer = ({ open, onTimerEnd }) => {
     return (
         <Modal
             open={open}
-            onClose={() => {}}
+            onClose={() => {onClose}}
             aria-labelledby="success-modal-title"
             aria-describedby="success-modal-description"
         >
+
+
             <Box sx={successModalStyle}>
                 {}
                 <Box
@@ -68,6 +71,18 @@ export const EmailConfirmTimer = ({ open, onTimerEnd }) => {
                             color: "#1C274C",
                             transform: "rotate(335deg)",
                         }}/>
+                    <IconButton
+                        onClick={onClose}
+                        sx={{
+                            position: "absolute",
+                            top: 10,
+                            right: 10,
+                            backgroundColor: "#00CED1",
+                            color: "white",
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
                 </Box>
                 {/* Título */}
                 <Box
@@ -111,7 +126,8 @@ export const EmailConfirmTimer = ({ open, onTimerEnd }) => {
                         {formatTime(timeLeft)}
                     </Typography>
                 </Box>
-            </Box>
+              </Box>
+
         </Modal>
     );
 };

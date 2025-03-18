@@ -1,21 +1,33 @@
-import { Box, Grid, Typography, IconButton } from "@mui/material";
+import React, { useState } from 'react';
+import { Box, Grid, Typography, IconButton, Dialog } from "@mui/material";
 import { Facebook, Instagram, LinkedIn, Twitter, Phone, Email } from "@mui/icons-material";
+import RecursosPoliticas from "../recursosPoliticas/RecursosPoliticas";
 
 export const Footer = () => {
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
-        <Box 
-            sx={{ 
-                bgcolor: "#00CED1", 
-                color: "white", 
-                py: 6, 
-                px: 2, 
+        <Box
+            sx={{
+                bgcolor: "#00CED1",
+                color: "white",
+                py: 6,
+                px: 2,
                 textAlign: "center",
                 mt: 6
             }}
         >
-            <Grid 
-                container 
-                spacing={4} 
+            <Grid
+                container
+                spacing={4}
                 justifyContent="center"
                 alignItems="center"
             >
@@ -26,6 +38,15 @@ export const Footer = () => {
                         alt="logo xplora+"
                         style={{ width: "350px", height: "auto" }}
                     />
+                    <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        mb={4}
+                        sx={{ cursor: 'pointer', color: 'white' }}
+                        onClick={handleOpen}
+                    >
+                        Recursos y políticas
+                    </Typography>
                 </Grid>
 
                 {/* Redes sociales */}
@@ -69,6 +90,11 @@ export const Footer = () => {
             <Typography variant="subtitle1" sx={{ mt: 4 }}>
                 © {new Date().getFullYear()} Empresa. Todos los derechos reservados.
             </Typography>
+
+            {/* Modal de Recursos y Políticas */}
+            <Dialog open={open} onClose={handleClose}>
+                <RecursosPoliticas onClose={handleClose} />
+            </Dialog>
         </Box>
     );
 };
