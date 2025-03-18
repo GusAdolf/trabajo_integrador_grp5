@@ -45,7 +45,7 @@ public class AuthenticationService {
                 )
         );
         User user = iUserRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Username not found."));
+                .orElseThrow(() -> new RuntimeException("User not found."));
 
         String token = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
