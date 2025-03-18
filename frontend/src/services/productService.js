@@ -180,4 +180,30 @@ export const updateUserRole = async (id, role) => {
   }
 }
 
+// Asign category
+export const assignCategory = async (id, categoryId) => {
+  try {
+    const bearerToken = `Bearer ${localStorage.getItem("token")}`;
+    const response = await fetch(`http://localhost:8080/categories/${id}/assign/${categoryId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: bearerToken,
+      },
+    });
+    if (response.status === 400) {
+      const responseText = await response.text();
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: responseText,
+      });
+
+      return;
+    }
+ 
+  } catch (error) {
+    console.error(error);
+  }
+}
 

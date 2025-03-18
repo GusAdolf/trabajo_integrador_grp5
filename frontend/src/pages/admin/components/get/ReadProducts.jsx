@@ -68,6 +68,7 @@ export const PostList = () => {
 
   useEffect(() => {
     getProducts().then((data) => {
+      console.log("🚀 ~ getProducts ~ data:", data)
       setProducts(data);
     });
   }, [isDelete]);
@@ -117,7 +118,7 @@ export const PostList = () => {
             }}
           />
           <TextField source="price" label="Precio" />
-          <FunctionField label="Categoría" render={() => "Aventura"} />
+          <TextField source="category.title" label="Categoría" />
           <Box display="flex" gap={1} label="Acciones">
             <EditButton
               label="Editar"

@@ -10,12 +10,18 @@ import {
   ArrayInput,
   SimpleFormIterator,
 } from "react-admin";
-import { createProduct } from "../../../../services/productService";
+import {
+  createProduct,
+  assignCategory,
+} from "../../../../services/productService";
+import { useAuth } from "../../../../context/AuthContext";
 
 export const PostIcon = BookIcon;
 
 export const PostCreate = () => {
-  const handleSubmit = async (values) => {
+  const { categories } = useAuth();
+
+  const handleSubmit = (values) => {
     const productBody = {
       name: values.Nombre,
       description: values.Descripción,
@@ -26,24 +32,30 @@ export const PostCreate = () => {
       })),
     };
 
-    try {
-      const response = await createProduct(productBody);
-      if (!response) {
-        return;
-      }
+    createProduct(productBody)
+      .then((response) => {
+        if (!response) return;
+        const { id } = response;
+        return assignCategory(id, values.Categoría);
+      })
+      .then((responseCategory) => {
+        console.log("🚀 ~ .then ~ responseCategory:", responseCategory);
+        if (!responseCategory) return;
 
-      Swal.fire({
-        icon: "success",
-        title: "Éxito",
-        text: "Producto creado correctamente.",
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Producto creado correctamente.",
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo completar la operación.",
+        });
       });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudo crear el producto.",
-      });
-    }
   };
   return (
     <Create
@@ -70,13 +82,24 @@ export const PostCreate = () => {
                 multiline
               />
             </Grid>
+            <Grid item xs={12} sm={6}>
+              <SelectInput
+                source="Categoría"
+                label="Categoría"
+                choices={categories.map((category) => ({
+                  id: category.id,
+                  name: category.title,
+                }))}
+                fullWidth
+              />
+            </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextInput source="Precio" label="Precio" fullWidth />
             </Grid>
 
             <Grid item xs={12}>
-              <label > Debe ingresar por lo menos cinco imagenes </label>
+              <label> Debe ingresar por lo menos cinco imagenes </label>
               <ArrayInput source="Imagenes" label="Imágenes (URLs)">
                 <SimpleFormIterator>
                   <TextInput label="URL de imagen" />
