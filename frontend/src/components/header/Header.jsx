@@ -11,6 +11,7 @@ import Login from "../login/Login";
 import { Avatar } from "@mui/material";
 import { Registration } from "../../components";
 import { useNavigate } from "react-router-dom";
+import UserMenu from "./UserMenu";
 
 const pages = [
   { name: "Home", id: "home", link: "/" },
@@ -28,8 +29,8 @@ export const Header = () => {
   return (
     <>
       <AppBar
-        position="fixed"
-        elevation="0"
+        position="sticky"
+        elevation={0}
         sx={{
           backgroundColor: "#F3F4F6",
           display: {
@@ -123,6 +124,7 @@ export const Header = () => {
                   <Avatar sx={{ bgcolor: "#00CED1", color: "white" }}>
                     {user.avatar}
                   </Avatar>
+                  <UserMenu/>
                   <Button onClick={logout} sx={{ color: "#A39A9A" }}>
                     Cerrar sesión
                   </Button>
