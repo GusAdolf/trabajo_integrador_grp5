@@ -13,6 +13,7 @@ import { ProductDetail } from "./pages/detailProduct/detailProduct";
 import { Gallery } from "./pages/gallery/Gallery";
 import { AuthProvider } from "./context/AuthContext";
 import { Footer } from "./components/footer/Footer";
+import { SearchPage } from "./pages/search/SearchPage";
 
 function App() {
   const location = useLocation();
@@ -37,6 +38,9 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/restricted" element={<Restricted />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/search" element={<SearchPage />} />
+
+
         {/*<Route path="*" element={<NotFoundPage />} />*/}
       </Routes>
       {!isRestrictedPage && !isAdminPage && <Footer />}
