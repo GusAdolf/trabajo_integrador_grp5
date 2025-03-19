@@ -48,7 +48,7 @@ export const Explore = () => {
 
   const categories = [
     "Todos",
-    ...new Set(allCategories.map((category) => category.title)),
+    ...new Set(allCategories.map((category) => category?.title)),
   ];
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -115,7 +115,7 @@ export const Explore = () => {
           flexWrap: "wrap",
         }}
       >
-        {categories.map((category) => (
+        {categories?.map((category) => (
           <Button
             key={category.id}
             variant={selectedCategory === category ? "contained" : "outlined"}
@@ -143,7 +143,7 @@ export const Explore = () => {
           gap: 3,
         }}
       >
-        {paginatedProducts.map((product) => (
+        {paginatedProducts?.map((product) => (
           <Box
             key={product.id}
             onClick={() => handleCardClick(product.id)}

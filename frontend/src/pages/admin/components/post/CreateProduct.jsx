@@ -30,6 +30,12 @@ export const PostCreate = () => {
         imageUrl: imgUrl,
         altText: `Imagen de ${values.Nombre}`,
       })),
+      city: {
+        id: 1,
+      },
+      availabilitySet: [{ date: "2025-11-22" }],
+      maxCapacity: 10,
+      address: "Soy una direccion",
     };
 
     createProduct(productBody)
