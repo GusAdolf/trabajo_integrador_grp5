@@ -22,7 +22,7 @@ public class BackendApplication {
 			if (iUserRepository.findByEmail("admin@admin.com").isEmpty()) {
 				User admin = new User();
 				admin.setEmail("admin@admin.com");
-				admin.setPassword(passwordEncoder.encode("admin123"));
+				admin.setPassword(passwordEncoder.encode("Admin12345678"));
 				admin.setFirstname("admin");
 				admin.setLastname("admin");
 				admin.setRole(Role.SUPERADMIN);

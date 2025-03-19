@@ -6,3 +6,5 @@ export { UsersLists } from "./get/UsersList";
 export { FeatureCreate } from "./features/FeatureCreate";
 export { FeatureList } from "./features/FeatureList";
 export { FeatureEdit } from "./features/FeatureEdit";
+export { CreateCategory } from "./post/CreateCategory";
+export { CategoriesList } from "./get/CategoriesList";

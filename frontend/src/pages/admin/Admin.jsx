@@ -8,13 +8,27 @@ import {
 } from "react-admin";
 import { useState, useEffect } from "react";
 import fakeDataProvider from "ra-data-fakerest";
-import { PostList, PostEdit, PostCreate, PostIcon, UsersLists, FeatureCreate, FeatureEdit, FeatureList } from "./components/index";
+import {
+  PostList,
+  PostEdit,
+  PostCreate,
+  PostIcon,
+  UsersLists,
+  CreateCategory,
+  CategoriesList,
+  FeatureCreate, 
+  FeatureEdit, 
+  FeatureList
+} from "./components/index";
 import LabelIcon from "@mui/icons-material/Label";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import AutoAwesomeMotionRoundedIcon from "@mui/icons-material/AutoAwesomeMotionRounded";
 import { getProducts } from "../../services/productService";
 import jsonServerProvider from "ra-data-json-server";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from "@mui/icons-material/Group";
+import CategoryIcon from "@mui/icons-material/Category";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import "./styles.css";
 
 const dataProvider = jsonServerProvider("http://localhost:8080");
 
@@ -29,24 +43,34 @@ export const MyMenu = () => {
         color: "white",
         height: "100vh",
         overflowY: "auto",
+        paddingTop: "30px",
       }}
     >
       <Menu.Item
-        to="/admin/posts/create"
+        to="/admin/products/create"
         primaryText="Crear Producto"
         leftIcon={<AddBoxRoundedIcon />}
       />
       <Menu.Item
-        to="/admin/posts"
+        to="/admin/products"
         primaryText="Lista de productos"
         leftIcon={<AutoAwesomeMotionRoundedIcon />}
       />
-            <Menu.Item
+      <Menu.Item
         to="/admin/users"
         primaryText="Lista de usuarios"
         leftIcon={<GroupIcon />}
       />
-
+      <Menu.Item
+        to="/admin/categories/create"
+        primaryText="Agregar categoria"
+        leftIcon={<CategoryIcon />}
+      />
+      <Menu.Item
+        to="/admin/categories/list"
+        primaryText="Lista de categorías"
+        leftIcon={<FormatListNumberedIcon />}
+      />
     </Menu>
   );
 };
@@ -54,7 +78,6 @@ export const MyMenu = () => {
 export const MyLayout = ({ children }) => (
   <Layout menu={MyMenu}>{children}</Layout>
 );
-
 
 export const AdminPage = () => {
   const [isMobile, setIsMobile] = useState(isMobileDevice());
@@ -90,16 +113,18 @@ export const AdminPage = () => {
       layout={MyLayout}
     >
       <Resource
-        name="posts"
+        name="products"
         list={PostList}
         edit={PostEdit}
         create={PostCreate}
         icon={PostIcon}
         sx={{ border: "2px solid red" }}
       />
-            <Resource
-        name="users"
-        list={UsersLists}
+      <Resource name="users" list={UsersLists} />
+      <Resource
+        name="categories"
+        list={CategoriesList}
+        create={CreateCategory}
       />
       <Resource
         name="features"
