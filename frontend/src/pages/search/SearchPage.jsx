@@ -1,8 +1,10 @@
 import { Box } from "@mui/material";
 import { useSearchParams } from "react-router";
+import { useEffect, useState } from "react";
 import Search from "../../components/search/Search";
 import { Explore } from "../../components/explore/Explore";
 import Products from "../../components/products/Products";
+import { getCities } from "../../services/citiesService";
 
 const categories = ["Todos", "Aventura", "Gastronomía", "Bienestar", "Cultura"];
 
@@ -19,6 +21,7 @@ const dummyProducts = Array.from({ length: 20 }, (_, i) => ({
 }));
 
 const dateStringToLocalDate = (dateString)=>{
+  if (!dateString) return new Date();
   const [ yearStr, monthStr, dayStr] = dateString.split("-");
   const year = +yearStr;
   const month = +monthStr - 1;
@@ -29,26 +32,56 @@ const dateStringToLocalDate = (dateString)=>{
 
 export const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const params = {
-    location: searchParams.get("location"),
+    cityId: searchParams.get("cityId"),
     from: searchParams.get("from"),
     to: searchParams.get("to"),
     people: searchParams.get("people"),
-  };  
+  };
+
+  // Fetch the city details if cityId is provided
+  useEffect(() => {
+    const fetchCityDetails = async () => {
+      if (params.cityId) {
+        setLoading(true);
+        try {
+          const citiesData = await getCities();
+          const city = citiesData.find(c => c.id === Number(params.cityId));
+          if (city) {
+            setSelectedCity(city);
+          }
+        } catch (error) {
+          console.error("Error fetching city details:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
+    fetchCityDetails();
+  }, [params.cityId]);
 
   const defaultValues = {
-    location: params.location || " ",
+    cityId: params.cityId ? Number(params.cityId) : null,
+    selectedCity: selectedCity,
     dateRange: {
-      startDate: dateStringToLocalDate(params.from) || new Date(),
-      endDate:
-      dateStringToLocalDate(params.to)  ||
+      startDate: dateStringToLocalDate(params.from),
+      endDate: dateStringToLocalDate(params.to) || 
         new Date(new Date().setDate(new Date().getDate() + 7)),
       key: "selection",
     },
-    people: +params.people || 1,
+    people: params.people ? Number(params.people) : 1,
   };
   
+  if (loading) {
+    return <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>Cargando...</Box>;
+  }
+
   return (
     <Box sx={{ width: "80%", mx: "auto", pb:"3rem" }}>
       <Search defaultValues={defaultValues} />
