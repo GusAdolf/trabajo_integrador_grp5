@@ -16,9 +16,9 @@ import {
   UsersLists,
   CreateCategory,
   CategoriesList,
-  FeatureCreate, 
+  CreateFeature, 
   FeatureEdit, 
-  FeatureList
+  FeaturesList
 } from "./components/index";
 import LabelIcon from "@mui/icons-material/Label";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
@@ -28,6 +28,8 @@ import jsonServerProvider from "ra-data-json-server";
 import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import "./styles.css";
 
 const dataProvider = jsonServerProvider("http://localhost:8080");
@@ -70,6 +72,16 @@ export const MyMenu = () => {
         to="/admin/categories/list"
         primaryText="Lista de categorías"
         leftIcon={<FormatListNumberedIcon />}
+      />
+      <Menu.Item
+        to="/admin/features/list"
+        primaryText="Lista de características"
+        leftIcon={<ListAltIcon/>}
+      />
+      <Menu.Item
+        to="/admin/features/create"
+        primaryText="Crear característica"
+        leftIcon={<PostAddIcon />}
       />
     </Menu>
   );
@@ -127,12 +139,11 @@ export const AdminPage = () => {
         create={CreateCategory}
       />
       <Resource
-        name="features"
-        list={FeatureList}
-        create={FeatureCreate}
-        edit={FeatureEdit}
-        icon={FeatureIcon}
+        name="categories"
+        list={FeaturesList}
+        create={CreateFeature}
       />
+      {/* - */}
     </Admin>
   );
 };
