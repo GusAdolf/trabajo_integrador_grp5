@@ -18,7 +18,6 @@ const PLACEHOLDER_IMAGE = "https://picsum.photos/200/300"; // Imagen de respaldo
 
 export const Explore = () => {
   const { products, categories: allCategories } = useAuth();
-  console.log("🚀 ~ Explore ~ products:", products);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
@@ -51,7 +50,6 @@ export const Explore = () => {
     "Todos",
     ...new Set(allCategories.map((category) => category.title)),
   ];
-  console.log("🚀 ~ Explore ~ categories:", categories);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
   const paginatedProducts = filteredProducts.slice(
