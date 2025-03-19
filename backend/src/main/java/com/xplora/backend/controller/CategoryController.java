@@ -5,6 +5,7 @@ import com.xplora.backend.entity.Product;
 import com.xplora.backend.service.implementation.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class CategoryController {
     }
 
     // Crear una categoría con validación de título duplicado
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody Category category) {
         if (categoryService.existsByTitle(category.getTitle())) {
@@ -48,6 +50,7 @@ public class CategoryController {
     }
 
     // Asignar una categoría a un producto con validación
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
     @PostMapping("/{productId}/assign/{categoryId}")
     public ResponseEntity<?> assignCategoryToProduct(@PathVariable Long productId, @PathVariable Long categoryId) {
         if (!categoryService.existsById(categoryId)) {
@@ -59,5 +62,13 @@ public class CategoryController {
         }
 
         return ResponseEntity.ok(categoryService.assignCategoryToProduct(productId, categoryId));
+    }
+
+    // ELIMINAR UNA CATEGORÍA (Solo ADMIN y SUPERADMIN)
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERADMIN')")
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
+        categoryService.deleteCategory(categoryId);
+        return ResponseEntity.ok("Categoría eliminada exitosamente");
     }
 }

@@ -56,18 +56,30 @@ public class CategoryService {
         return productRepository.save(product);
     }
 
-    // verificar si una categoria existe
+    // Verificar si una categoría existe
     public boolean existsById(Long categoryId) {
         return categoryRepository.existsById(categoryId);
     }
 
-    // verificar si un producto existe
+    // Verificar si un producto existe
     public boolean productExistsById(Long productId) {
         return productRepository.existsById(productId);
     }
 
-    // verificar que una categoria con el mismo nombre existe
+    // Verificar que una categoría con el mismo nombre existe
     public boolean existsByTitle(String title) {
         return categoryRepository.findByTitle(title).isPresent();
+    }
+
+    //  ELIMINAR UNA CATEGORÍA CON VALIDACIONES
+    public void deleteCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+
+        if (!category.getProducts().isEmpty()) {
+            throw new RuntimeException("No se puede eliminar una categoría que tiene productos asignados");
+        }
+
+        categoryRepository.delete(category);
     }
 }

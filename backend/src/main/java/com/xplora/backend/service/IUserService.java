@@ -9,4 +9,5 @@ public interface IUserService {
     List<User> getAllUsers();
     User changeUserRole(Long id, UserRoleRequestDto request);
     User getUserByToken(String token);
+    User getUserByEmail(String email);
 }
