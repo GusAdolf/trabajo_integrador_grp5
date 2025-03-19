@@ -5,35 +5,27 @@ import Search from "../../components/search/Search";
 import { Explore } from "../../components/explore/Explore";
 import Products from "../../components/products/Products";
 import { getCities } from "../../services/citiesService";
+import { getCategories } from "../../services/categoryService";
+import { getProducts } from "../../services/productService";
 
-const categories = ["Todos", "Aventura", "Gastronomía", "Bienestar", "Cultura"];
-
-const dummyProducts = Array.from({ length: 20 }, (_, i) => ({
-  id: i + 1,
-  name: `Experiencia ${i + 1}`,
-  description: "Una aventura única e inolvidable.",
-  price: `$${(Math.random() * 100 + 50).toFixed(2)}`,
-  category: categories[Math.floor(Math.random() * (categories.length - 1)) + 1],
-  image: `https://picsum.photos/300/200?random=${i + 1}`,
-  date: "12 de Marzo, 2025",
-  rating: (Math.random() * 2 + 3).toFixed(1),
-  location: "Bogotá, Colombia",
-}));
-
-const dateStringToLocalDate = (dateString)=>{
+const dateStringToLocalDate = (dateString) => {
   if (!dateString) return new Date();
-  const [ yearStr, monthStr, dayStr] = dateString.split("-");
+  const [yearStr, monthStr, dayStr] = dateString.split("-");
   const year = +yearStr;
   const month = +monthStr - 1;
   const day = +dayStr;
 
-  return new Date(year,month,day)
-}
+  return new Date(year, month, day);
+};
 
 export const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCity, setSelectedCity] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState(["Todos"]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
 
   const params = {
     cityId: searchParams.get("cityId"),
@@ -42,14 +34,52 @@ export const SearchPage = () => {
     people: searchParams.get("people"),
   };
 
-  // Fetch the city details if cityId is provided
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setProductsLoading(true);
+      try {
+        const productsData = await getProducts();
+        if (productsData && Array.isArray(productsData)) {
+          setProducts(productsData);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setProductsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setCategoriesLoading(true);
+      try {
+        const categoriesData = await getCategories();
+        if (categoriesData && Array.isArray(categoriesData)) {
+          setCategories([
+            "Todos",
+            ...categoriesData.map((category) => category.title),
+          ]);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   useEffect(() => {
     const fetchCityDetails = async () => {
       if (params.cityId) {
         setLoading(true);
         try {
           const citiesData = await getCities();
-          const city = citiesData.find(c => c.id === Number(params.cityId));
+          const city = citiesData.find((c) => c.id === Number(params.cityId));
           if (city) {
             setSelectedCity(city);
           }
@@ -71,26 +101,27 @@ export const SearchPage = () => {
     selectedCity: selectedCity,
     dateRange: {
       startDate: dateStringToLocalDate(params.from),
-      endDate: dateStringToLocalDate(params.to) || 
+      endDate:
+        dateStringToLocalDate(params.to) ||
         new Date(new Date().setDate(new Date().getDate() + 7)),
       key: "selection",
     },
     people: params.people ? Number(params.people) : 1,
   };
-  
-  if (loading) {
-    return <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>Cargando...</Box>;
+
+  if (loading || categoriesLoading || productsLoading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+        Cargando...
+      </Box>
+    );
   }
 
   return (
-    <Box sx={{ width: "80%", mx: "auto", pb:"3rem" }}>
+    <Box sx={{ width: "80%", mx: "auto", pb: "3rem" }}>
       <Search defaultValues={defaultValues} />
 
-      <Products
-        categories={categories}
-        products={dummyProducts}
-        itemsPerPage={6}
-      />
+      <Products categories={categories} products={products} itemsPerPage={6} />
     </Box>
   );
 };

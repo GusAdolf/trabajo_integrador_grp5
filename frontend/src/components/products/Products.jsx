@@ -1,20 +1,10 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  Typography,
-  Rating,
-  Pagination,
-} from "@mui/material";
+import { Box, Button, Typography, Rating, Pagination } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
 
-const Products = ({ 
-  categories, 
-  products, 
-  itemsPerPage = 6
-}) => {
+const Products = ({ categories, products, itemsPerPage = 6 }) => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [page, setPage] = useState(1);
@@ -23,8 +13,8 @@ const Products = ({
   useEffect(() => {
     let filtered = products.filter(
       (product) =>
-        (selectedCategory === "Todos" ||
-          product.category === selectedCategory)
+        selectedCategory === "Todos" ||
+        (product.category && product.category.title === selectedCategory)
     );
     setFilteredProducts(filtered);
     setPage(1);
@@ -32,6 +22,32 @@ const Products = ({
 
   const handleCardClick = (id) => {
     navigate(`/product/${id}`);
+  };
+
+  const getImageUrl = (product) => {
+    if (product.imageSet && product.imageSet.length > 0) {
+      return product.imageSet[0].imageUrl;
+    }
+    return "https://picsum.photos/300/200";
+  };
+
+  const formatDate = (product) => {
+    if (product.availabilitySet && product.availabilitySet.length > 0) {
+      const date = new Date(product.availabilitySet[0].date);
+      return date.toLocaleDateString("es-ES", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    }
+    return "Disponible";
+  };
+
+  const formatLocation = (product) => {
+    if (product.city) {
+      return `${product.city.name}, ${product.city.country}`;
+    }
+    return "Ubicación no especificada";
   };
 
   return (
@@ -89,7 +105,7 @@ const Products = ({
               }}
             >
               <img
-                src={product.image}
+                src={getImageUrl(product)}
                 alt={product.name}
                 style={{ width: "100%", height: 220, objectFit: "cover" }}
               />
@@ -105,11 +121,11 @@ const Products = ({
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <CalendarMonthIcon sx={{ fontSize: 16, color: "gray" }} />
                     <Typography variant="body2" color="textSecondary">
-                      {product.date}
+                      {formatDate(product)}
                     </Typography>
                   </Box>
                   <Rating
-                    value={parseFloat(product.rating)}
+                    value={product.averageScore || 0}
                     precision={0.1}
                     readOnly
                     size="small"
@@ -123,11 +139,11 @@ const Products = ({
                 >
                   <LocationOnIcon sx={{ fontSize: 16, color: "gray" }} />
                   <Typography variant="body2" color="textSecondary">
-                    {product.location}
+                    {formatLocation(product)}
                   </Typography>
                 </Box>
                 <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>
-                  {product.price}
+                  ${product.price}
                 </Typography>
               </Box>
             </Box>
