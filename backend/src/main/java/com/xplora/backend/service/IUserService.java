@@ -6,7 +6,8 @@ import com.xplora.backend.entity.User;
 import java.util.List;
 
 public interface IUserService {
-    List<User> findAllUsers();
-    User changeRoleUser(Long id, UserRoleRequestDto request) throws Exception;
-    User findByTokenUser(String token);
+    List<User> getAllUsers();
+    User changeUserRole(Long id, UserRoleRequestDto request);
+    User getUserByToken(String token);
+    User getUserByEmail(String email);
 }
