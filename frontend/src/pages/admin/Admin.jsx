@@ -44,12 +44,12 @@ export const MyMenu = () => {
       }}
     >
       <Menu.Item
-        to="/admin/posts/create"
+        to="/admin/products/create"
         primaryText="Crear Producto"
         leftIcon={<AddBoxRoundedIcon />}
       />
       <Menu.Item
-        to="/admin/posts"
+        to="/admin/products"
         primaryText="Lista de productos"
         leftIcon={<AutoAwesomeMotionRoundedIcon />}
       />
@@ -110,7 +110,7 @@ export const AdminPage = () => {
       layout={MyLayout}
     >
       <Resource
-        name="posts"
+        name="products"
         list={PostList}
         edit={PostEdit}
         create={PostCreate}

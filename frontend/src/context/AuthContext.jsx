@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { loginUser, getProfile } from "../services/productService";
+import { loginUser, getProfile, getProducts } from "../services/productService";
 import { getCategories } from "../services/categoryService";
 
 export const AuthContext = createContext();
@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       fetchCategories();
+      fetchProducts()
     }
   }, []);
 
@@ -23,6 +25,13 @@ export const AuthProvider = ({ children }) => {
     const data = await getCategories();
     if (data) {
       setCategories(data);
+    }
+  };
+
+  const fetchProducts = async () => {
+    const data = await getProducts();
+    if (data) {
+      setProducts(data);
     }
   };
 
@@ -64,7 +73,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, categories  }}>
+    <AuthContext.Provider value={{ user, login, logout, categories, products }}>
       {children}
     </AuthContext.Provider>
   );
