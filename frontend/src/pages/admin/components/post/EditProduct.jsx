@@ -26,18 +26,22 @@ import { Grid, Box, Container } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../../../context/AuthContext";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  assignCategory,
+  updateProduct,
+} from "../../../../services/productService";
 
 export const PostEdit = () => {
   const { id } = useParams();
-  const { products } = useAuth();
+  const { products, categories } = useAuth();
   const [productById, setProductById] = useState(null);
   const [productEdit, setProductEdit] = useState({
+    id: "",
     name: "",
     description: "",
     price: "",
     imageSet: [],
   });
-  console.log("🚀 ~ PostEdit ~ productEdit:", productEdit);
 
   useEffect(() => {
     if (products && id) {
@@ -48,6 +52,7 @@ export const PostEdit = () => {
       setProductById(foundProduct);
       if (foundProduct) {
         setProductEdit({
+          id: foundProduct.id,
           name: foundProduct.name,
           description: foundProduct.description,
           price: foundProduct.price,
@@ -94,6 +99,32 @@ export const PostEdit = () => {
     return <div>Cargando...</div>;
   }
 
+  const handleSubmit = (values) => {
+    console.log("🚀 ~ handleSubmit ~ values:", values.Categoría)
+    updateProduct(productEdit)
+      .then((response) => {
+        return assignCategory(id, values.Categoría);
+      })
+      .then((responseCategory) => {
+        console.log("🚀 ~ .then ~ responseCategory:", responseCategory);
+        if (!responseCategory) return;
+
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Producto creado correctamente.",
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo completar la operación.",
+        });
+      });
+  };
+
   return (
     <Edit
       title="Editar un producto"
@@ -106,7 +137,7 @@ export const PostEdit = () => {
     >
       <Container sx={{ display: "flex", alignItems: "center" }}>
         {productById && (
-          <SimpleForm>
+          <SimpleForm onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextInput
@@ -135,6 +166,17 @@ export const PostEdit = () => {
                   fullWidth
                   onChange={handleInputChange}
                 />
+                <Grid item xs={12} sm={6}>
+                  <SelectInput
+                    source="Categoría"
+                    label="Categoría"
+                    choices={categories.map((category) => ({
+                      id: category.id,
+                      name: category.title,
+                    }))}
+                    fullWidth
+                  />
+                </Grid>
                 <Grid item xs={12}>
                   {productEdit.imageSet.map((image, index) => (
                     <div key={index} style={{ display: "flex" }}>
@@ -167,6 +209,25 @@ export const PostEdit = () => {
                     </SimpleFormIterator>
                   </ArrayInput>
                 </Grid>
+              </Grid>
+              <Grid item xs={12} display="flex" justifyContent="center">
+                <Box mt={2}>
+                  <SaveButton
+                    label="Editar"
+                    sx={{
+                      backgroundColor: "#00CED1",
+                      borderRadius: "10px",
+                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                      padding: "10px 30px",
+                      fontWeight: "bold",
+                      textTransform: "none",
+                      width: "100%",
+                      "&:hover": {
+                        backgroundColor: "#00B3B3",
+                      },
+                    }}
+                  />
+                </Box>
               </Grid>
             </Grid>
           </SimpleForm>
