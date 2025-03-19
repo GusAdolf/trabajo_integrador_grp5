@@ -10,12 +10,18 @@ import {
   ArrayInput,
   SimpleFormIterator,
 } from "react-admin";
-import { createProduct } from "../../../../services/productService";
+import {
+  createProduct,
+  assignCategory,
+} from "../../../../services/productService";
+import { useAuth } from "../../../../context/AuthContext";
 
 export const PostIcon = BookIcon;
 
 export const PostCreate = () => {
-  const handleSubmit = async (values) => {
+  const { categories } = useAuth();
+
+  const handleSubmit = (values) => {
     const productBody = {
       name: values.Nombre,
       description: values.Descripción,
@@ -24,26 +30,38 @@ export const PostCreate = () => {
         imageUrl: imgUrl,
         altText: `Imagen de ${values.Nombre}`,
       })),
+      city: {
+        id: 1,
+      },
+      availabilitySet: [{ date: "2025-11-22" }],
+      maxCapacity: 10,
+      address: "Soy una direccion",
     };
 
-    try {
-      const response = await createProduct(productBody);
-      if (!response) {
-        return;
-      }
+    createProduct(productBody)
+      .then((response) => {
+        if (!response) return;
+        const { id } = response;
+        return assignCategory(id, values.Categoría);
+      })
+      .then((responseCategory) => {
+        console.log("🚀 ~ .then ~ responseCategory:", responseCategory);
+        if (!responseCategory) return;
 
-      Swal.fire({
-        icon: "success",
-        title: "Éxito",
-        text: "Producto creado correctamente.",
+        Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "Producto creado correctamente.",
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo completar la operación.",
+        });
       });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudo crear el producto.",
-      });
-    }
   };
   return (
     <Create
@@ -54,6 +72,7 @@ export const PostCreate = () => {
         justifyContent: "center",
       }}
       label="Crear producto"
+      title="Crear producto"
     >
       <Container sx={{ display: "flex", alignItems: "center" }}>
         <SimpleForm toolbar={false} onSubmit={handleSubmit}>
@@ -61,29 +80,23 @@ export const PostCreate = () => {
             <Grid item xs={12} sm={6}>
               <TextInput source="Nombre" label="Nombre" fullWidth />
             </Grid>
-
-{/*             <Grid item xs={12} sm={6}>
-              <SelectInput
-                source="Categoría"
-                label="Categoría"
-                defaultValue="todas"
-                choices={[
-                  { id: "aventura", name: "Aventura" },
-                  { id: "gastronomia", name: "Gastronomía" },
-                  { id: "bienestar", name: "Bienestar" },
-                  { id: "cultura", name: "Cultura" },
-                  { id: "todas", name: "Todas" },
-                ]}
-                fullWidth
-              />
-            </Grid> */}
-
             <Grid item xs={12}>
               <TextInput
                 source="Descripción"
                 label="Descripción"
                 fullWidth
                 multiline
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <SelectInput
+                source="Categoría"
+                label="Categoría"
+                choices={categories.map((category) => ({
+                  id: category.id,
+                  name: category.title,
+                }))}
+                fullWidth
               />
             </Grid>
 

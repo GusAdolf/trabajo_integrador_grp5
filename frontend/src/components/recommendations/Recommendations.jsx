@@ -10,40 +10,33 @@ import {
 } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-
-const API_BASE_URL = "http://localhost:8080"; // Reemplazar con la URL real del backend
+import { useAuth } from "../../context/AuthContext";
 
 export const Recommendations = () => {
+  const { products: allProducts } = useAuth();
   const [products, setProducts] = useState([]);
   const [index, setIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/products`);
-        const data = await response.json();
+    const processedProducts = allProducts.map((product) => ({
+      ...product,
+      imageUrl:
+        product.imageSet?.[0]?.imageUrl || "https://via.placeholder.com/300",
+    }));
 
-        const processedProducts = data.map((product) => ({
-          ...product,
-          imageUrl: product.imageSet?.[0]?.imageUrl || "https://via.placeholder.com/300",
-        }));
+    setProducts(processedProducts.sort(() => 0.5 - Math.random()).slice(0, 10));
 
-        setProducts(processedProducts.sort(() => 0.5 - Math.random()).slice(0, 10));
-      } catch (error) {
-        console.error("Error al obtener productos:", error);
-      }
-    };
-
-    fetchProducts();
     updateVisibleCards();
     window.addEventListener("resize", updateVisibleCards);
     return () => window.removeEventListener("resize", updateVisibleCards);
-  }, []);
+  }, [allProducts]);
 
   const updateVisibleCards = () => {
-    setVisibleCards(window.innerWidth < 600 ? 1 : window.innerWidth < 900 ? 2 : 3);
+    setVisibleCards(
+      window.innerWidth < 600 ? 1 : window.innerWidth < 900 ? 2 : 3
+    );
   };
 
   const nextSlide = () => {
@@ -70,12 +63,28 @@ export const Recommendations = () => {
         Las experiencias más recomendadas
       </Typography>
 
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
         <IconButton onClick={prevSlide} disabled={index === 0}>
           <ArrowBackIos />
         </IconButton>
 
-        <Box sx={{ display: "flex", overflow: "hidden", gap: 2, width: "100%", justifyContent: "center", padding: "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            overflow: "hidden",
+            gap: 2,
+            width: "100%",
+            justifyContent: "center",
+            padding: "10px",
+          }}
+        >
           {products.slice(index, index + visibleCards).map((product) => (
             <Card
               key={product.id}
@@ -107,7 +116,9 @@ export const Recommendations = () => {
                 }}
               >
                 <Box>
-                  <Typography variant="h6" align="center">{product.name}</Typography>
+                  <Typography variant="h6" align="center">
+                    {product.name}
+                  </Typography>
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -125,14 +136,32 @@ export const Recommendations = () => {
                   </Typography>
                 </Box>
 
-                <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-                  <Typography variant="body2">⏳ {product.available_date || "Fecha no disponible"}</Typography>
-                  <Typography variant="body2">⭐ {product.rating || "N/A"}</Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mt: 1,
+                  }}
+                >
+                  <Typography variant="body2">
+                    ⏳ {product.available_date || "Fecha no disponible"}
+                  </Typography>
+                  <Typography variant="body2">
+                    ⭐ {product.rating || "N/A"}
+                  </Typography>
                 </Box>
 
-                <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mt: 1,
+                  }}
+                >
                   <Typography variant="body2">📍 {product.location}</Typography>
-                  <Typography variant="h6" fontWeight="bold">{product.price}</Typography>
+                  <Typography variant="h6" fontWeight="bold">
+                    {product.price}
+                  </Typography>
                 </Box>
 
                 <Button
@@ -148,7 +177,10 @@ export const Recommendations = () => {
           ))}
         </Box>
 
-        <IconButton onClick={nextSlide} disabled={index >= products.length - visibleCards}>
+        <IconButton
+          onClick={nextSlide}
+          disabled={index >= products.length - visibleCards}
+        >
           <ArrowForwardIos />
         </IconButton>
       </Box>
