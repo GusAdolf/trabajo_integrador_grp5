@@ -32,6 +32,8 @@ import "./styles.css";
 import { useAuth } from "../../context/AuthContext";
 import { getCategories } from "../../services/categoryService";
 
+const FRONT_URL = import.meta.env.VITE_FRONT_DOMAIN || "http://localhost:5173";
+
 const emptyDataProvider = {
   getList: () => Promise.resolve({ data: [], total: 1 }),
   getOne: async (resource, params) => {
@@ -71,7 +73,7 @@ export const MyMenu = () => {
     >
       {/* 2) Añadimos el botón de Home */}
       <Menu.Item
-        to="http://localhost:5173/"
+        to=${FRONT_URL}
         primaryText="Ir a Home"
         leftIcon={<HomeIcon />}   // Icono de Home
       />
