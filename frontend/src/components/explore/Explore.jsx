@@ -38,7 +38,7 @@ export const Explore = () => {
     let results = products.filter(
       (product) =>
         (selectedCategory === "Todos" ||
-          product.category.title === selectedCategory) &&
+          product.category?.title === selectedCategory) &&
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -197,7 +197,7 @@ export const Explore = () => {
                 color="textSecondary"
                 sx={{ fontStyle: "italic", mt: 1 }}
               >
-                Categoría: {product.category.title || "No especificada"}
+                Categoría: {product.category?.title || "No especificada"}
               </Typography>
 
               <Box
