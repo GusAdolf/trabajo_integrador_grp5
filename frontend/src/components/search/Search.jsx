@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-// Change from DateRangePicker to DateRange
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -18,7 +17,9 @@ import {
   Box,
   Typography,
   Popover,
-  ClickAwayListener
+  ClickAwayListener,
+  Autocomplete,
+  CircularProgress
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -28,16 +29,20 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
+import { getCities } from '../../services/citiesService';
 
-// Modify the Zod schema to work with Date objects from react-date-range
+// Update the schema to remove location requirement and focus on cityId
 const searchFormSchema = z.object({
-  location: z.string().min(1, { message: 'La ubicación es requerida' }),
+  cityId: z.number({
+    required_error: "Debes seleccionar una ciudad",
+    invalid_type_error: "Debes seleccionar una ciudad válida"
+  }),
   dateRange: z.object({
     startDate: z.date(),
     endDate: z.date(),
     key: z.string().optional()
   }).refine(data => {
-    return data.endDate > data.startDate;
+    return data.endDate >= data.startDate;
   }, {
     message: "La fecha de salida debe ser después de la fecha de entrada",
     path: ["endDate"]
@@ -48,7 +53,35 @@ const searchFormSchema = z.object({
 const Search = ({defaultValues}) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const navigate= useNavigate();
+  const navigate = useNavigate();
+  const [cities, setCities] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState(defaultValues?.selectedCity || null);
+
+  // Fetch cities on component mount
+  useEffect(() => {
+    const fetchCities = async () => {
+      setLoading(true);
+      try {
+        const citiesData = await getCities();
+        setCities(citiesData);
+        
+        // If we have a city ID from defaultValues, find and set the selectedCity
+        if (defaultValues?.cityId && citiesData.length > 0) {
+          const city = citiesData.find(city => city.id === Number(defaultValues.cityId));
+          if (city) {
+            setSelectedCity(city);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchCities();
+  }, [defaultValues?.cityId]);
 
   // Create a separate state for the calendar
   const [dateRangeState, setDateRangeState] = useState([
@@ -62,7 +95,7 @@ const Search = ({defaultValues}) => {
   const { control, handleSubmit, formState: { errors }, watch, setValue } = useForm({
     resolver: zodResolver(searchFormSchema),
     defaultValues: defaultValues || {
-      location: '',
+      cityId: null,
       dateRange: {
         startDate: new Date(),
         endDate: new Date(new Date().setDate(new Date().getDate() + 7)),
@@ -80,8 +113,14 @@ const Search = ({defaultValues}) => {
     setValue('dateRange', dateRangeState[0]);
   }, [dateRangeState, setValue]);
 
-  // Format dates as DD/MM/YY
+  // Remove setting location value since we only care about cityId
+  useEffect(() => {
+    if (selectedCity) {
+      setValue('cityId', selectedCity.id);
+    }
+  }, [selectedCity, setValue]);
 
+  // Format dates as DD/MM/YY
   const formatDate = (date) => {
     if (!date) return '';
     const day = date.getDate().toString().padStart(2, '0');
@@ -111,18 +150,16 @@ const Search = ({defaultValues}) => {
   };
 
   const onSubmit = async (data) => {
-    // Navegar a  /buscar?ubicacion=Lima&desde=2015-03-15&hasta=2015-03-15&personas=2
-
     console.log('Formulario enviado:', data);
     const searchParams = new URLSearchParams();
-    searchParams.set("location", data.location);
-    searchParams.set("from",formatDateToParam(data.dateRange.startDate))
-    searchParams.set("to",formatDateToParam(data.dateRange.endDate));
-    searchParams.set("people",data.people);
+    if (data.cityId) {
+      searchParams.set("cityId", data.cityId);
+    }
+    searchParams.set("from", formatDateToParam(data.dateRange.startDate));
+    searchParams.set("to", formatDateToParam(data.dateRange.endDate));
+    searchParams.set("people", data.people);
 
-    navigate("/search?"+searchParams)
-    
-    
+    navigate("/search?"+searchParams);
   };
 
   const handleIncrement = () => {
@@ -149,11 +186,8 @@ const Search = ({defaultValues}) => {
       <CardHeader 
         title="Explora y reserva" 
         sx={{ 
-          // backgroundColor:"#FFFF",
           backgroundColor:"#00CED1",
-          // color: '#1C274C',
           color: '#ffff',
-
           textAlign: 'left',
           p: 2,
           borderBottom:"1px solid #F3F4F6"
@@ -164,23 +198,56 @@ const Search = ({defaultValues}) => {
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={3}>
               <Controller
-                name="location"
+                name="cityId"
                 control={control}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label="¿A dónde viajas?"
-                    variant="outlined"
-                    error={!!errors.location}
-                    helperText={errors.location?.message}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <LocationOnIcon  sx={{color:"#73FBFD"}} />
-                        </InputAdornment>
-                      )
+                  <Autocomplete
+                    id="city-autocomplete"
+                    options={cities}
+                    loading={loading}
+                    value={selectedCity}
+                    getOptionLabel={(option) => {
+                      if (typeof option === 'string') {
+                        return option;
+                      }
+                      return option.name ? `${option.name}, ${option.country}` : '';
                     }}
+                    onChange={(_, newValue) => {
+                      setSelectedCity(newValue);
+                      setValue('cityId', newValue ? newValue.id : null);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="¿A dónde viajas?"
+                        variant="outlined"
+                        error={!!errors.cityId}
+                        helperText={errors.cityId?.message}
+                        InputProps={{
+                          ...params.InputProps,
+                          startAdornment: (
+                            <>
+                              <InputAdornment position="start">
+                                <LocationOnIcon sx={{color:"#73FBFD"}} />
+                              </InputAdornment>
+                              {params.InputProps.startAdornment}
+                            </>
+                          ),
+                          endAdornment: (
+                            <>
+                              {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                              {params.InputProps.endAdornment}
+                            </>
+                          ),
+                        }}
+                      />
+                    )}
+                    renderOption={(props, option) => (
+                      <li {...props}>
+                        <LocationOnIcon sx={{ color: "#73FBFD", mr: 1 }} />
+                        {option.name}, {option.country}
+                      </li>
+                    )}
                   />
                 )}
               />
