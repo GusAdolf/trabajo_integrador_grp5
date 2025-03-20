@@ -1,11 +1,14 @@
 import Swal from "sweetalert2";
 
+// Usa la variable de entorno VITE_BACKEND_URL y, si no existe, usa localhost por defecto.
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+
 // create category
 export const createCategories = async (category) => {
   console.log("🚀 ~ createCategories ~ category:", category);
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch("http://localhost:8080/categories", {
+    const response = await fetch("http://${BASE_URL}/categories", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +35,7 @@ export const createCategories = async (category) => {
 export const getCategories = async () => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch("http://localhost:8080/categories", {
+    const response = await fetch("${BASE_URL}/categories", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +52,7 @@ export const getCategories = async () => {
 export const deleteCategory = async (id) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(`http://localhost:8080/categories/${id}`, {
+    const response = await fetch("${BASE_URL}/categories/${id}", {
       method: "DELETE",
       headers: {
         Authorization: bearerToken,
@@ -87,5 +90,5 @@ export const deleteCategory = async (id) => {
     });
 
     return null;
-  }
-};
+    }
+  };
