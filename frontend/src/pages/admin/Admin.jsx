@@ -27,7 +27,10 @@ import CategoryIcon from "@mui/icons-material/Category";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import "./styles.css";
 
-const dataProvider = jsonServerProvider("http://localhost:8080");
+const dataProvider = jsonServerProvider(
+  import.meta.env.VITE_APP_API_URL || 'http://localhost:8080'
+);
+
 
 // Detecta si el usuario está en móvil
 const isMobileDevice = () => window.innerWidth <= 768;
