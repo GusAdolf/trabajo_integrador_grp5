@@ -33,7 +33,7 @@ import {
 
 export const PostEdit = () => {
   const { id } = useParams();
-  const { products, categories } = useAuth();
+  const { products, categories, features } = useAuth();
   const [productById, setProductById] = useState(null);
   const [productEdit, setProductEdit] = useState({
     id: "",
@@ -179,6 +179,17 @@ export const PostEdit = () => {
                     choices={categories.map((category) => ({
                       id: category.id,
                       name: category.title,
+                    }))}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <SelectInput
+                    source="Características"
+                    label="Características"
+                    choices={features.map((feature) => ({
+                      id: feature.id,
+                      name: feature.name,
                     }))}
                     fullWidth
                   />

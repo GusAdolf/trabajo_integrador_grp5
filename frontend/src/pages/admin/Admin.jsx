@@ -16,6 +16,9 @@ import {
   UsersLists,
   CreateCategory,
   CategoriesList,
+  CreateFeature, 
+  FeatureEdit, 
+  FeaturesList
 } from "./components/index";
 import LabelIcon from "@mui/icons-material/Label";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
@@ -26,6 +29,8 @@ import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import HomeIcon from "@mui/icons-material/Home";  // <--- 1) Importar HomeIcon
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import "./styles.css";
 
 const dataProvider = jsonServerProvider("http://localhost:8080");
@@ -75,6 +80,16 @@ export const MyMenu = () => {
         to="/admin/categories/list"
         primaryText="Lista de categorías"
         leftIcon={<FormatListNumberedIcon />}
+      />
+      <Menu.Item
+        to="/admin/features/list"
+        primaryText="Lista de características"
+        leftIcon={<ListAltIcon/>}
+      />
+      <Menu.Item
+        to="/admin/features/create"
+        primaryText="Crear característica"
+        leftIcon={<PostAddIcon />}
       />
     </Menu>
   );
@@ -131,6 +146,12 @@ export const AdminPage = () => {
         list={CategoriesList}
         create={CreateCategory}
       />
+      <Resource
+        name="features"
+        list={FeaturesList}
+        create={CreateFeature}
+      />
+      {/* - */}
     </Admin>
   );
 };
