@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DB_DRIVER: com.mysql.cj.jdbc.Driver
-      DB_HOST: 191.89.129.146
-      DB_NAME: ExploraDB
-      DB_PASSWORD: 123456789ExploraDB
-      DB_PORT: 3307
-      DB_URL: jdbc:mysql://191.89.129.146:3307/ExploraDB?useSSL=false&serverTimezone=UTC
+      DB_HOST: trolley.proxy.rlwy.net
+      DB_NAME: railway
+      DB_PASSWORD: RBDinrWjMfwWDwxeZbUHCkDPSEqXtQop
+      DB_PORT: 30061
+      DB_URL: jdbc:mysql://trolley.proxy.rlwy.net:30061/railway?useSSL=false&serverTimezone=UTC
       DB_USERNAME: root
       EMAIL_FROM: xplora.hello@gmail.com
       EMAIL_PASSWORD: "ztee jjqv oenb kxfq"
