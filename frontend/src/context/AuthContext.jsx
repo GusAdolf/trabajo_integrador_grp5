@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { loginUser, getProfile, getProducts } from "../services/productService";
 import { getCategories } from "../services/categoryService";
-import { getFeatures } from "../services/featuresService";
+import { getFeatures, deleteFeature } from "../services/featuresService";
 
 export const AuthContext = createContext();
 
@@ -45,6 +45,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const refreshFeatures = () => fetchFeatures();
+
+  const deleteFeatureById = async (id) => {
+    await deleteFeature(id);
+    fetchFeatures();
+  };
+
   const login = async (email, password) => {
     const response = await loginUser({ email, password });
     if (!response) {
@@ -83,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, categories, products, features }}>
+    <AuthContext.Provider value={{ user, login, logout, categories, products, features, refreshFeatures, deleteFeatureById }}>
       {children}
     </AuthContext.Provider>
   );

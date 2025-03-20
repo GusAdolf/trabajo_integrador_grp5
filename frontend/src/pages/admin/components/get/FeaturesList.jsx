@@ -1,20 +1,19 @@
+import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import {
   List,
   Datagrid,
   TextField,
   EditButton,
-  useRecordContext,
   TopToolbar,
   CreateButton,
-  FunctionField,
-  DeleteButton,
   ImageField
 } from "react-admin";
 
 import { getFeatures } from "../../../../services/featuresService";
 import "./categoryStyles.css";
 import { useAuth } from "../../../../context/AuthContext";
+import { CustomDeleteFeature } from "../deleteButton/DeleteFeature";
 
 const namespace = "list-features";
 
@@ -40,7 +39,16 @@ const CustomListActions = () => (
 
 export const FeaturesList = () => {
   const { features } = useAuth();
+  const [ listFeatures, setListFeatures ] = useState(features)
+  const [isDelete, setIsDelete] = useState(false);
   console.log("features", features)
+  
+  useEffect(() => {
+    getFeatures().then((data) => {
+      setListFeatures(data);
+    });
+  }, [isDelete]);
+
   return (
     <div className={namespace}>
       <List
@@ -60,7 +68,7 @@ export const FeaturesList = () => {
             className={`${namespace}-data`}
             rowClick={null}
             bulkActionButtons={false}
-            data={features}
+            data={listFeatures}
             sx={{
               "& .RaDatagrid-headerCell": {
                 fontWeight: "bold",
@@ -97,21 +105,7 @@ export const FeaturesList = () => {
                   },
                 }}
               />
-              <DeleteButton
-                label="Eliminar"
-                sx={{
-                  backgroundColor: "#d33",
-                  color: "white",
-                  borderRadius: "10px",
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-                  padding: "5px 20px",
-                  fontWeight: "bold",
-                  textTransform: "none",
-                  "&:hover": {
-                    backgroundColor: "black",
-                  },
-                }}
-              />
+              <CustomDeleteFeature setIsDelete={setIsDelete} />
             </Box>
           </Datagrid>
         </Box>
