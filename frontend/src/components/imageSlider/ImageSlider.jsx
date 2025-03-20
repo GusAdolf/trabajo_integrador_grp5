@@ -54,7 +54,7 @@ export const ImageSlider = () => {
       width: "90%", 
       margin: "auto", 
       overflow: "hidden",
-      mt: 4,
+      mt: 2, 
       mb: 4
     }}>
       <Slider {...settings}>
@@ -65,7 +65,7 @@ export const ImageSlider = () => {
               alt={`Slide ${index + 1}`}
               style={{ 
                 width: "100%", 
-                height: "400px",
+                height: "450px",
                 borderRadius: 10, 
                 objectFit: "cover" 
               }}
