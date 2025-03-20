@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
     }
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token ) {
       fetchCategories();
       fetchProducts()
     }

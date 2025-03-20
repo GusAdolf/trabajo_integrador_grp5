@@ -132,6 +132,9 @@ export const PostEdit = () => {
   };
 
   return (
+    <>
+{
+  productById && 
     <Edit
       title="Editar un producto"
       sx={{
@@ -240,5 +243,7 @@ export const PostEdit = () => {
         )}
       </Container>
     </Edit>
+}
+  </>
   );
 };

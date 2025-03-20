@@ -44,14 +44,15 @@ export const PostCreate = () => {
         const { id } = response;
         return assignCategory(id, values.Categoría);
       })
-      .then((responseCategory) => {
-        console.log("🚀 ~ .then ~ responseCategory:", responseCategory);
-        if (!responseCategory) return;
+      .then(() => {
+        //if (!responseCategory) return;
 
         Swal.fire({
           icon: "success",
           title: "Éxito",
           text: "Producto creado correctamente.",
+        }).then(() => {
+          window.location.href = "/admin/products";
         });
       })
       .catch((error) => {

@@ -25,14 +25,28 @@ import jsonServerProvider from "ra-data-json-server";
 import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import AddHomeIcon from "@mui/icons-material/AddHome";
+import LogoutIcon from "@mui/icons-material/Logout";
 import "./styles.css";
+import { useAuth } from "../../context/AuthContext";
 
-const dataProvider = jsonServerProvider("http://localhost:8080");
+const emptyDataProvider = {
+  getList: () => Promise.resolve({ data: [], total: 1 }),
+  getOne: () => Promise.reject(),
+  getMany: () => Promise.reject(),
+  getManyReference: () => Promise.reject(),
+  create: () => Promise.reject(),
+  update: () => Promise.resolve({ data: [], total: 1 }),
+  updateMany: () => Promise.reject(),
+  delete: () => Promise.reject(),
+  deleteMany: () => Promise.reject(),
+};
 
 // Detecta si el usuario está en móvil
 const isMobileDevice = () => window.innerWidth <= 768;
 
 export const MyMenu = () => {
+  const {logout} = useAuth()
   return (
     <Menu
       sx={{
@@ -43,31 +57,46 @@ export const MyMenu = () => {
         paddingTop: "30px",
       }}
     >
-      <Menu.Item
-        to="/admin/products/create"
-        primaryText="Crear Producto"
-        leftIcon={<AddBoxRoundedIcon />}
-      />
-      <Menu.Item
-        to="/admin/products"
-        primaryText="Lista de productos"
-        leftIcon={<AutoAwesomeMotionRoundedIcon />}
-      />
-      <Menu.Item
-        to="/admin/users"
-        primaryText="Lista de usuarios"
-        leftIcon={<GroupIcon />}
-      />
-      <Menu.Item
-        to="/admin/categories/create"
-        primaryText="Agregar categoria"
-        leftIcon={<CategoryIcon />}
-      />
-      <Menu.Item
-        to="/admin/categories/list"
-        primaryText="Lista de categorías"
-        leftIcon={<FormatListNumberedIcon />}
-      />
+      <div>
+        <Menu.Item
+          to="/admin/products/create"
+          primaryText="Crear Producto"
+          leftIcon={<AddBoxRoundedIcon />}
+        />
+        <Menu.Item
+          to="/admin/products"
+          primaryText="Lista de productos"
+          leftIcon={<AutoAwesomeMotionRoundedIcon />}
+        />
+        <Menu.Item
+          to="/admin/users"
+          primaryText="Lista de usuarios"
+          leftIcon={<GroupIcon />}
+        />
+        <Menu.Item
+          to="/admin/categories/create"
+          primaryText="Agregar categoria"
+          leftIcon={<CategoryIcon />}
+        />
+        <Menu.Item
+          to="/admin/categories/list"
+          primaryText="Lista de categorías"
+          leftIcon={<FormatListNumberedIcon />}
+        />
+      </div>
+      <div>
+        <Menu.Item
+          to="/"
+          primaryText="Volver al home"
+          leftIcon={<AddHomeIcon />}
+        />
+        <Menu.Item
+          to="/"
+          primaryText="Cerrar sesión"
+          leftIcon={<LogoutIcon />}
+          onClick={logout}
+        />
+      </div>
     </Menu>
   );
 };
@@ -104,7 +133,7 @@ export const AdminPage = () => {
   return (
     <Admin
       basename="/admin"
-      dataProvider={dataProvider}
+      dataProvider={emptyDataProvider}
       theme={nanoLightTheme}
       darkTheme={nanoLightTheme}
       layout={MyLayout}
