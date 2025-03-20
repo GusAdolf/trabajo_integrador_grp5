@@ -1,6 +1,6 @@
 package com.xplora.backend.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRoleRequestDto {
-    @NotNull(message = "El rol no debe ser nulo.")
+    @NotBlank
     private String role;
 }

@@ -5,31 +5,29 @@ import com.xplora.backend.service.IEmailService;
 import com.xplora.backend.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/send-email")
 public class EmailController {
-
     private IEmailService emailService;
-    private IUserService iUserService;
+    private IUserService userService;
 
-    @Autowired
-    public EmailController(IEmailService emailService, IUserService iUserService) {
+    public EmailController(IEmailService emailService, IUserService userService) {
         this.emailService = emailService;
-        this.iUserService = iUserService;
+        this.userService = userService;
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/welcome")
     private ResponseEntity<String> sendEmailWelcome(@RequestHeader("Authorization") String authHeader) {
         try {
-            User user = iUserService.findByTokenUser(authHeader.substring(7));
+            String userToken = authHeader.substring(7);
+            User user = userService.getUserByToken(userToken);
             emailService.sendMailWelcome(user);
             return ResponseEntity
-                    .ok("Correo enviado exitosamente.");
+                    .ok("Correo enviado exitosamente");
         } catch (Exception ex) {
             return ResponseEntity
                     .badRequest()

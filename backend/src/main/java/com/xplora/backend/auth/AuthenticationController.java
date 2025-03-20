@@ -1,6 +1,7 @@
 package com.xplora.backend.auth;
 
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws MessagingException {
+    ResponseEntity<AuthenticationResponse> register(@RequestBody @Valid RegisterRequest request) throws MessagingException {
         return ResponseEntity.ok(authenticationService.register(request));
     }
 

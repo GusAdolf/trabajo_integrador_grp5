@@ -63,6 +63,33 @@ export const deleteProduct = async (id) => {
   }
 };
 
+// Update product
+export const updateProduct = async (product) => {
+  try {
+    const bearerToken = `Bearer ${localStorage.getItem("token")}`;
+    const response = await fetch(URL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: bearerToken,
+      },
+      body: JSON.stringify(product ),
+    });
+    if (response.status === 400) {
+      const responseText = await response.text();
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: responseText,
+      });
+      return;
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // USERS
 
 // Create user
@@ -176,8 +203,36 @@ export const updateUserRole = async (id, role) => {
 
       return;
     }
- 
   } catch (error) {
     console.error(error);
   }
-}
+};
+
+// Asign category
+export const assignCategory = async (id, categoryId) => {
+  try {
+    const bearerToken = `Bearer ${localStorage.getItem("token")}`;
+    const response = await fetch(
+      `http://localhost:8080/categories/${id}/assign/${categoryId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearerToken,
+        },
+      }
+    );
+    if (response.status === 400) {
+      const responseText = await response.text();
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: responseText,
+      });
+
+      return;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

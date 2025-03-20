@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { ImageSlider } from "../../components/imageSlider/ImageSlider";
 import { Recommendations } from "../../components/recommendations/Recommendations";
 import { Explore } from "../../components/explore/Explore";
+import Search from "../../components/search/Search";
 
 export const Home = () => {
   return (
@@ -15,6 +16,7 @@ export const Home = () => {
       }}
     >
       <ImageSlider />
+      <Search/>
       <Box id="recomendaciones" sx={{ width: '90%' }}>
         <Recommendations />
       </Box>
