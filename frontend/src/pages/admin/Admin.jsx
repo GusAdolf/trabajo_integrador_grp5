@@ -28,6 +28,7 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import "./styles.css";
 
 const dataProvider = jsonServerProvider(
+
   import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'
 );
 
