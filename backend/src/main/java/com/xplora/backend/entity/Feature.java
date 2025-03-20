@@ -1,5 +1,6 @@
 package com.xplora.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +26,6 @@ public class Feature {
     private String iconUrl;
 
     @ManyToMany(mappedBy = "features")
+    @JsonIgnore
     private List<Product> products;
 }
