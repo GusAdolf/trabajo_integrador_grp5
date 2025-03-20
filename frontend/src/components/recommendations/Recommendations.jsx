@@ -56,7 +56,7 @@ export const Recommendations = () => {
           fontWeight: 700,
           fontSize: { xs: "24px", sm: "30px", md: "40px" },
           textAlign: "left",
-          color: "#00CED1",
+          color:"#1C274C",
           mb: 3,
         }}
       >
