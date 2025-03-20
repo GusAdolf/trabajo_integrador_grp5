@@ -79,7 +79,7 @@ export const Explore = () => {
             fontWeight: 700,
             fontSize: "40px",
             lineHeight: "50.4px",
-            color: "#0E2880",
+            color: "#1C274C",
           }}
         >
           Explora más
@@ -216,7 +216,7 @@ export const Explore = () => {
         ))}
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", my: 3 }}>
         <Pagination
           count={totalPages}
           page={page}
