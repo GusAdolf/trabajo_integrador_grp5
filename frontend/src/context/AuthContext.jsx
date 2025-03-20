@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { loginUser, getProfile, getProducts } from "../services/productService";
 import { getCategories } from "../services/categoryService";
 import { getCities } from "../services/citiesService";
+import { getFeatures, deleteFeature } from "../services/featuresService";
 
 export const AuthContext = createContext();
 
@@ -10,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [cities, setCities] = useState([])
+  const [features, setFeatures] = useState([])
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -19,7 +21,8 @@ export const AuthProvider = ({ children }) => {
     
     fetchProducts(); // Obtener productos siempre
     fetchCategories(); // Obtener categorías siempre
-    
+    fetchFeatures(); // Obtener características siempre
+
     const token = localStorage.getItem("token");
     if (token ) {
       fetchCategories();
@@ -68,6 +71,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchFeatures = async () => {
+    const data = await getFeatures();
+    if (data) {
+      setFeatures(data);
+    }
+  };
+
+  const refreshFeatures = () => fetchFeatures();
+
+  const deleteFeatureById = async (id) => {
+    await deleteFeature(id);
+    fetchFeatures();
+  };
+
   const login = async (email, password) => {
     const response = await loginUser({ email, password });
     if (!response) {
@@ -93,7 +110,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, categories, products, cities }}>
+    <AuthContext.Provider value={{ user, login, logout, categories, products, features,cities,  refreshFeatures, deleteFeatureById }}>
       {children}
     </AuthContext.Provider>
   );

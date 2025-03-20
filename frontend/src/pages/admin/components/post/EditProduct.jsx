@@ -39,7 +39,7 @@ import Swal from "sweetalert2";
 
 export const PostEdit = () => {
   const { id } = useParams();
-  const { products, categories } = useAuth();
+  const { products, categories, features } = useAuth();
   const [productById, setProductById] = useState(null);
   const [productEdit, setProductEdit] = useState({
     id: "",

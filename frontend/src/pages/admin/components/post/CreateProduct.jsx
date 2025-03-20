@@ -9,6 +9,8 @@ import {
   SelectInput,
   ArrayInput,
   SimpleFormIterator,
+  SelectArrayInput,
+  ReferenceArrayInput,
   NumberInput,
   DateInput,
 } from "react-admin";

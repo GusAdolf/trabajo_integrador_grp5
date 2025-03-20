@@ -16,6 +16,9 @@ import {
   UsersLists,
   CreateCategory,
   CategoriesList,
+  CreateFeature,
+  FeatureEdit,
+  FeaturesList,
 } from "./components/index";
 import LabelIcon from "@mui/icons-material/Label";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
@@ -27,7 +30,9 @@ import CategoryIcon from "@mui/icons-material/Category";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import AddHomeIcon from "@mui/icons-material/AddHome";
 import LogoutIcon from "@mui/icons-material/Logout";
-import HomeIcon from "@mui/icons-material/Home";  // <--- 1) Importar HomeIcon
+import HomeIcon from "@mui/icons-material/Home"; // <--- 1) Importar HomeIcon
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import "./styles.css";
 import { useAuth } from "../../context/AuthContext";
 import { getCategories } from "../../services/categoryService";
@@ -35,14 +40,14 @@ import { getCategories } from "../../services/categoryService";
 const emptyDataProvider = {
   getList: () => Promise.resolve({ data: [], total: 1 }),
   getOne: async (resource, params) => {
-    if (resource === 'products') {
+    if (resource === "products") {
       const products = await getProducts();
       const product = products.find((c) => c.id == params.id);
-      console.log("🚀 ~ getOne: ~ product:", product)
+      console.log("🚀 ~ getOne: ~ product:", product);
       if (product) {
         return { data: product };
       }
-      throw new Error('Product not found');
+      throw new Error("Product not found");
     }
   },
   getMany: () => Promise.reject(),
@@ -71,9 +76,9 @@ export const MyMenu = () => {
     >
       {/* 2) Añadimos el botón de Home */}
       <Menu.Item
-        to="http://localhost:5173/"               
+        to="http://localhost:5173/"
         primaryText="Ir a Home"
-        leftIcon={<HomeIcon />}   // Icono de Home
+        leftIcon={<HomeIcon />} // Icono de Home
       />
 
       <Menu.Item
@@ -101,12 +106,23 @@ export const MyMenu = () => {
         primaryText="Lista de categorías"
         leftIcon={<FormatListNumberedIcon />}
       />
-              <Menu.Item
-          to="/"
-          primaryText="Cerrar sesión"
-          leftIcon={<LogoutIcon />}
-          onClick={logout}
-        />
+
+      <Menu.Item
+        to="/admin/features/list"
+        primaryText="Lista de características"
+        leftIcon={<ListAltIcon />}
+      />
+      <Menu.Item
+        to="/admin/features/create"
+        primaryText="Crear característica"
+        leftIcon={<PostAddIcon />}
+      />
+      <Menu.Item
+        to="/"
+        primaryText="Cerrar sesión"
+        leftIcon={<LogoutIcon />}
+        onClick={logout}
+      />
     </Menu>
   );
 };
@@ -162,6 +178,8 @@ export const AdminPage = () => {
         list={CategoriesList}
         create={CreateCategory}
       />
+      <Resource name="features" list={FeaturesList} create={CreateFeature} />
+      {/* - */}
     </Admin>
   );
 };
