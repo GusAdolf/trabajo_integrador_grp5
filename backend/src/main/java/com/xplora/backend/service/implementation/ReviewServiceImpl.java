@@ -50,9 +50,9 @@ public class ReviewServiceImpl implements IReviewService {
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la fecha reservada en las fechas disponibles del producto"));
 
-        if (!LocalDate.now().isAfter(availability.getDate())) {
+        /*if (!LocalDate.now().isAfter(availability.getDate())) {
             throw new BadRequestException("La reseña debe hacerse despues de la fecha de reservación");
-        }
+        }*/
 
         if (booking.getReview() != null) {
             throw new DataIntegrityViolationException("La reservación ya tiene una reseña");

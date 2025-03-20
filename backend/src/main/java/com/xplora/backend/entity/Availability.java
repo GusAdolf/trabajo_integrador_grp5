@@ -11,7 +11,7 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "availability")
+@Table(name = "availabilities")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,7 +24,7 @@ public class Availability {
 
     @NotNull
     @Column(nullable = false)
-    @Future
+    //@Future
     private LocalDate date;
 
     @Max(value = 100, message = "máximo 100 cupos")

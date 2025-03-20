@@ -1,4 +1,4 @@
-package com.xplora.backend.auth;
+package com.xplora.backend.authentication;
 
 import com.xplora.backend.configuration.JwtService;
 import com.xplora.backend.entity.Role;
