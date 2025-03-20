@@ -1,4 +1,4 @@
-package com.xplora.backend.auth;
+package com.xplora.backend.authentication;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
