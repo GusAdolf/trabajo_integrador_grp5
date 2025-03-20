@@ -160,8 +160,8 @@ export const Header = () => {
         </Container>
       </AppBar>
 
-      {/* Espacio entre el header y el contenido */}
-      <Box sx={{ mt: 10 }} />
+      {/* Remove this Box that's creating extra space */}
+      {/* <Box sx={{ mt: 10 }} /> */}
 
       <Registration open={open} setOpen={setOpen} handleOpen={handleOpen} />
     </>
