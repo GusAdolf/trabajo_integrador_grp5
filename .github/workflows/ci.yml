@@ -36,6 +36,8 @@ jobs:
 
   build-frontend:
     runs-on: ubuntu-latest
+    # Aquí indicamos que este job depende de build-backend
+    needs: build-backend
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
