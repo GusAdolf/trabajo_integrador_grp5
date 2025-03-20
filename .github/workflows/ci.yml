@@ -15,7 +15,7 @@ jobs:
       DB_NAME: railway
       DB_PASSWORD: RBDinrWjMfwWDwxeZbUHCkDPSEqXtQop
       DB_PORT: 30061
-      DB_URL: jdbc:mysql://trolley.proxy.rlwy.net:30061/railway?useSSL=false&serverTimezone=UTC
+      DB_URL: mysql://root:RBDinrWjMfwWDwxeZbUHCkDPSEqXtQop@trolley.proxy.rlwy.net:30061/railway
       DB_USERNAME: root
       EMAIL_FROM: xplora.hello@gmail.com
       EMAIL_PASSWORD: "ztee jjqv oenb kxfq"

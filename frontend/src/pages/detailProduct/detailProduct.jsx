@@ -16,7 +16,9 @@ import {
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
-const API_BASE_URL = "http://localhost:8080";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+
+
 const PLACEHOLDER_IMAGE = "https://picsum.photos/600/400";
 
 export const ProductDetail = () => {
