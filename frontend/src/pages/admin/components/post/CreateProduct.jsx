@@ -12,7 +12,10 @@ import {
   NumberInput,
   DateInput,
 } from "react-admin";
-import { createProduct, assignCategory } from "../../../../services/productService";
+import {
+  createProduct,
+  assignCategory,
+} from "../../../../services/productService";
 import { useAuth } from "../../../../context/AuthContext";
 
 export const PostIcon = BookIcon;
@@ -43,14 +46,16 @@ export const PostCreate = () => {
         const { id } = response;
         return assignCategory(id, values.Categoría);
       })
-      .then((responseCategory) => {
-        if (!responseCategory) return;
+      .then(() => {
+        //if (!responseCategory) return;
 
         Swal.fire({
           icon: "success",
           title: "¡Producto Creado!",
           text: "El producto se ha creado con éxito.",
           confirmButtonColor: "#00CED1",
+        }).then(() => {
+          window.location.href = "/admin/products";
         });
       })
       .catch((error) => {
@@ -107,11 +112,7 @@ export const PostCreate = () => {
             <Grid container spacing={2}>
               {/* Nombre */}
               <Grid item xs={12} md={6}>
-                <TextInput
-                  source="Nombre"
-                  label="Nombre"
-                  fullWidth
-                />
+                <TextInput source="Nombre" label="Nombre" fullWidth />
               </Grid>
 
               {/* Categoría */}
@@ -155,7 +156,11 @@ export const PostCreate = () => {
 
               {/* Imágenes */}
               <Grid item xs={12}>
-                <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight="bold"
+                  sx={{ mb: 1 }}
+                >
                   Ingrese al menos 5 imágenes
                 </Typography>
                 <ArrayInput source="Imagenes" label="">
@@ -173,8 +178,8 @@ export const PostCreate = () => {
                   Disponibilidad
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                  Seleccione las fechas en las que estará disponible el producto.
-                  Puede agregar más con el botón “Agregar”.
+                  Seleccione las fechas en las que estará disponible el
+                  producto. Puede agregar más con el botón “Agregar”.
                 </Typography>
                 <ArrayInput source="Disponibilidad" label="">
                   <SimpleFormIterator>

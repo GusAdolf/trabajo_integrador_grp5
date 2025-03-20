@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import { useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
-import Search from "../../components/search/Search";
 import { Explore } from "../../components/explore/Explore";
 import Products from "../../components/products/Products";
 import { getCities } from "../../services/citiesService";
 import { getCategories } from "../../services/categoryService";
 import { getProducts } from "../../services/productService";
+import Search from "../../components/Search/Search";
 
 const dateStringToLocalDate = (dateString) => {
   if (!dateString) return new Date();
@@ -125,7 +125,7 @@ export const SearchPage = () => {
   return (
     <Box sx={{ width: "80%", mx: "auto", pb: "3rem" }}>
       <Search defaultValues={defaultValues} />
-
+      
       <Products categories={categories} products={filteredProducts} itemsPerPage={6} />
     </Box>
   );

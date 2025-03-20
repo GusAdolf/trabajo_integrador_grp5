@@ -25,15 +25,40 @@ import jsonServerProvider from "ra-data-json-server";
 import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import AddHomeIcon from "@mui/icons-material/AddHome";
+import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";  // <--- 1) Importar HomeIcon
 import "./styles.css";
+import { useAuth } from "../../context/AuthContext";
+import { getCategories } from "../../services/categoryService";
 
-const dataProvider = jsonServerProvider("http://localhost:8080");
+const emptyDataProvider = {
+  getList: () => Promise.resolve({ data: [], total: 1 }),
+  getOne: async (resource, params) => {
+    if (resource === 'products') {
+      const products = await getProducts();
+      const product = products.find((c) => c.id == params.id);
+      console.log("🚀 ~ getOne: ~ product:", product)
+      if (product) {
+        return { data: product };
+      }
+      throw new Error('Product not found');
+    }
+  },
+  getMany: () => Promise.reject(),
+  getManyReference: () => Promise.reject(),
+  create: () => Promise.reject(),
+  update: () => Promise.resolve(),
+  updateMany: () => Promise.reject(),
+  delete: () => Promise.resolve({}),
+  deleteMany: () => Promise.reject(),
+};
 
 // Detecta si el usuario está en móvil
 const isMobileDevice = () => window.innerWidth <= 768;
 
 export const MyMenu = () => {
+  const { logout } = useAuth();
   return (
     <Menu
       sx={{
@@ -76,6 +101,12 @@ export const MyMenu = () => {
         primaryText="Lista de categorías"
         leftIcon={<FormatListNumberedIcon />}
       />
+              <Menu.Item
+          to="/"
+          primaryText="Cerrar sesión"
+          leftIcon={<LogoutIcon />}
+          onClick={logout}
+        />
     </Menu>
   );
 };
@@ -112,7 +143,7 @@ export const AdminPage = () => {
   return (
     <Admin
       basename="/admin"
-      dataProvider={dataProvider}
+      dataProvider={emptyDataProvider}
       theme={nanoLightTheme}
       darkTheme={nanoLightTheme}
       layout={MyLayout}

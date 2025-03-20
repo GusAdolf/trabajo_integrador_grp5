@@ -4,9 +4,9 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
 const images = [
-  "https://picsum.photos/1200/500?random=1",
-  "https://picsum.photos/1200/500?random=2",
-  "https://picsum.photos/1200/500?random=3"
+  "https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s",
+  "https://fastly.picsum.photos/id/15/2500/1667.jpg?hmac=Lv03D1Y3AsZ9L2tMMC1KQZekBVaQSDc1waqJ54IHvo4",
+  "https://fastly.picsum.photos/id/27/3264/1836.jpg?hmac=p3BVIgKKQpHhfGRRCbsi2MCAzw8mWBCayBsKxxtWO8g"
 ];
 
 export const ImageSlider = () => {
@@ -54,7 +54,7 @@ export const ImageSlider = () => {
       width: "90%", 
       margin: "auto", 
       overflow: "hidden",
-      mt: 4,
+      mt: 2, 
       mb: 4
     }}>
       <Slider {...settings}>
@@ -65,7 +65,7 @@ export const ImageSlider = () => {
               alt={`Slide ${index + 1}`}
               style={{ 
                 width: "100%", 
-                height: "400px",
+                height: "450px",
                 borderRadius: 10, 
                 objectFit: "cover" 
               }}

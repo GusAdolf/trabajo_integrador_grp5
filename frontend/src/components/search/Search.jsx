@@ -179,24 +179,25 @@ const Search = ({defaultValues}) => {
   return (
     <Card sx={{ 
       maxWidth: '100%', 
-      margin: '2rem auto', 
+      margin: 'auto 3rem', 
       boxShadow: 3,
-      borderRadius: 2
+      borderRadius: 2,
+      my:"40px"
     }}>
       <CardHeader 
         title="Explora y reserva" 
         sx={{ 
           backgroundColor:"#00CED1",
-          color: '#ffff',
+          color: '#fff',
           textAlign: 'left',
           p: 2,
           borderBottom:"1px solid #F3F4F6"
         }}
       />
-      <CardContent sx={{ p: 3 }}>
+      <CardContent sx={{ p: 3}}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} md={3}>
+          <Grid container spacing={4} alignItems="center"  >
+            <Grid item xs={12} md={3} >
               <Controller
                 name="cityId"
                 control={control}
@@ -326,7 +327,7 @@ const Search = ({defaultValues}) => {
                 name="people"
                 control={control}
                 render={({ field }) => (
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent:"center"}}>
                     <InputAdornment position="start" sx={{ mr: 1 }}>
                       <PeopleIcon sx={{color:"#73FBFD"}} />
                     </InputAdornment>
