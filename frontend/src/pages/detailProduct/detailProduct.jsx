@@ -1,20 +1,30 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Grid, Button, IconButton, Popover, CircularProgress } from "@mui/material";
-import { DateRange } from "react-date-range";
+import { 
+    Box, 
+    Typography, 
+    Grid, 
+    Button, 
+    IconButton, 
+    Popover, 
+    CircularProgress,
+    TextField 
+} from "@mui/material";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import {
     CalendarMonth as CalendarMonthIcon,
     Add as AddIcon,
     Remove as RemoveIcon,
-    Person as PersonIcon,
     Window as WindowIcon,
     HourglassBottom as HourglassBottomIcon,
     Group as GroupIcon,
     Info as InfoIcon,
     MonetizationOn as MonetizationOnIcon
 } from "@mui/icons-material";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
+
+// Se agrega SweetAlert2 sin eliminar nada existente
+import Swal from "sweetalert2";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
@@ -27,14 +37,9 @@ export const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [dateError, setDateError] = useState(null);
     const [selectedPeople, setSelectedPeople] = useState(1);
-    const [dateRange, setDateRange] = useState([
-        {
-            startDate: new Date(),
-            endDate: new Date(),
-            key: "selection"
-        }
-    ]);
+    const [selectedDate, setSelectedDate] = useState(null); 
     const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(() => {
@@ -55,18 +60,50 @@ export const ProductDetail = () => {
         fetchProduct();
     }, [id]);
 
-    if (loading) return <Box sx={{ textAlign: "center", mt: 5 }}><CircularProgress /></Box>;
-    if (error) return <Box sx={{ textAlign: "center", mt: 5 }}><Typography color="error">{error}</Typography></Box>;
+    if (loading) {
+        return (
+            <Box sx={{ textAlign: "center", mt: 5 }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Box sx={{ textAlign: "center", mt: 5 }}>
+                <Typography color="error">{error}</Typography>
+            </Box>
+        );
+    }
+
+    const price = product.price ?? 0;
+    const availableDates = product.availabilitySet?.map((availability) => availability.date) || [];
+    const maxCapacity =
+        product.availabilitySet?.reduce((acc, availability) => acc + availability.capacity, 0) ||
+        product.capacity;
+    const totalPrice = selectedPeople * price;
 
     // Manejo de la cantidad de personas
     const handlePeopleChange = (increment) => {
         setSelectedPeople((prev) => {
             const newCount = prev + increment;
-            return newCount >= 1 && newCount <= product.capacity ? newCount : prev;
+            return newCount >= 1 && newCount <= maxCapacity ? newCount : prev;
         });
     };
 
-    // Manejadores para el selector de rango de fechas
+    // Permitir ingresar manualmente la cantidad de personas
+    const handleManualPeopleChange = (e) => {
+        const inputValue = parseInt(e.target.value, 10);
+        if (Number.isNaN(inputValue) || inputValue < 1) {
+            setSelectedPeople(1);
+        } else if (inputValue > maxCapacity) {
+            setSelectedPeople(maxCapacity);
+        } else {
+            setSelectedPeople(inputValue);
+        }
+    };
+
+    // Manejo del Popover del calendario
     const handleDateClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -76,8 +113,53 @@ export const ProductDetail = () => {
     };
 
     const isOpen = Boolean(anchorEl);
-    const price = product.price ?? 0;
-    const totalPrice = selectedPeople * price;
+
+    // Función para manejar la selección de fecha y cerrar el calendario
+    const handleCalendarChange = (date) => {
+        const dateString = date.toISOString().split("T")[0];
+        if (availableDates.includes(dateString)) {
+            setSelectedDate(date);
+            setDateError(null);
+        } else {
+            setDateError("Fecha no disponible");
+        }
+        handleClosePopover();
+    };
+
+    // Función para aplicar estilos a las fechas en el calendario
+    const tileClassName = ({ date, view }) => {
+        if (view === "month") {
+            const dateString = date.toISOString().split("T")[0];
+            if (availableDates.includes(dateString)) {
+                return "available-date";
+            } else {
+                return "unavailable-date";
+            }
+        }
+    };
+
+    // >>> Agregamos el manejador de reserva <<<
+    const handleReservation = () => {
+        // Si no hay fecha seleccionada o la fecha es "no disponible"
+        if (!selectedDate || dateError) {
+            Swal.fire({
+                icon: "error",
+                title: "Error al reservar",
+                text: dateError
+                    ? "Has escogido una fecha no disponible"
+                    : "No has seleccionado una fecha disponible",
+            });
+            return;
+        }
+
+        // Si todo está correcto, simulamos la reserva exitosa
+        Swal.fire({
+            icon: "success",
+            title: "¡Reserva Exitosa!",
+            text: "Tu reserva se ha realizado con éxito.",
+            confirmButtonColor: "#FD346E",
+        });
+    };
 
     return (
         <Box sx={{ width: "90%", margin: "0 auto", mt: 4 }}>
@@ -87,23 +169,37 @@ export const ProductDetail = () => {
                     <img
                         src={product.imageSet?.[0]?.imageUrl || PLACEHOLDER_IMAGE}
                         alt="Principal"
-                        style={{ width: "100%", height: 400, objectFit: "cover", borderRadius: "8px" }}
+                        style={{ 
+                            width: "100%",
+                            height: 400,
+                            objectFit: "cover",
+                            borderRadius: "8px" 
+                        }}
                     />
                 </Grid>
                 <Grid item xs={12} md={4}>
                     <Grid container spacing={1} sx={{ mt: 5 }}>
                         {product.imageSet?.slice(1, 5).map((img, index, arr) => (
                             <Grid item xs={6} key={index} sx={{ position: "relative" }}>
-                                <img src={img.imageUrl} alt={`Imagen ${index + 1}`} 
-                                    style={{ width: "100%", height: 194, objectFit: "cover", borderRadius: "12px" }} 
+                                <img
+                                    src={img.imageUrl}
+                                    alt={`Imagen ${index + 1}`}
+                                    style={{
+                                        width: "100%",
+                                        height: 194,
+                                        objectFit: "cover",
+                                        borderRadius: "12px"
+                                    }}
                                 />
-                                {index === arr.length - 1 && product.imageSet.length > 5 && (
+                                {index === arr.length - 1 && product.imageSet.length >= 5 && (
                                     <Button
                                         variant="contained"
                                         startIcon={<WindowIcon />}
-
-                                        onClick={() => navigate("/gallery", { state: { product } })} // Modificación para enviar `product`
-
+                                        onClick={() =>
+                                            navigate("/gallery", {
+                                                state: { product }
+                                            })
+                                        }
                                         sx={{
                                             position: "absolute",
                                             bottom: 10,
@@ -122,25 +218,55 @@ export const ProductDetail = () => {
                 </Grid>
             </Grid>
 
-            {/* Título */}
-            <Typography variant="h4" fontWeight="bold" sx={{ mt: 2 }}>{product.name}</Typography>
-
             {/* Sección de descripción y detalles */}
+            <Typography variant="h4" fontWeight="bold" sx={{ mt: 2 }}>
+                {product.name}
+            </Typography>
+
             <Grid container spacing={3} sx={{ mt: 2 }}>
                 <Grid item xs={12} md={8}>
-                    <Typography variant="h6" fontWeight="bold">Descripción</Typography>
+                    <Typography variant="h6" fontWeight="bold">
+                        Descripción
+                    </Typography>
                     <Typography>{product.description}</Typography>
 
-                    {/* Detalles */}
-                    <Typography variant="h6" fontWeight="bold" sx={{ mt: 2 }}>Detalles</Typography>
+                    <Typography variant="h6" fontWeight="bold" sx={{ mt: 2 }}>
+                        Detalles
+                    </Typography>
                     <Box sx={{ mt: 2 }}>
                         {[
-                            { icon: <HourglassBottomIcon sx={{ color: "#FD346E" }} />, label: "Duración:", value: product.duration },
-                            { icon: <GroupIcon sx={{ color: "#FD346E" }} />, label: "Cupo:", value: product.capacity },
-                            { icon: <MonetizationOnIcon sx={{ color: "#FD346E" }} />, label: "Precio por persona:", value: `$${price.toFixed(2)}` },
-                            { icon: <InfoIcon sx={{ color: "#FD346E" }} />, label: "Incluido:", value: "Consultar detalles" }
+                            {
+                                icon: <HourglassBottomIcon sx={{ color: "#FD346E" }} />,
+                                label: "Duración:",
+                                value: "6 horas"
+                            },
+                            {
+                                icon: <GroupIcon sx={{ color: "#FD346E" }} />,
+                                label: "Cupo:",
+                                value: maxCapacity
+                            },
+                            {
+                                icon: <MonetizationOnIcon sx={{ color: "#FD346E" }} />,
+                                label: "Precio por persona:",
+                                value: `$${price.toFixed(2)}`
+                            },
+                            {
+                                icon: <InfoIcon sx={{ color: "#FD346E" }} />,
+                                label: "Incluido:",
+                                value: "Consultar detalles"
+                            }
                         ].map((detail, index) => (
-                            <Box key={index} sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1, borderBottom: "2px solid #FD346E", pb: 1 }}>
+                            <Box
+                                key={index}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                    mb: 1,
+                                    borderBottom: "2px solid #FD346E",
+                                    pb: 1
+                                }}
+                            >
                                 {detail.icon}
                                 <Typography fontWeight="bold">{detail.label}</Typography>
                                 <Typography color="textSecondary">{detail.value}</Typography>
@@ -149,48 +275,135 @@ export const ProductDetail = () => {
                     </Box>
                 </Grid>
 
-                {/* Sección de reserva con selector de rango de fechas */}
+                {/* Sección de reserva con selector de fechas y personas */}
                 <Grid item xs={12} md={4}>
-                    <Box sx={{ p: 4, backgroundColor: "white", borderRadius: "8px", boxShadow: 3, minHeight: 400, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>Reserva tu experiencia</Typography>
+                    <Box
+                        sx={{
+                            p: 4,
+                            backgroundColor: "white",
+                            borderRadius: "8px",
+                            boxShadow: 3,
+                            minHeight: 400,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center"
+                        }}
+                    >
+                        <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+                            Reserva tu experiencia
+                        </Typography>
 
-                        {/* Selector de fechas con popover y doble calendario */}
+                        {/* Botón que abre el calendario y muestra la fecha si está seleccionada */}
                         <Button
                             variant="outlined"
                             fullWidth
                             startIcon={<CalendarMonthIcon />}
                             onClick={handleDateClick}
-                            sx={{ mb: 3, color: "#FD346E", borderColor: "#FD346E" }}
+                            sx={{
+                                mb: 3,
+                                color: "#FD346E",
+                                borderColor: "#FD346E",
+                                fontSize: { xs: "0.8rem", sm: "1rem" }
+                            }}
                         >
-                            Seleccione Fechas
+                            {selectedDate
+                                ? selectedDate.toLocaleDateString()
+                                : "Seleccione Fecha"}
                         </Button>
-                        <Popover open={isOpen} anchorEl={anchorEl} onClose={handleClosePopover} anchorOrigin={{ vertical: "bottom", horizontal: "left" }}>
-                            <DateRange ranges={dateRange} onChange={(ranges) => setDateRange([ranges.selection])} months={2} direction="horizontal" rangeColors={["#00CED1"]} showDateDisplay={false} />
+
+                        <Popover
+                            open={isOpen}
+                            anchorEl={anchorEl}
+                            onClose={handleClosePopover}
+                            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                        >
+                            <Calendar
+                                onChange={handleCalendarChange}
+                                value={selectedDate || new Date()}
+                                tileClassName={tileClassName}
+                                minDate={new Date()}
+                                selectRange={false}
+                                showDoubleView={true}
+                            />
                         </Popover>
 
-                        {/* Selector de personas centrado */}
-                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: 3, mb: 3 }}>
-                            <PersonIcon sx={{ color: "#FD346E", mr: 1 }} />
-                            <IconButton onClick={() => handlePeopleChange(-1)} sx={{ color: "#FD346E" }}>
-                                <RemoveIcon />
+                        {/* Mostrar mensaje de error si la fecha no está disponible */}
+                        {dateError && (
+                            <Typography color="error" sx={{ mt: 1 }}>
+                                {dateError}
+                            </Typography>
+                        )}
+
+                        {/* Selector de personas: botones + campo para ingresar cantidad */}
+                        <Box sx={{ display: "flex", alignItems: "center", mt: 3, mb: 3 }}>
+                            <IconButton
+                                onClick={() => handlePeopleChange(-1)}
+                                disabled={selectedPeople <= 1}
+                            >
+                                <RemoveIcon
+                                    sx={{ color: selectedPeople > 1 ? "#FD346E" : "gray" }}
+                                />
                             </IconButton>
-                            <Typography variant="body1" sx={{ mx: 2 }}>{selectedPeople}</Typography>
-                            <IconButton onClick={() => handlePeopleChange(1)} sx={{ color: "#FD346E" }}>
-                                <AddIcon />
+
+                            <TextField
+                                type="number"
+                                value={selectedPeople}
+                                onChange={handleManualPeopleChange}
+                                sx={{ width: 60, mx: 2 }}
+                                inputProps={{
+                                    min: 1,
+                                    max: maxCapacity,
+                                    style: { textAlign: "center" }
+                                }}
+                            />
+
+                            <IconButton
+                                onClick={() => handlePeopleChange(1)}
+                                disabled={selectedPeople >= maxCapacity}
+                            >
+                                <AddIcon
+                                    sx={{ color: selectedPeople < maxCapacity ? "#FD346E" : "gray" }}
+                                />
                             </IconButton>
                         </Box>
 
-                        <Typography fontWeight="bold" sx={{ mb: 3 }}>Total: ${totalPrice.toFixed(2)}</Typography>
+                        <Typography fontWeight="bold" sx={{ mb: 3 }}>
+                            Total: ${totalPrice.toFixed(2)}
+                        </Typography>
 
-                        <Button variant="contained" fullWidth sx={{ p: 2, fontSize: "1.1rem", backgroundColor: "#FD346E" }}>
+                        <Button
+                            variant="contained"
+                            fullWidth
+                            sx={{
+                                p: 2,
+                                fontSize: "1.1rem",
+                                backgroundColor: "#FD346E"
+                            }}
+                            // Llamamos a la nueva función
+                            onClick={() => handleReservation()}
+                        >
                             Reservar
                         </Button>
+
+                        {/* Estilos personalizados para fechas disponibles y no disponibles */}
+                        <style>
+                            {`
+                                .available-date {
+                                    color: #FD346E !important;
+                                }
+                                .unavailable-date {
+                                    text-decoration: line-through !important;
+                                    color: #D3D3D3 !important;
+                                }
+                            `}
+                        </style>
                     </Box>
                 </Grid>
             </Grid>
         </Box>
     );
 };
+
 
 
 // import { useState } from "react";

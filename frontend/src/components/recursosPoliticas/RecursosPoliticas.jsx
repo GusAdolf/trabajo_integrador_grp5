@@ -17,7 +17,7 @@ const RecursosPoliticas = ({ onClose }) => {
 
             </Typography>
             <Typography variant="body1" paragraph>
-                <span style={{ color: 'magenta', fontWeight: 'bold', textAlign: 'justify'}} > <strong>1. Introducción: </strong> </span>
+                <span style={{ color: '#FD346E', fontWeight: 'bold', textAlign: 'justify'}} > <strong>1. Introducción: </strong> </span>
                 <br />
                 <div style={{ textAlign: 'justify' }}>
                     <p>
@@ -26,7 +26,7 @@ const RecursosPoliticas = ({ onClose }) => {
                 </div>
                     </Typography>
             <Typography variant="body1" paragraph>
-                <span style={{ color: 'magenta', fontWeight: 'bold' }}> <strong>2. Uso del Sitio Web:</strong></span>
+                <span style={{ color: "#FD346E", fontWeight: 'bold' }}> <strong>2. Uso del Sitio Web:</strong></span>
                 <br />
                 <div style={{ textAlign: 'justify' }}>
                     <p>
@@ -37,7 +37,7 @@ const RecursosPoliticas = ({ onClose }) => {
                 </div>
                     </Typography>
             <Typography variant="body1" paragraph>
-                <span style={{ color: 'magenta', fontWeight: 'bold' }}> <strong>3. Reservas y Pagos:</strong> </span>
+                <span style={{ color: "#FD346E", fontWeight: 'bold' }}> <strong>3. Reservas y Pagos:</strong> </span>
                 <br />
                 <div style={{ textAlign: 'justify' }}>
                     <p>
@@ -48,7 +48,7 @@ const RecursosPoliticas = ({ onClose }) => {
                 </div>
             </Typography>
             <Typography variant="body1" paragraph>
-                <span style={{ color: 'magenta', fontWeight: 'bold' }}> <strong>4. Cancelaciones y Reembolsos:</strong></span>
+                <span style={{ color: "#FD346E", fontWeight: 'bold' }}> <strong>4. Cancelaciones y Reembolsos:</strong></span>
                 <br />
                 <div style={{ textAlign: 'justify' }}>
                     <p>
@@ -59,7 +59,7 @@ const RecursosPoliticas = ({ onClose }) => {
                 </div>
                     </Typography>
             <Typography variant="body1" paragraph>
-                <span style={{ color: 'magenta', fontWeight: 'bold' }}> <strong>5. Responsabilidad y Seguridad:</strong></span>
+                <span style={{ color: "#FD346E", fontWeight: 'bold' }}> <strong>5. Responsabilidad y Seguridad:</strong></span>
                 <br />
                 <div style={{ textAlign: 'justify' }}>
                     <p>
@@ -70,7 +70,7 @@ const RecursosPoliticas = ({ onClose }) => {
                 </div>
                     </Typography>
             <Typography variant="body1" paragraph>
-                <span style={{ color: 'magenta', fontWeight: 'bold' }}> <strong>6. Privacidad y Protección de Datos:</strong></span>
+                <span style={{ color: "#FD346E", fontWeight: 'bold' }}> <strong>6. Privacidad y Protección de Datos:</strong></span>
                 <br />
                 <div style={{ textAlign: 'justify' }}>
                     <p>
@@ -80,7 +80,7 @@ const RecursosPoliticas = ({ onClose }) => {
                 </div>
                     </Typography>
             <Typography variant="body1" paragraph>
-                <span style={{ color: 'magenta', fontWeight: 'bold' }}> <strong>7. Modificaciones a la Política:</strong></span>
+                <span style={{ color: "#FD346E", fontWeight: 'bold' }}> <strong>7. Modificaciones a la Política:</strong></span>
                 <br />
                 <div style={{ textAlign: 'justify' }}>
                     <p>
@@ -95,7 +95,7 @@ const RecursosPoliticas = ({ onClose }) => {
                 <br />
             </Typography>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 'auto' }}>
-            <Button variant="contained" onClick={onClose} sx={{ mt: 2 }}>
+            <Button variant="contained" onClick={onClose} sx={{ mt: 2, background:"#00CED1" }}>
                 Cerrar
             </Button>
             </div>

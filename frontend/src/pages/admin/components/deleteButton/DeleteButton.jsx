@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { useRecordContext, DeleteButton } from "react-admin";
 import { deleteProduct } from "../../../../services/productService";
+import Button from "@mui/material/Button";
 
 export const CustomDeleteButton = ({setIsDelete}) => {
   const record = useRecordContext();
@@ -22,7 +23,9 @@ export const CustomDeleteButton = ({setIsDelete}) => {
     if (result.isConfirmed) {
       try {
         await deleteProduct(record.id);
-        Swal.fire("Eliminado", "El producto ha sido eliminado.", "success");
+        Swal.fire("Eliminado", "El producto ha sido eliminado.", "success").then(() => {
+          window.location.href = "/admin/products";
+        })
         setIsDelete(true);
       } catch (error) {
         Swal.fire("Error", "No se pudo eliminar el producto.", "error");
@@ -31,7 +34,7 @@ export const CustomDeleteButton = ({setIsDelete}) => {
   };
 
   return (
-    <DeleteButton
+    <Button
       label="Eliminar"
       onClick={handleDelete}
       sx={{
@@ -47,6 +50,6 @@ export const CustomDeleteButton = ({setIsDelete}) => {
           backgroundColor: "#a00",
         },
       }}
-    />
+    >Eliminar</Button>
   );
 };
