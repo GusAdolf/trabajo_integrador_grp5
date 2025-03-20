@@ -30,14 +30,26 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";  // <--- 1) Importar HomeIcon
 import "./styles.css";
 import { useAuth } from "../../context/AuthContext";
+import { getCategories } from "../../services/categoryService";
 
 const emptyDataProvider = {
   getList: () => Promise.resolve({ data: [], total: 1 }),
-  getOne: () => Promise.reject(),
+  getOne: async (resource, params) => {
+    if (resource === 'products') {
+      const products = await getProducts();
+      const product = products.find((c) => c.id == params.id);
+      console.log("🚀 ~ getOne: ~ product:", product)
+      if (product) {
+        return { data: product };
+      }
+      throw new Error('Product not found');
+    }
+    // Implementa getOne para otros recursos si es necesario
+  },
   getMany: () => Promise.reject(),
   getManyReference: () => Promise.reject(),
   create: () => Promise.reject(),
-  update: () => Promise.resolve({ data: [], total: 1 }),
+  update: () => Promise.resolve(),
   updateMany: () => Promise.reject(),
   delete: () => Promise.reject(),
   deleteMany: () => Promise.reject(),
@@ -47,7 +59,7 @@ const emptyDataProvider = {
 const isMobileDevice = () => window.innerWidth <= 768;
 
 export const MyMenu = () => {
-  const {logout} = useAuth()
+  const { logout } = useAuth();
   return (
     <Menu
       sx={{
