@@ -44,14 +44,13 @@ const emptyDataProvider = {
       }
       throw new Error('Product not found');
     }
-    // Implementa getOne para otros recursos si es necesario
   },
   getMany: () => Promise.reject(),
   getManyReference: () => Promise.reject(),
   create: () => Promise.reject(),
   update: () => Promise.resolve(),
   updateMany: () => Promise.reject(),
-  delete: () => Promise.reject(),
+  delete: () => Promise.resolve({}),
   deleteMany: () => Promise.reject(),
 };
 
