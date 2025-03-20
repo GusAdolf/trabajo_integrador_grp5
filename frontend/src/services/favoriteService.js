@@ -4,9 +4,10 @@ const API_URL = "http://localhost:8080"
 
 export const getFavorites = async (token) => {
     try {
+        const bearerToken = `Bearer ${localStorage.getItem("token")}`;
         const response = await fetch(`${API_URL}/favorites`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: bearerToken,
             },
         });
 
@@ -34,10 +35,11 @@ export const getFavorites = async (token) => {
 
 export const addFavorite = async (token, productId) => {
     try {
+        const bearerToken = `Bearer ${localStorage.getItem("token")}`;
         const response = await fetch(`${API_URL}/favorites/${productId}`, {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: bearerToken,
             },
         });
 
@@ -72,10 +74,11 @@ export const addFavorite = async (token, productId) => {
 
 export const removeFavorite = async (token, favoriteId) => {
     try {
+        const bearerToken = `Bearer ${localStorage.getItem("token")}`;
         const response = await fetch(`${API_URL}/favorites/${favoriteId}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: bearerToken,
             },
         });
 
