@@ -27,6 +27,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import AddHomeIcon from "@mui/icons-material/AddHome";
 import LogoutIcon from "@mui/icons-material/Logout";
+import HomeIcon from "@mui/icons-material/Home";  // <--- 1) Importar HomeIcon
 import "./styles.css";
 import { useAuth } from "../../context/AuthContext";
 
@@ -57,46 +58,44 @@ export const MyMenu = () => {
         paddingTop: "30px",
       }}
     >
-      <div>
-        <Menu.Item
-          to="/admin/products/create"
-          primaryText="Crear Producto"
-          leftIcon={<AddBoxRoundedIcon />}
-        />
-        <Menu.Item
-          to="/admin/products"
-          primaryText="Lista de productos"
-          leftIcon={<AutoAwesomeMotionRoundedIcon />}
-        />
-        <Menu.Item
-          to="/admin/users"
-          primaryText="Lista de usuarios"
-          leftIcon={<GroupIcon />}
-        />
-        <Menu.Item
-          to="/admin/categories/create"
-          primaryText="Agregar categoria"
-          leftIcon={<CategoryIcon />}
-        />
-        <Menu.Item
-          to="/admin/categories/list"
-          primaryText="Lista de categorías"
-          leftIcon={<FormatListNumberedIcon />}
-        />
-      </div>
-      <div>
-        <Menu.Item
-          to="/"
-          primaryText="Volver al home"
-          leftIcon={<AddHomeIcon />}
-        />
-        <Menu.Item
+      {/* 2) Añadimos el botón de Home */}
+      <Menu.Item
+        to="http://localhost:5173/"               
+        primaryText="Ir a Home"
+        leftIcon={<HomeIcon />}   // Icono de Home
+      />
+
+      <Menu.Item
+        to="/admin/products/create"
+        primaryText="Crear Producto"
+        leftIcon={<AddBoxRoundedIcon />}
+      />
+      <Menu.Item
+        to="/admin/products"
+        primaryText="Lista de productos"
+        leftIcon={<AutoAwesomeMotionRoundedIcon />}
+      />
+      <Menu.Item
+        to="/admin/users"
+        primaryText="Lista de usuarios"
+        leftIcon={<GroupIcon />}
+      />
+      <Menu.Item
+        to="/admin/categories/create"
+        primaryText="Agregar categoria"
+        leftIcon={<CategoryIcon />}
+      />
+      <Menu.Item
+        to="/admin/categories/list"
+        primaryText="Lista de categorías"
+        leftIcon={<FormatListNumberedIcon />}
+      />
+              <Menu.Item
           to="/"
           primaryText="Cerrar sesión"
           leftIcon={<LogoutIcon />}
           onClick={logout}
         />
-      </div>
     </Menu>
   );
 };

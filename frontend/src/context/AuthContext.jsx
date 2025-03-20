@@ -14,12 +14,35 @@ export const AuthProvider = ({ children }) => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    
+    fetchProducts(); // Obtener productos siempre
+    fetchCategories(); // Obtener categorías siempre
+    
     const token = localStorage.getItem("token");
     if (token ) {
       fetchCategories();
       fetchProducts()
+      fetchUserProfile(token);
     }
   }, []);
+
+  const fetchUserProfile = async (token) => {
+    const profile = await getProfile(token);
+    if (profile) {
+      const { firstname, lastname, email } = profile;
+      const initials = `${firstname.charAt(0)}${lastname.charAt(0)}`.toUpperCase();
+
+      const user = {
+        name: `${firstname} ${lastname}`,
+        email,
+        avatar: initials,
+        isAdmin: profile.role === "SUPERADMIN" || profile.role === "ADMIN",
+      };
+
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
+    }
+  };
 
   const fetchCategories = async () => {
     const data = await getCategories();
@@ -40,26 +63,12 @@ export const AuthProvider = ({ children }) => {
     if (!response) {
       return;
     }
-    let token;
 
+    let token;
     if (response?.token) {
       token = response.token;
       localStorage.setItem("token", token);
-      const profile = await getProfile(token);
-      const { firstname, lastname, email } = profile;
-      const initials = `${firstname.charAt(0)}${lastname.charAt(
-        0
-      )}`.toUpperCase();
-
-      const user = {
-        name: `${firstname} ${lastname}`,
-        email,
-        avatar: initials,
-        isAdmin: profile.role === "SUPERADMIN" || profile.role === "ADMIN",
-      };
-
-      localStorage.setItem("user", JSON.stringify(user));
-      setUser(user);
+      await fetchUserProfile(token); // Obtener perfil después de loguearse
       window.location.href = "/profile";
     }
   };
@@ -69,6 +78,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
     setCategories([]);
+    setProducts([]); // Limpiar productos al cerrar sesión
     window.location.href = "/";
   };
 

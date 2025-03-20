@@ -5,16 +5,14 @@ import {
   Button,
   Typography,
   Pagination,
-  Rating,
   InputAdornment,
+  Chip,
 } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-
-const PLACEHOLDER_IMAGE = "https://picsum.photos/200/300"; // Imagen de respaldo estática
 
 export const Explore = () => {
   const { products, categories: allCategories } = useAuth();
@@ -26,19 +24,14 @@ export const Explore = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const processedProducts = products.map((product) => ({
-      ...product,
-      imageUrl: product.imageSet?.[0]?.imageUrl || PLACEHOLDER_IMAGE,
-    }));
-
-    setFilteredProducts(processedProducts);
-  }, []);
+    setFilteredProducts(products);
+  }, [products]);
 
   useEffect(() => {
     let results = products.filter(
       (product) =>
         (selectedCategory === "Todos" ||
-          product.category.title === selectedCategory) &&
+          product.category?.title === selectedCategory) &&
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -62,7 +55,8 @@ export const Explore = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", margin: "0 auto", mt: 4 }}>
+    <Box sx={{ width: "100%", margin: "0 auto", mt: 4, px: 2 }}>
+      {/* Barra de búsqueda y título */}
       <Box
         sx={{
           display: "flex",
@@ -88,6 +82,7 @@ export const Explore = () => {
           <TextField
             variant="outlined"
             size="small"
+            placeholder="Buscar producto..."
             onChange={(e) => setSearchTerm(e.target.value)}
             InputProps={{
               startAdornment: (
@@ -99,13 +94,18 @@ export const Explore = () => {
           />
           <Button
             variant="contained"
-            sx={{ bgcolor: "#00CED1", color: "white" }}
+            sx={{
+              bgcolor: "#00CED1",
+              color: "white",
+              ":hover": { bgcolor: "#00b3b3" },
+            }}
           >
             Buscar
           </Button>
         </Box>
       </Box>
 
+      {/* Categorías */}
       <Box
         sx={{
           display: "flex",
@@ -117,7 +117,7 @@ export const Explore = () => {
       >
         {categories?.map((category) => (
           <Button
-            key={category.id}
+            key={category}
             variant={selectedCategory === category ? "contained" : "outlined"}
             onClick={() => setSelectedCategory(category)}
             sx={{
@@ -125,6 +125,11 @@ export const Explore = () => {
               backgroundColor:
                 selectedCategory === category ? "#00CED1" : "#ffffff",
               color: selectedCategory === category ? "#ffffff" : "#00CED1",
+              ":hover": {
+                backgroundColor:
+                  selectedCategory === category ? "#00B3B3" : "#f0f0f0",
+                borderColor: "#00CED1",
+              },
             }}
           >
             {category}
@@ -132,6 +137,7 @@ export const Explore = () => {
         ))}
       </Box>
 
+      {/* Lista de productos paginados */}
       <Box
         sx={{
           display: "grid",
@@ -143,79 +149,110 @@ export const Explore = () => {
           gap: 3,
         }}
       >
-        {paginatedProducts?.map((product) => (
-          <Box
-            key={product.id}
-            onClick={() => handleCardClick(product.id)}
-            sx={{
-              background:"white",
-              borderRadius: "16px",
-              boxShadow: 3,
-              overflow: "hidden",
-              cursor: "pointer",
-              transition: "transform 0.2s",
-              "&:hover": { transform: "scale(1.05)" },
-            }}
-          >
-            <img
-              src={product?.imageSet[0]?.imageUrl}
-              alt={product.name}
-              style={{ width: "100%", height: 220, objectFit: "cover" }}
-              onError={(e) => {
-                e.target.src = PLACEHOLDER_IMAGE;
+        {paginatedProducts?.map((product) => {
+          const formattedDate =
+            product.availabilitySet?.length > 0
+              ? new Date(product.availabilitySet[0].date).toLocaleDateString(
+                  "es-ES",
+                  {
+                    timeZone: "UTC",
+                  }
+                )
+              : "No disponible";
+
+          return (
+            <Box
+              key={product.id}
+              onClick={() => handleCardClick(product.id)}
+              sx={{
+                backgroundColor: "white",
+                borderRadius: "16px",
+                boxShadow: 3,
+                overflow: "hidden",
+                cursor: "pointer",
+                transition: "transform 0.2s",
+                "&:hover": { transform: "scale(1.02)" },
+                display: "flex",
+                flexDirection: "column",
               }}
-            />
-            <Box sx={{ p: 2 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  mb: 1,
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <CalendarMonthIcon sx={{ fontSize: 16, color: "gray" }} />
-                  <Typography variant="body2" color="textSecondary">
-                    {product.date || "Fecha no disponible"}
+            >
+              {/* Imagen con Overlay de Categoría */}
+              <Box sx={{ position: "relative" }}>
+                <img
+                  src={product.imageSet?.[0]?.imageUrl}
+                  alt={product.name}
+                  style={{
+                    width: "100%",
+                    height: 220,
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+                {product.category?.title && (
+                  <Chip
+                    label={product.category.title}
+                    sx={{
+                      position: "absolute",
+                      top: 8,
+                      left: 8,
+                      backgroundColor: "rgba(0,0,0,0.6)",
+                      color: "#ffffff",
+                      fontWeight: "bold",
+                    }}
+                  />
+                )}
+              </Box>
+
+              {/* Contenido de la tarjeta */}
+              <Box sx={{ p: 2, flexGrow: 1, display: "flex", flexDirection: "column" }}>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  {product.name}
+                </Typography>
+
+                {/* Disponibilidad */}
+                <Box sx={{ display: "flex", alignItems: "center", mt: 1, gap: 1 }}>
+                  <CalendarMonthIcon sx={{ fontSize: "18px", color: "#00CED1" }} />
+                  <Typography variant="body2">
+                    {formattedDate || "No disponible"}
                   </Typography>
                 </Box>
-                <Rating
-                  value={parseFloat(product.rating) || 3.5}
-                  precision={0.1}
-                  readOnly
-                  size="small"
-                />
-              </Box>
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                {product.name}
-              </Typography>
 
-              {/*Nueva línea: Muestra la categoría del producto */}
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                sx={{ fontStyle: "italic", mt: 1 }}
-              >
-                Categoría: {product.category.title || "No especificada"}
-              </Typography>
+                {/* Ubicación */}
+                <Box sx={{ display: "flex", alignItems: "center", mt: 1, gap: 1 }}>
+                  <LocationOnIcon sx={{ fontSize: "18px", color: "#00CED1" }} />
+                  <Typography variant="body2">
+                    {product.city?.name || "Ubicación no especificada"},{" "}
+                    {product.city?.country || ""}
+                  </Typography>
+                </Box>
 
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}
-              >
-                <LocationOnIcon sx={{ fontSize: 16, color: "gray" }} />
-                <Typography variant="body2" color="textSecondary">
-                  {product.location}
+                {/* Precio */}
+                <Typography
+                  variant="h6"
+                  sx={{
+                    mt: "auto", // empuja el precio a la parte de abajo del contenedor
+                    fontWeight: "bold",
+                    color: "#00CED1",
+                  }}
+                >
+                  ${product.price}
                 </Typography>
+
+                <Button
+                                variant="contained"
+                                fullWidth
+                                sx={{ mt: 2, backgroundColor: "#00CED1" }}
+                                onClick={() => navigate(`/product/${product.id}`)}
+                              >
+                                Reservar
+                              </Button>
               </Box>
-              <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>
-                {product.price}
-              </Typography>
             </Box>
-          </Box>
-        ))}
+          );
+        })}
       </Box>
 
+      {/* Paginación */}
       <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
         <Pagination
           count={totalPages}
