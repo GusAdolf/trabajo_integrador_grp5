@@ -9,6 +9,7 @@ import {
   useRecordContext,
   TopToolbar,
   CreateButton,
+  FunctionField,
 } from "react-admin";
 
 import { getProducts } from "../../../../services/productService";
@@ -16,9 +17,6 @@ import { CustomDeleteButton } from "../deleteButton/DeleteButton";
 
 export const PostIcon = BookIcon;
 
-/**
- * Campo para mostrar varias imágenes en miniatura
- */
 const MultipleImageField = ({ source }) => {
   const record = useRecordContext();
   if (!record || !record[source]) return null;
@@ -43,9 +41,6 @@ const MultipleImageField = ({ source }) => {
   );
 };
 
-/**
- * Campo personalizado para mostrar la disponibilidad con capacidad en formato reducido.
- */
 const AvailabilityField = ({ source }) => {
   const record = useRecordContext();
   if (!record || !record[source]) return null;
@@ -109,28 +104,34 @@ export const PostList = () => {
 
   return (
     <List
-      sx={{
-        height: "80vh",
-        display: "flex",
-        alignItems: "center",
-        width: "100%",
-        justifyContent: "center",
-      }}
       title="Lista de productos"
       actions={<CustomListActions />}
       bulkActionButtons={false}
+      sx={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        paddingTop: "40px", // Añadir padding en la parte superior
+      }}
     >
-      <Box>
+      <Box
+        sx={{
+          flex: 1,
+          overflow: "auto",
+        }}
+      >
         <Datagrid
-          rowClick={null}
-          bulkActionButtons={false}
           data={products}
+          bulkActionButtons={false}
+          rowClick={null}
           sx={{
             "& .RaDatagrid-headerCell": {
               fontWeight: "bold",
               backgroundColor: "#00B3B3",
               color: "white",
             },
+            minWidth: 800,
           }}
           empty={
             <div style={{ textAlign: "center", padding: "20px" }}>
@@ -141,9 +142,12 @@ export const PostList = () => {
           <TextField source="id" sx={{ width: "50px" }} />
           <MultipleImageField source="imageSet" label="Imágenes" />
           <TextField source="name" label="Nombre" sx={{ width: "200px" }} />
-          <TextField
-            source="description"
+          <FunctionField
             label="Descripción"
+            render={(record) => {
+              const desc = record.description || "";
+              return desc.length > 80 ? `${desc.slice(0, 80)}...` : desc;
+            }}
             sx={{
               maxWidth: "300px",
               whiteSpace: "nowrap",
@@ -162,7 +166,7 @@ export const PostList = () => {
                 backgroundColor: "#00CED1",
                 borderRadius: "10px",
                 boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-                padding: "5px 20px",
+                padding: "10px 20px",
                 fontWeight: "bold",
                 textTransform: "none",
                 "&:hover": {
