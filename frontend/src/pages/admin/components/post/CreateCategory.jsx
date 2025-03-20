@@ -34,10 +34,12 @@ export const CreateCategory = () => {
         icon: "success",
         title: "Éxito",
         text: "Categoría creada correctamente",
+      }).then(() => {
+        // Redirige solo cuando el usuario haga clic en "OK"
+        window.location.href = "/admin/categories/list";
       });
 
       setCategory({ title: "", description: "", imageUrl: "" });
-      window.location.href = "/admin/categories/list";
     } catch (error) {
       console.log("🚀 ~ handleSubmit ~ error:", error)
       Swal.fire({

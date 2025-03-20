@@ -97,7 +97,6 @@ export const PostList = () => {
 
   useEffect(() => {
     getProducts().then((data) => {
-      console.log("🚀 ~ getProducts ~ data:", data);
       setProducts(data);
     });
   }, [isDelete]);
