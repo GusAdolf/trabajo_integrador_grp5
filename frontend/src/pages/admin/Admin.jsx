@@ -25,6 +25,7 @@ import jsonServerProvider from "ra-data-json-server";
 import GroupIcon from "@mui/icons-material/Group";
 import CategoryIcon from "@mui/icons-material/Category";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import HomeIcon from "@mui/icons-material/Home";  // <--- 1) Importar HomeIcon
 import "./styles.css";
 
 const dataProvider = jsonServerProvider("http://localhost:8080");
@@ -43,6 +44,13 @@ export const MyMenu = () => {
         paddingTop: "30px",
       }}
     >
+      {/* 2) Añadimos el botón de Home */}
+      <Menu.Item
+        to="http://localhost:5173/"               
+        primaryText="Ir a Home"
+        leftIcon={<HomeIcon />}   // Icono de Home
+      />
+
       <Menu.Item
         to="/admin/products/create"
         primaryText="Crear Producto"
