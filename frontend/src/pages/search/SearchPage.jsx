@@ -117,11 +117,16 @@ export const SearchPage = () => {
     );
   }
 
+  const filteredProducts = products
+    .filter((p)=> p.city?.id === selectedCity?.id)
+    .filter((p)=> p.availabilitySet?.some((ad)=> new Date(ad.date).getTime() >= new Date(params.from).getTime() && new Date(ad.date).getTime() <= new Date(params.to).getTime() && ad.capacity >= +params.people ))
+
+
   return (
     <Box sx={{ width: "80%", mx: "auto", pb: "3rem" }}>
       <Search defaultValues={defaultValues} />
 
-      <Products categories={categories} products={products} itemsPerPage={6} />
+      <Products categories={categories} products={filteredProducts} itemsPerPage={6} />
     </Box>
   );
 };

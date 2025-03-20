@@ -78,85 +78,106 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
         ))}
       </Box>
 
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: {
-            xs: "1fr",
-            sm: "repeat(2, 1fr)",
-            md: "repeat(3, 1fr)",
-          },
-          gap: 3,
-        }}
-      >
-        {filteredProducts
-          .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-          .map((product) => (
-            <Box
-              key={product.id}
-              onClick={() => handleCardClick(product.id)}
-              sx={{
-                borderRadius: "16px",
-                boxShadow: 3,
-                overflow: "hidden",
-                cursor: "pointer",
-                transition: "transform 0.2s",
-                "&:hover": { transform: "scale(1.05)" },
-              }}
-            >
-              <img
-                src={getImageUrl(product)}
-                alt={product.name}
-                style={{ width: "100%", height: 220, objectFit: "cover" }}
-              />
-              <Box sx={{ p: 2 }}>
+      {filteredProducts.length === 0 ? (
+        <Box 
+          sx={{ 
+            textAlign: "center", 
+            py: 5, 
+            bgcolor: "#f5f5f5", 
+            borderRadius: 2,
+            mt: 2
+          }}
+        >
+          <Typography variant="h5" color="textSecondary">
+            No se encontraron resultados
+          </Typography>
+          <Typography variant="body1" color="textSecondary" sx={{ mt: 1 }}>
+            Intenta cambiar los filtros o revisa más tarde
+          </Typography>
+        </Box>
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+              },
+              gap: 3,
+            }}
+          >
+            {filteredProducts
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((product) => (
                 <Box
+                  key={product.id}
+                  onClick={() => handleCardClick(product.id)}
                   sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mb: 1,
+                    borderRadius: "16px",
+                    boxShadow: 3,
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    transition: "transform 0.2s",
+                    "&:hover": { transform: "scale(1.05)" },
                   }}
                 >
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <CalendarMonthIcon sx={{ fontSize: 16, color: "gray" }} />
-                    <Typography variant="body2" color="textSecondary">
-                      {formatDate(product)}
+                  <img
+                    src={getImageUrl(product)}
+                    alt={product.name}
+                    style={{ width: "100%", height: 220, objectFit: "cover" }}
+                  />
+                  <Box sx={{ p: 2 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        mb: 1,
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <CalendarMonthIcon sx={{ fontSize: 16, color: "gray" }} />
+                        <Typography variant="body2" color="textSecondary">
+                          {formatDate(product)}
+                        </Typography>
+                      </Box>
+                      <Rating
+                        value={product.averageScore || 0}
+                        precision={0.1}
+                        readOnly
+                        size="small"
+                      />
+                    </Box>
+                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                      {product.name}
+                    </Typography>
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}
+                    >
+                      <LocationOnIcon sx={{ fontSize: 16, color: "gray" }} />
+                      <Typography variant="body2" color="textSecondary">
+                        {formatLocation(product)}
+                      </Typography>
+                    </Box>
+                    <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>
+                      ${product.price}
                     </Typography>
                   </Box>
-                  <Rating
-                    value={product.averageScore || 0}
-                    precision={0.1}
-                    readOnly
-                    size="small"
-                  />
                 </Box>
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  {product.name}
-                </Typography>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}
-                >
-                  <LocationOnIcon sx={{ fontSize: 16, color: "gray" }} />
-                  <Typography variant="body2" color="textSecondary">
-                    {formatLocation(product)}
-                  </Typography>
-                </Box>
-                <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>
-                  ${product.price}
-                </Typography>
-              </Box>
-            </Box>
-          ))}
-      </Box>
+              ))}
+          </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
-        <Pagination
-          count={Math.ceil(filteredProducts.length / itemsPerPage)}
-          page={page}
-          onChange={(_, value) => setPage(value)}
-        />
-      </Box>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+            <Pagination
+              count={Math.ceil(filteredProducts.length / itemsPerPage)}
+              page={page}
+              onChange={(_, value) => setPage(value)}
+            />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

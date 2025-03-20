@@ -42,7 +42,7 @@ const searchFormSchema = z.object({
     endDate: z.date(),
     key: z.string().optional()
   }).refine(data => {
-    return data.endDate > data.startDate;
+    return data.endDate >= data.startDate;
   }, {
     message: "La fecha de salida debe ser después de la fecha de entrada",
     path: ["endDate"]
