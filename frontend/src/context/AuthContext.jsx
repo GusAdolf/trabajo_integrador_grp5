@@ -19,8 +19,10 @@ export const AuthProvider = ({ children }) => {
     fetchCategories(); // Obtener categorías siempre
     
     const token = localStorage.getItem("token");
-    if (token) {
-      fetchUserProfile(token); // Obtener perfil solo si hay token
+    if (token ) {
+      fetchCategories();
+      fetchProducts()
+      fetchUserProfile(token);
     }
   }, []);
 

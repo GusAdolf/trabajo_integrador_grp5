@@ -13,8 +13,7 @@ export const getProducts = async () => {
     }
     return await response.json();
   } catch (error) {
-    console.error(error);
-    return [];
+   return null;
   }
 };
 
@@ -175,7 +174,7 @@ export const getUsers = async () => {
     });
     return await response.json();
   } catch (error) {
-    console.error(error);
+    return null;
   }
 };
 
