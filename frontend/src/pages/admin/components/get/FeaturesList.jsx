@@ -12,7 +12,7 @@ import {
   ImageField
 } from "react-admin";
 
-import { getCategories } from "../../../../services/categoryService";
+import { getFeatures } from "../../../../services/featuresService";
 import "./categoryStyles.css";
 import { useAuth } from "../../../../context/AuthContext";
 
@@ -40,7 +40,7 @@ const CustomListActions = () => (
 
 export const FeaturesList = () => {
   const { features } = useAuth();
-
+  console.log("features", features)
   return (
     <div className={namespace}>
       <List
@@ -50,7 +50,7 @@ export const FeaturesList = () => {
           alignItems: "center",
           justifyContent: "center",
         }}
-        title="Lista de categorías"
+        title="Lista de características"
         actions={<CustomListActions />}
         bulkActionButtons={false}
         className={`${namespace}-container`}
@@ -70,27 +70,17 @@ export const FeaturesList = () => {
             }}
             empty={
               <div style={{ textAlign: "center", padding: "20px" }}>
-                Aún no se ha registrado ninguna categoría.
+                Aún no se ha registrado ninguna característica.
               </div>
             }
           >
             <TextField source="id" sx={{ width: "50px" }} />
             <TextField
-              source="title"
-              label="Nombre de la categoría"
+              source="name"
+              label="Nombre de la características"
               sx={{ width: "200px" }}
             />
-            <TextField
-              source="description"
-              label="Descripción"
-              sx={{
-                maxWidth: "300px",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            />
-            <ImageField source="imageUrl" label="Imagen" />
+            <ImageField source="iconUrl" label="Icono" />
             <Box display="flex" gap={1} label="Acciones">
               <EditButton
                 label="Editar"

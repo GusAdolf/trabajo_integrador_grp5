@@ -139,7 +139,7 @@ export const AdminPage = () => {
         create={CreateCategory}
       />
       <Resource
-        name="categories"
+        name="features"
         list={FeaturesList}
         create={CreateFeature}
       />

@@ -189,7 +189,7 @@ export const PostEdit = () => {
                     label="Características"
                     choices={features.map((feature) => ({
                       id: feature.id,
-                      name: feature.title,
+                      name: feature.name,
                     }))}
                     fullWidth
                   />
