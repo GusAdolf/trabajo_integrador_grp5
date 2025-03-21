@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-const AVAILABILITY_URL = "http://localhost:8080/availabilities";
+const AVAILABILITY_URL = "https://backend-production-147b.up.railway.app/availabilities";
 
 // Crear disponibilidad para un producto
 export const createAvailability = async (productId, availabilityData) => {

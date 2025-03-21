@@ -1,7 +1,7 @@
 
 import Swal from "sweetalert2";
 
-const API_URL = "http://localhost:8080/features"
+const API_URL = "https://backend-production-147b.up.railway.app/features"
 
 // create feature
 export const createFeatures = async (feature) => {

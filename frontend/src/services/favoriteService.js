@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-const API_URL = "http://localhost:8080"
+const API_URL = "https://backend-production-147b.up.railway.app"
 
 export const getFavorites = async (token) => {
     try {
