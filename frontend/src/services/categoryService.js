@@ -8,7 +8,7 @@ export const createCategories = async (category) => {
   console.log("🚀 ~ createCategories ~ category:", category);
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch("http://${BASE_URL}/categories", {
+    const response = await fetch(`http://${BASE_URL}/categories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
