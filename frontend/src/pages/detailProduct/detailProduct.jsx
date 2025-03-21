@@ -45,7 +45,7 @@ export const ProductDetail = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch("${BASE_URL}/products/${id}");
+                const response = await fetch(`${BASE_URL}/products/${id}`);
                 if (!response.ok) throw new Error("No se pudo cargar el producto.");
 
                 const data = await response.json();
