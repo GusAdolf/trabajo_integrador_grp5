@@ -54,7 +54,7 @@ export const Footer = () => {
         >
           <box xs={{ with: "250px" }}>
             <img
-              src="src/assets/logowhite.svg"
+              src="/assets/logowhite.svg"
               alt="logo xplora+"
               style={{ width: "100%" }}
             />
