@@ -32,7 +32,8 @@ export const Header = () => {
         position="sticky"
         elevation={0}
         sx={{
-          backgroundColor: "#F3F4F6",
+          backgroundColor: "#Ffffff",
+          boxShadow:" 0px 8px 6px -4px rgba(230,225,230,1);",
           display: {
             xs: "none",
             sm: "none",
@@ -40,6 +41,7 @@ export const Header = () => {
             lg: "block",
             xl: "block",
           },
+
         }}
       >
         <Container maxWidth="xl" sx={{ width: "90%", padding: "0 !important" }}>

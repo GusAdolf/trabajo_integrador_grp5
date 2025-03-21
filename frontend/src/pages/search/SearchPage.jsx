@@ -6,7 +6,7 @@ import Products from "../../components/products/Products";
 import { getCities } from "../../services/citiesService";
 import { getCategories } from "../../services/categoryService";
 import { getProducts } from "../../services/productService";
-import Search from "../../components/Search/Search";
+import Search from "../../components/search/Search";
 
 const dateStringToLocalDate = (dateString) => {
   if (!dateString) return new Date();
