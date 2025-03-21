@@ -78,7 +78,7 @@ export const MyMenu = () => {
     >
       {/* 2) Añadimos el botón de Home */}
       <Menu.Item
-        to="${FRONT_URL}"
+        to= {FRONT_URL}
         primaryText="Ir a Home"
         leftIcon={<HomeIcon />} // Icono de Home
       />
