@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import { Box, Button, Typography, Rating, Pagination } from "@mui/material";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
+import { getFavorites, addFavorite, removeFavorite } from "../../services/favoriteService";
 
 const Products = ({ categories, products, itemsPerPage = 6 }) => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const [favoriteProducts, setFavoriteProducts] = useState([]);
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
@@ -20,10 +23,42 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
     setPage(1);
   }, [selectedCategory, products]);
 
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await getFavorites(); 
+        const favoriteIds = response.map((fav) => fav.productId);
+        setFavoriteProducts(favoriteIds);
+      } catch (error) {
+        console.error("Error al obtener favoritos:", error);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
+
+
   const handleCardClick = (id) => {
     navigate(`/product/${id}`);
   };
 
+  const toggleFavorite = async (productId) => {
+    console.log("🚀 ~ toggleFavorite ~ productId:", productId)
+    try {
+      if (favoriteProducts.includes(productId)) {
+        await removeFavorite(productId);
+        setFavoriteProducts((prev) => prev.filter((id) => id !== productId));
+      } else {
+        await addFavorite(productId);
+        setFavoriteProducts((prev) => [...prev, productId]);
+      }
+    } catch (error) {
+      console.error("Error al modificar favorito:", error);
+    }
+  };
+  
+  const isFavorite = (productId) => favoriteProducts.includes(productId);
+  
   const getImageUrl = (product) => {
     if (product.imageSet && product.imageSet.length > 0) {
       return product.imageSet[0].imageUrl;
@@ -115,6 +150,7 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
                   key={product.id}
                   onClick={() => handleCardClick(product.id)}
                   sx={{
+                    position: "relative",
                     borderRadius: "16px",
                     boxShadow: 3,
                     overflow: "hidden",
@@ -123,6 +159,28 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
                     "&:hover": { transform: "scale(1.05)" },
                   }}
                 >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      zIndex: 2,
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      padding: "6px",
+                      boxShadow: 2,
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(product.id);
+                    }}
+                  >
+                    {isFavorite(product.id) ? (
+                      <Favorite sx={{ color: "red" }} />
+                    ) : (
+                      <FavoriteBorder sx={{ color: "gray" }} />
+                    )}
+                  </Box>
                   <img
                     src={getImageUrl(product)}
                     alt={product.name}

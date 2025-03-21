@@ -40,6 +40,11 @@ export default function UserMenu() {
     handleClose();
   };
 
+  const navigateToFavorites = () => {
+    navigate("/favorites");
+    handleClose();
+  };
+
   const open = Boolean(anchorEl);
 
   return (
@@ -93,7 +98,7 @@ export default function UserMenu() {
           </ListItemIcon>
           Perfil
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={navigateToFavorites}>
           <ListItemIcon>
             <FavoriteIcon
               sx={{

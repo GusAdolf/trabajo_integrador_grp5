@@ -240,3 +240,8 @@ export const assignCategory = async (id, categoryId) => {
     console.error(error);
   }
 };
+
+// Add category 
+export const addCategory = async () => {
+
+};

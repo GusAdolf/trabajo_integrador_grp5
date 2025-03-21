@@ -9,6 +9,8 @@ import {
   SelectInput,
   ArrayInput,
   SimpleFormIterator,
+  SelectArrayInput,
+  ReferenceArrayInput,
   NumberInput,
   DateInput,
 } from "react-admin";
@@ -21,7 +23,8 @@ import { useAuth } from "../../../../context/AuthContext";
 export const PostIcon = BookIcon;
 
 export const PostCreate = () => {
-  const { categories } = useAuth();
+  const { categories, cities } = useAuth();
+  const required = (value) => (value ? undefined : "Este campo es requerido");
 
   const handleSubmit = (values) => {
     const productBody = {
@@ -32,7 +35,7 @@ export const PostCreate = () => {
         imageUrl: imgUrl,
         altText: `Imagen de ${values.Nombre}`,
       })),
-      city: { id: 1 },
+      city: { id: values.Ciudad },
       availabilitySet: values.Disponibilidad?.map((availability) => ({
         date: availability.date,
       })),
@@ -112,7 +115,7 @@ export const PostCreate = () => {
             <Grid container spacing={2}>
               {/* Nombre */}
               <Grid item xs={12} md={6}>
-                <TextInput source="Nombre" label="Nombre" fullWidth />
+                <TextInput source="Nombre" label="Nombre" fullWidth validate={required}/>
               </Grid>
 
               {/* Categoría */}
@@ -125,6 +128,19 @@ export const PostCreate = () => {
                     name: category.title,
                   }))}
                   fullWidth
+                  validate={required}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <SelectInput
+                  source="Ciudad"
+                  label="Ciudad"
+                  choices={cities.map((city) => ({
+                    id: city.id,
+                    name: city.name,
+                  }))}
+                  fullWidth
+                  validate={required}
                 />
               </Grid>
 
@@ -136,12 +152,13 @@ export const PostCreate = () => {
                   multiline
                   rows={3}
                   fullWidth
+                  validate={required}
                 />
               </Grid>
 
               {/* Precio */}
               <Grid item xs={12} md={6}>
-                <TextInput source="Precio" label="Precio" fullWidth />
+                <TextInput source="Precio" label="Precio" fullWidth validate={required}/>
               </Grid>
 
               {/* Capacidad Global */}
@@ -151,6 +168,7 @@ export const PostCreate = () => {
                   label="Capacidad Máxima (global)"
                   fullWidth
                   min={1}
+                  validate={required}
                 />
               </Grid>
 
@@ -163,11 +181,11 @@ export const PostCreate = () => {
                 >
                   Ingrese al menos 5 imágenes
                 </Typography>
-                <ArrayInput source="Imagenes" label="">
+                <ArrayInput source="Imagenes" label="" validate={required}>
                   {/* initialCount={5} para 5 campos por defecto, 
                       aunque ya creamos 5 con defaultValues */}
                   <SimpleFormIterator initialCount={5}>
-                    <TextInput label="URL de imagen" />
+                    <TextInput label="URL de imagen" validate={required}/>
                   </SimpleFormIterator>
                 </ArrayInput>
               </Grid>
@@ -181,7 +199,7 @@ export const PostCreate = () => {
                   Seleccione las fechas en las que estará disponible el
                   producto. Puede agregar más con el botón “Agregar”.
                 </Typography>
-                <ArrayInput source="Disponibilidad" label="">
+                <ArrayInput source="Disponibilidad" label="" validate={required}>
                   <SimpleFormIterator>
                     <DateInput label="Fecha" source="date" />
                   </SimpleFormIterator>
