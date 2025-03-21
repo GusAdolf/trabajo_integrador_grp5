@@ -27,7 +27,7 @@ public class City {
     private String name;
 
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 100)
     @Column(nullable = false, length = 50)
     private String country;
 
