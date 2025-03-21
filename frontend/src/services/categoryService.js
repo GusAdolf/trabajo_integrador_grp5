@@ -34,12 +34,12 @@ export const createCategories = async (category) => {
 // get categories
 export const getCategories = async () => {
   try {
-    const bearerToken = `Bearer ${localStorage.getItem("token")}`;
+    //const bearerToken = `Bearer ${localStorage.getItem("token")}`;
     const response = await fetch("${BASE_URL}/categories", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: bearerToken,
+        //Authorization: bearerToken,
       },
     });
     return await response.json();

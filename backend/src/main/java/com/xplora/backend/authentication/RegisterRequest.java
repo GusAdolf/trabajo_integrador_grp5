@@ -22,7 +22,7 @@ public class RegisterRequest {
     private String lastname;
 
     @NotBlank
-    @Size(min = 5, max = 30)
+    @Size(min = 5, max = 100)
     @Email
     private String email;
 
