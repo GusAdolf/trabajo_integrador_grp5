@@ -48,7 +48,7 @@ export const Header = () => {
           <Toolbar disableGutters>
             <a href="/">
               <img
-                src="src/assets/logo.svg"
+                src="public/assets/logo.svg"
                 alt="logo xplora+"
                 style={{ width: "150px", height: "auto" }}
               />
