@@ -21,11 +21,11 @@ export const AuthProvider = ({ children }) => {
     
     fetchProducts(); // Obtener productos siempre
     fetchCategories(); // Obtener categorías siempre
-    fetchFeatures(); // Obtener características siempre
+    //fetchFeatures(); // Obtener características siempre
 
     const token = localStorage.getItem("token");
     if (token ) {
-      fetchCategories();
+      //fetchCategories();
       fetchProducts()
       fetchUserProfile(token);
       fetchCities();

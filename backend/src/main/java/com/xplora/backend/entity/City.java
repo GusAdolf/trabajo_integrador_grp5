@@ -28,7 +28,7 @@ public class City {
 
     @NotBlank
     @Size(min = 3, max = 100)
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String country;
 
     @OneToMany(mappedBy = "city")
