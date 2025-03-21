@@ -14,3 +14,20 @@
     background-color: #00B3B3 !important;
     padding: 5px 15px !important;
 }
+
+.features {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    gap: 50px;
+
+    
+}
+
+.features__button {
+    border-radius: 10px !important;
+    background-color: #00B3B3 !important;
+    padding: 5px 15px !important;
+}
