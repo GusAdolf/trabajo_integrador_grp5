@@ -14,7 +14,7 @@ import lombok.*;
 public class ReviewRequestDto {
     @NotNull
     @Max(value = 5, message = "Máximo 5 estrellas")
-    @Min(value = 1, message = "Mínimo 1 estrella") // entero??
+    @Min(value = 1, message = "Mínimo 1 estrella")
     private Integer score;
 
     @Size(max = 1000)

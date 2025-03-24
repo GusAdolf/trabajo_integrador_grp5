@@ -2,6 +2,8 @@ package com.xplora.backend.controller;
 
 import com.xplora.backend.entity.Feature;
 import com.xplora.backend.service.implementation.FeatureService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ public class FeatureController {
 
     // Obtener todas las características (HU 17) - Solo para administradores
     //@PreAuthorize("hasRole('ADMIN')")
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public ResponseEntity<List<Feature>> getAllFeatures() {
         return ResponseEntity.ok(featureService.getAllFeatures());
@@ -30,6 +33,7 @@ public class FeatureController {
     }
 
     // Agregar una característica a un producto
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/product/{productId}")
     public ResponseEntity<?> addFeatureToProduct(@PathVariable Long productId, @RequestParam Long featureId) {
         Optional<Feature> featureOptional = featureService.findById(featureId);
@@ -41,6 +45,7 @@ public class FeatureController {
 
     // Crear una nueva característica - Solo para administradores
     //@PreAuthorize("hasRole('ADMIN')")
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
     public ResponseEntity<?> createFeature(@RequestBody Feature feature) {
         if (featureService.existsByName(feature.getName())) {
@@ -51,6 +56,7 @@ public class FeatureController {
 
     // Editar una característica - Solo para administradores
     //@PreAuthorize("hasRole('ADMIN')")
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/{featureId}")
     public ResponseEntity<?> updateFeature(@PathVariable Long featureId, @RequestBody Feature featureDetails) {
         if (featureService.existsByName(featureDetails.getName()) && !featureService.findById(featureId).get().getName().equals(featureDetails.getName())) {
@@ -61,6 +67,7 @@ public class FeatureController {
 
     // Eliminar una característica - Solo para administradores
     //@PreAuthorize("hasRole('ADMIN')")
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{featureId}")
     public ResponseEntity<Void> deleteFeature(@PathVariable Long featureId) {
         featureService.deleteFeature(featureId);

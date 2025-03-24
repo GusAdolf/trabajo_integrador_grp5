@@ -5,6 +5,8 @@ import com.xplora.backend.entity.User;
 import com.xplora.backend.service.implementation.FavoriteServiceImpl;
 import com.xplora.backend.service.IUserService;
 import com.xplora.backend.configuration.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +34,7 @@ public class FavoriteController {
 
     // AÑADIR A FAVORITOS
     @PreAuthorize("isAuthenticated()")
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/{productId}")
     public ResponseEntity<String> addFavorite(@RequestHeader("Authorization") String token, @PathVariable Long productId) {
         User user = getAuthenticatedUser(token);
@@ -41,6 +44,7 @@ public class FavoriteController {
 
     //  LISTAR FAVORITOS DEL USUARIO AUTENTICADO
     @PreAuthorize("isAuthenticated()")
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public ResponseEntity<List<Favorite>> getFavorites(@RequestHeader("Authorization") String token) {
         User user = getAuthenticatedUser(token);
@@ -49,6 +53,7 @@ public class FavoriteController {
 
     // ELIMINAR UN FAVORITO POR ID
     @PreAuthorize("isAuthenticated()")
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/{favoriteId}")
     public ResponseEntity<String> removeFavorite(@RequestHeader("Authorization") String token, @PathVariable Long favoriteId) {
         User user = getAuthenticatedUser(token);
