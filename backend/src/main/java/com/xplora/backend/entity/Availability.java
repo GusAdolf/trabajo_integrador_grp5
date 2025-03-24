@@ -2,13 +2,10 @@ package com.xplora.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "availabilities")
@@ -22,16 +19,18 @@ public class Availability {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(nullable = false)
-    //@Future
     private LocalDate date;
 
-    @Max(value = 100, message = "máximo 100 cupos")
-    @Min(value = 0, message = "mínimo 0 cupos")
     @Column(nullable = false)
-    private Integer capacity;
+    private Integer remainingCapacity;
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "availability")
+    @JsonIgnore
+    private Set<Booking> bookingSet;
+
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(nullable = false)
     @JsonIgnore

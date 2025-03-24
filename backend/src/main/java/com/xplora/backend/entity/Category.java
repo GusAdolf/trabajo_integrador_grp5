@@ -29,6 +29,6 @@ public class Category {
     private String imageUrl; // URL de la imagen representativa
 
     @JsonIgnore // Evita la recursión infinita al serializar JSON
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
 }

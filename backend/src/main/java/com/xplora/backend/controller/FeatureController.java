@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/features")
+@RequestMapping("/api/v1/features")
 public class FeatureController {
 
     @Autowired
