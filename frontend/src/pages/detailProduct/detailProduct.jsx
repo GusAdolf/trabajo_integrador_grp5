@@ -25,6 +25,7 @@ import {
 
 // Se agrega SweetAlert2 sin eliminar nada existente
 import Swal from "sweetalert2";
+import RedesSociales from "../../components/redesSociales/RedesSociales";
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 const PLACEHOLDER_IMAGE = "https://picsum.photos/600/400";
@@ -161,6 +162,10 @@ export const ProductDetail = () => {
 
     return (
         <Box sx={{ width: "90%", margin: "0 auto", mt: 4 }}>
+            {/* Contenedor para los botones de RedesSociales y/o cualquier otro elemento en top-right */}
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+                <RedesSociales />
+            </Box>
             {/* Sección de imágenes con cuadrícula */}
             <Grid container spacing={2}>
                 <Grid item xs={12} md={8} sx={{ mt: 6 }}>
