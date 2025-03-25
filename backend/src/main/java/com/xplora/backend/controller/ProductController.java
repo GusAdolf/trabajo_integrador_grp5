@@ -1,5 +1,7 @@
 package com.xplora.backend.controller;
 
+import com.xplora.backend.dto.request.ProductRequestDto;
+import com.xplora.backend.dto.response.ProductResponseDto;
 import com.xplora.backend.entity.Product;
 import com.xplora.backend.service.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("api/v1/products")
 public class ProductController {
     private IProductService productService;
 
@@ -22,30 +24,31 @@ public class ProductController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
-    public ResponseEntity<Product> saveProduct(@RequestBody @Valid Product product) {
+    public ResponseEntity<ProductResponseDto> saveProduct(@RequestBody @Valid ProductRequestDto productRequestDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(productService.saveProduct(product));
+                .body(productService.saveProduct(productRequestDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
         return ResponseEntity
                 .ok(productService.getProductById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
         return ResponseEntity
                 .ok(productService.getAllProducts());
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
-    @PutMapping
-    public ResponseEntity<Product> updateProduct(@RequestBody @Valid Product product) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id,
+                                                            @RequestBody @Valid ProductRequestDto productRequestDto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productService.updateProduct(product));
+                .body(productService.updateProduct(id, productRequestDto));
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))

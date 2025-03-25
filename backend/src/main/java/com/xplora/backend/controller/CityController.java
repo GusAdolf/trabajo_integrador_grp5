@@ -1,6 +1,7 @@
 package com.xplora.backend.controller;
 
-import com.xplora.backend.entity.City;
+import com.xplora.backend.dto.request.CityRequestDto;
+import com.xplora.backend.dto.response.CityResponseDto;
 import com.xplora.backend.service.ICityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cities")
+@RequestMapping("api/v1/cities")
 public class CityController {
     private ICityService cityService;
 
@@ -22,14 +23,14 @@ public class CityController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
-    public ResponseEntity<City> saveCity(@RequestBody @Valid City city) {
+    public ResponseEntity<CityResponseDto> saveCity(@RequestBody @Valid CityRequestDto cityRequestDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(cityService.saveCity(city));
+                .body(cityService.saveCity(cityRequestDto));
     }
 
     @GetMapping
-    public ResponseEntity<List<City>> getAllCities() {
+    public ResponseEntity<List<CityResponseDto>> getAllCities() {
         return ResponseEntity
                 .ok(cityService.getAllCities());
     }

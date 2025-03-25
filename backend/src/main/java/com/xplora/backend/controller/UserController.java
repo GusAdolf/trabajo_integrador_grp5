@@ -1,6 +1,7 @@
 package com.xplora.backend.controller;
 
 import com.xplora.backend.dto.request.UserRoleRequestDto;
+import com.xplora.backend.dto.response.UserResponseDto;
 import com.xplora.backend.entity.User;
 import com.xplora.backend.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/v1/users")
 public class UserController {
     private IUserService userService;
 
@@ -23,25 +24,24 @@ public class UserController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         return ResponseEntity
                 .ok(userService.getAllUsers());
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
-    @PutMapping("{id}/role")
-    public ResponseEntity<?> changeUserRole(@PathVariable Long id,
+    @PutMapping("/{id}/role")
+    public ResponseEntity<?> updateUserRole(@PathVariable Long id,
                                             @RequestBody @Valid UserRoleRequestDto role) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.changeUserRole(id, role));
+                .body(userService.updateUserRole(id, role));
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserByToken(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.substring(7);
+    public ResponseEntity<User> getAuthenticatedUser(@RequestHeader("Authorization") String authHeader) {
         return ResponseEntity
-                .ok(userService.getUserByToken(token));
+                .ok(userService.getAuthenticatedUser(authHeader));
     }
 }

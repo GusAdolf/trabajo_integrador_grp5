@@ -1,5 +1,7 @@
 package com.xplora.backend.utils;
 
+import com.xplora.backend.dto.request.AvailabilityRequestDto;
+import com.xplora.backend.dto.request.ProductRequestDto;
 import com.xplora.backend.entity.*;
 import com.xplora.backend.repository.*;
 import com.xplora.backend.service.IProductService;
@@ -14,7 +16,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class Data implements CommandLineRunner {
+public class DataInitializer implements CommandLineRunner {
     private final IUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ICityRepository cityRepository;
@@ -123,21 +125,13 @@ public class Data implements CommandLineRunner {
     }
 
     void insertProducts() {
-        Product product1 = new Product(
-                null,
+        ProductRequestDto productRequestDto1 = new ProductRequestDto(
                 "Paseo en barco por el Sena",
                 "Tanto de día como de noche, dar un paseo en barco por el Sena es imprescindible para descubrir la belleza de París desde una perspectiva única. La embarcación es panorámica e incluye comentarios en español.",
                 180.0,
                 20,
-                0.0,
-                0,
                 "Adress",
-                new City(
-                        1,
-                        null,
-                        null,
-                        null
-                ),
+                1,
                 Set.of(
                         new Image(
                                 null,
@@ -170,53 +164,22 @@ public class Data implements CommandLineRunner {
                                 null
                         )
                 ),
-                new Category(
-                        4L,
-                        null,
-                        null,
-                        null,
-                        null
-                ),
-                List.of(
-                        new Feature(
-                                1L,
-                                "Familias",
-                                "https://img.icons8.com/?size=26&id=6880&format=png",
-                                null
-                        ),
-                        new Feature(4L,
-                                "Grupos pequeños",
-                                "https://img.icons8.com/?size=24&id=u9iFuoXqgfLU&format=png",
-                                null
-                        )
-                ),
+                4L,
+                List.of(1L, 4L),
                 Set.of(
-                        new Availability(
-                                null,
-                                LocalDate.of(2025,3, 22),
-                                null,
-                                null
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2026,3, 22)
                         )
-                ),
-                null,
-                null
+                )
         );
 
-        Product product2 = new Product(
-                null,
+        ProductRequestDto productRequestDto2 = new ProductRequestDto(
                 "Tour gastronómico por el barrio del Trastevere",
                 "Helados, pizzas, vinos… Deleita tú paladar con las delicias gastronómicas del Trastevere, el barrio bohemio de Roma. ¡Culminarás este tour con un gran sabor de boca!",
                 30.55,
                 10,
-                0.0,
-                0,
                 "Adress",
-                new City(
-                        3,
-                        null,
-                        null,
-                        null
-                ),
+                3,
                 Set.of(
                         new Image(
                                 null,
@@ -249,53 +212,22 @@ public class Data implements CommandLineRunner {
                                 null
                         )
                 ),
-                new Category(
-                        1L,
-                        null,
-                        null,
-                        null,
-                        null
-                ),
-                List.of(
-                        new Feature(
-                                1L,
-                                "Familias",
-                                "https://img.icons8.com/?size=26&id=6880&format=png",
-                                null
-                        ),
-                        new Feature(4L,
-                                "Grupos pequeños",
-                                "https://img.icons8.com/?size=24&id=u9iFuoXqgfLU&format=png",
-                                null
-                        )
-                ),
+                1L,
+                List.of(1L, 4L),
                 Set.of(
-                        new Availability(
-                                null,
-                                LocalDate.of(2025,3, 25),
-                                null,
-                                null
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,3, 25)
                         )
-                ),
-                null,
-                null
+                )
         );
 
-        Product product3 = new Product(
-                null,
-                "Machu Picchu desde Cusco - Tour de Día Completo en Tren Panorámico",
+        ProductRequestDto productRequestDto3 = new ProductRequestDto(
+                "Machu Picchu - Tour de Día Completo en Tren Panorámico",
                 "Machu Picchu,declarado patrimonio cultural de la humanidad por la UNESCO se considera uno de los lugares de interes mundial mas importantes que tiene que visitar en PERU.",
                 200.00,
                 15,
-                0.0,
-                0,
                 "Adress",
-                new City(
-                        4,
-                        null,
-                        null,
-                        null
-                ),
+                4,
                 Set.of(
                         new Image(
                                 null,
@@ -328,48 +260,22 @@ public class Data implements CommandLineRunner {
                                 null
                         )
                 ),
-                new Category(
-                        2L,
-                        null,
-                        null,
-                        null,
-                        null
-                ),
-                List.of(
-                        new Feature(
-                                5L,
-                                "3 Horas",
-                                "https://img.icons8.com/?size=24&id=QECUQIt2LlW8&format=png",
-                                null
-                        )
-                ),
+                2L,
+                List.of(5L),
                 Set.of(
-                        new Availability(
-                                null,
-                                LocalDate.of(2025,3, 21),
-                                null,
-                                null
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,3, 21)
                         )
-                ),
-                null,
-                null
+                )
         );
 
-        Product product4 = new Product(
-                null,
+        ProductRequestDto productRequestDto4 = new ProductRequestDto(
                 "Snorkel en Cabo San Lucas",
                 "¡Embárcate en una emocionante travesía con nuestro tour de snorkel en Cabo y visita al Arco del fin del mundo! Experimenta la emoción de tu vida mientras embarcaciones de alta velocidad te llevan al Arco, la Playa del Amor.",
                 120.00,
                 10,
-                0.0,
-                0,
                 "Adress",
-                new City(
-                        5,
-                        null,
-                        null,
-                        null
-                ),
+                5,
                 Set.of(
                         new Image(
                                 null,
@@ -402,54 +308,22 @@ public class Data implements CommandLineRunner {
                                 null
                         )
                 ),
-                new Category(
-                        3L,
-                        null,
-                        null,
-                        null,
-                        null
-                ),
-                List.of(
-                        new Feature(
-                                2L,
-                                "Sea Lovers",
-                                "https://img.icons8.com/?size=50&id=aDhl4dThqSY6&format=png",
-                                null
-                        ),
-                        new Feature(
-                                3L,
-                                "Activo",
-                                "https://img.icons8.com/?size=24&id=0Az5RrjFrZpO&format=png",
-                                null
-                        )
-                ),
+                3L,
+                List.of(2L, 3L),
                 Set.of(
-                        new Availability(
-                                null,
-                                LocalDate.of(2025,3, 28),
-                                null,
-                                null
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,3, 28)
                         )
-                ),
-                null,
-                null
+                )
         );
 
-        Product product5 = new Product(
-                null,
-                "Asakusa",
+        ProductRequestDto productRequestDto5 = new ProductRequestDto(
+                "Barrio de Asakusa",
                 "La atmósfera del barrio de Asakusa te transportará al antiguo Tokyo. La atracción principal de esta zona es el Templo Sensoji, uno de los templos budistas más famosos de Japón.",
                 180.00,
                 30,
-                0.0,
-                0,
                 "Adress",
-                new City(
-                        6,
-                        null,
-                        null,
-                        null
-                ),
+                6,
                 Set.of(
                         new Image(
                                 null,
@@ -482,38 +356,71 @@ public class Data implements CommandLineRunner {
                                 null
                         )
                 ),
-                new Category(
-                        2L,
-                        null,
-                        null,
-                        null,
-                        null
-                ),
-                List.of(
-                        new Feature(
-                                5L,
-                                "3 Horas",
-                                "https://img.icons8.com/?size=24&id=QECUQIt2LlW8&format=png",
-                                null
-                        )
-                ),
+                2L,
+                List.of(5L),
                 Set.of(
-                        new Availability(
-                                null,
-                                LocalDate.of(2025,4, 2),
-                                null,
-                                null
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 2)
                         )
-                ),
-                null,
-                null
+                )
         );
 
+        ProductRequestDto productRequestDto6 = new ProductRequestDto(
+                "Tour en autobús de té por la tarde de Peppa Pig con audioguía",
+                "Vea lo mejor de Londres mientras viaja a bordo de un icónico autobús Routemaster de dos pisos. Disfrute de una experiencia de té con temática vespertina de Peppa Pig con delicias tradicionales británicas y bebidas calientes ilimitadas.",
+                90.00,
+                25,
+                "Adress",
+                2,
+                Set.of(
+                        new Image(
+                                null,
+                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                null,
+                                null
+                        )
+                ),
+                4L,
+                List.of(1L, 5L),
+                Set.of(
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 1)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 4)
+                        )
+                )
+        );
 
-        productService.saveProduct(product1);
-        productService.saveProduct(product2);
-        productService.saveProduct(product3);
-        productService.saveProduct(product4);
-        productService.saveProduct(product5);
+        productService.saveProduct(productRequestDto1);
+        productService.saveProduct(productRequestDto2);
+        productService.saveProduct(productRequestDto3);
+        productService.saveProduct(productRequestDto4);
+        productService.saveProduct(productRequestDto5);
+        productService.saveProduct(productRequestDto6);
     }
 }

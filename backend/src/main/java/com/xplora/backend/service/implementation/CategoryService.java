@@ -2,6 +2,7 @@ package com.xplora.backend.service.implementation;
 
 import com.xplora.backend.entity.Category;
 import com.xplora.backend.entity.Product;
+import com.xplora.backend.exception.ResourceNotFoundException;
 import com.xplora.backend.repository.ICategoryRepository;
 import com.xplora.backend.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +82,10 @@ public class CategoryService {
         }
 
         categoryRepository.delete(category);
+    }
+
+    public Category findById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("La categoria no existe"));
     }
 }
