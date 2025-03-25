@@ -4,8 +4,6 @@ import com.xplora.backend.entity.User;
 import com.xplora.backend.service.IEmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,7 +14,6 @@ import org.springframework.core.io.Resource;
 
 @Service
 public class EmailServiceImpl implements IEmailService {
-    private final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
 
@@ -30,7 +27,6 @@ public class EmailServiceImpl implements IEmailService {
 
     @Override
     public void sendMailWelcome(User user) throws MessagingException {
-        logger.info("sendMailWelcome - Enviando correo de registro/bienvenida al usuario con id: " + user.getId());
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
@@ -39,7 +35,7 @@ public class EmailServiceImpl implements IEmailService {
 
         Context context = new Context();
         context.setVariable("firstname", user.getFirstname());
-        String contentHTML = templateEngine.process("email-welcome", context);
+        String contentHTML = templateEngine.process("email", context);
 
         helper.setText(contentHTML, true);
         helper.addInline("attachment.png", resourceFile);

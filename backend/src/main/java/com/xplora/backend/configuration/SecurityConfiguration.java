@@ -25,45 +25,48 @@ public class SecurityConfiguration {
         return http.authorizeHttpRequests(
                 auth -> {
                     //auth.anyRequest().permitAll();
-                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    auth.requestMatchers("/api/v1/auth/**").permitAll();
-                    auth.requestMatchers("/h2-console/**").permitAll();
 
-                    // Swagger (Documentación)
+                    // Endpoints que no requieren autenticación
+                    auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    auth.requestMatchers("/api/auth/**").permitAll();
+                    auth.requestMatchers("/h2-console/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/products/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/images/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/cities/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/reviews/product/**").permitAll();
+
+                    // Endpoints de Swagger (Documentación)
                     auth.requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll();
 
-                    auth.requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST, "/api/v1/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
-
-                    auth.requestMatchers(HttpMethod.GET, "/images/**").permitAll();
+                    // Endpoints que requieren ADMIN o SUPERADMIN
+                    auth.requestMatchers(HttpMethod.POST, "/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, "/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, "/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.POST, "/images/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.POST, "/cities/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.POST, "/availabilities/product/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers("/users").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers("/users/*/role/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
 
-                    auth.requestMatchers("/api/v1/users").hasAnyAuthority("ADMIN", "SUPERADMIN");
-                    auth.requestMatchers("/api/v1/users/*/role/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
-
-                    auth.requestMatchers(HttpMethod.GET, "/api/v1/cities/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST, "/api/v1/cities/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
-
-                    auth.requestMatchers(HttpMethod.GET, "/api/v1/availabilities/product/**").permitAll();
-
-                    auth.requestMatchers(HttpMethod.GET, "/api/v1/reviews/product/**").permitAll();
-
+                    // Protección para categorías
                     auth.requestMatchers(HttpMethod.GET, "/categories/**").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/categories/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.DELETE, "/categories/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
 
+                    // Protección para características (features)
                     auth.requestMatchers(HttpMethod.GET, "/features/product/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/features").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.POST, "/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.PUT, "/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.DELETE, "/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
 
+                    // Endpoints que requieren autenticación (usuarios registrados)
+                    auth.requestMatchers("/send-email/**").authenticated();
+                    auth.requestMatchers("/users/profile/**").authenticated();
+
                     // Todos los demás endpoints requieren autenticación
-                    //auth.requestMatchers("/api/v1/users/profile/**").authenticated();
                     auth.anyRequest().authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable)

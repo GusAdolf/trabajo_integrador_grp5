@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/send-email")
+@RequestMapping("/send-email")
 public class EmailController {
     private IEmailService emailService;
     private IUserService userService;
@@ -21,9 +21,10 @@ public class EmailController {
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/welcome")
-    private ResponseEntity<String> sendEmailWelcomeToAuthenticatedUser(@RequestHeader("Authorization") String authHeader) {
+    private ResponseEntity<String> sendEmailWelcome(@RequestHeader("Authorization") String authHeader) {
         try {
-            User user = userService.getAuthenticatedUser(authHeader);
+            String userToken = authHeader.substring(7);
+            User user = userService.getUserByToken(userToken);
             emailService.sendMailWelcome(user);
             return ResponseEntity
                     .ok("Correo enviado exitosamente");

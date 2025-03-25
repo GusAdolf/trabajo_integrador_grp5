@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/images")
+@RequestMapping("/images")
 public class ImageController {
 
     private final ImageService imageService;

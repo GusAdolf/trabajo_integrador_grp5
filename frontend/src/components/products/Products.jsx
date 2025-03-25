@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Typography, Rating, Pagination, Tooltip } from "@mui/material";
+import { Box, Button, Typography, Rating, Pagination } from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
 import { getFavorites, addFavorite, removeFavorite } from "../../services/favoriteService";
-import { useAuth } from "../../context/AuthContext";
 
 const Products = ({ categories, products, itemsPerPage = 6 }) => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [filteredProducts, setFilteredProducts] = useState(products);
-  const [favorites, setFavorites] = useState([]);
+  const [favoriteProducts, setFavoriteProducts] = useState([]);
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   useEffect(() => {
     let filtered = products.filter(
@@ -25,20 +23,19 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
     setPage(1);
   }, [selectedCategory, products]);
 
-  const fetchFavorites = async () => {
-    if (!user) return;
-    
-    try {
-      const favorites = await getFavorites();
-      setFavorites(favorites);
-    } catch (error) {
-      console.error("Error al obtener favoritos:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await getFavorites(); 
+        const favoriteIds = response.map((fav) => fav.productId);
+        setFavoriteProducts(favoriteIds);
+      } catch (error) {
+        console.error("Error al obtener favoritos:", error);
+      }
+    };
+
     fetchFavorites();
-  }, [user]);
+  }, []);
 
 
   const handleCardClick = (id) => {
@@ -46,22 +43,21 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
   };
 
   const toggleFavorite = async (productId) => {
-    if (!user) return;
-
+    console.log("🚀 ~ toggleFavorite ~ productId:", productId)
     try {
-      const favorite = favorites.find((fav) => fav.product.id === productId);
-      if (favorite) {
-        await removeFavorite(favorite.id);
+      if (favoriteProducts.includes(productId)) {
+        await removeFavorite(productId);
+        setFavoriteProducts((prev) => prev.filter((id) => id !== productId));
       } else {
         await addFavorite(productId);
+        setFavoriteProducts((prev) => [...prev, productId]);
       }
-      fetchFavorites()
     } catch (error) {
       console.error("Error al modificar favorito:", error);
     }
   };
   
-  const isFavorite = (productId) => favorites.some(fav => fav.product.id === productId);
+  const isFavorite = (productId) => favoriteProducts.includes(productId);
   
   const getImageUrl = (product) => {
     if (product.imageSet && product.imageSet.length > 0) {
@@ -163,42 +159,28 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
                     "&:hover": { transform: "scale(1.05)" },
                   }}
                 >
-                  <Tooltip 
-                    title={
-                      !user 
-                        ? "Primero inicia sesión" 
-                        : isFavorite(product.id) 
-                          ? "Quitar de favoritos" 
-                          : "Agregar a favoritos"
-                    } 
-                    arrow 
-                    placement="top"
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      zIndex: 2,
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      padding: "6px",
+                      boxShadow: 2,
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(product.id);
+                    }}
                   >
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 8,
-                        right: 8,
-                        zIndex: 2,
-                        backgroundColor: "white",
-                        borderRadius: "50%",
-                        padding: "6px",
-                        boxShadow: 2,
-                        opacity: user ? 1 : 0.6,
-                        cursor: user ? "pointer" : "not-allowed",
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (user) toggleFavorite(product.id);
-                      }}
-                    >
-                      {user && isFavorite(product.id) ? (
-                        <Favorite sx={{ color: "red" }} />
-                      ) : (
-                        <FavoriteBorder sx={{ color: "gray" }} />
-                      )}
-                    </Box>
-                  </Tooltip>
+                    {isFavorite(product.id) ? (
+                      <Favorite sx={{ color: "red" }} />
+                    ) : (
+                      <FavoriteBorder sx={{ color: "gray" }} />
+                    )}
+                  </Box>
                   <img
                     src={getImageUrl(product)}
                     alt={product.name}

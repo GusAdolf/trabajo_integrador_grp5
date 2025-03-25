@@ -3,13 +3,15 @@ package com.xplora.backend.authentication;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class RegisterRequest {
     @NotBlank
     @Size(min = 3, max = 100)
@@ -24,8 +26,7 @@ public class RegisterRequest {
     @Email
     private String email;
 
-    @ToString.Exclude
     @NotBlank
-    @Size(min = 8)
+    @Size(min = 8, max = 100)
     private String password;
 }

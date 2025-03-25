@@ -1,6 +1,7 @@
 package com.xplora.backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -9,18 +10,20 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Booking extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private Status status = Status.PENDING;
+    private Status status;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private Availability availability;
+    @NotNull
+    @Column(nullable = false)
+    private Long availabilityId;
 
+    @NotNull
     @Column(nullable = false)
     private Integer quantity;
 
@@ -29,6 +32,7 @@ public class Booking extends Timestamp {
     private User user;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(nullable = false)
     private Product product;
 
