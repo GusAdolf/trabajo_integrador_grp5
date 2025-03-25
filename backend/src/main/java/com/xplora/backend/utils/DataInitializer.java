@@ -168,7 +168,7 @@ public class DataInitializer implements CommandLineRunner {
                 List.of(1L, 4L),
                 Set.of(
                         new AvailabilityRequestDto(
-                                LocalDate.of(2026,3, 22)
+                                LocalDate.of(2025,3, 22)
                         )
                 )
         );

@@ -1,13 +1,13 @@
 import Swal from "sweetalert2";
 
-const URL = "http://localhost:8080/products";
+const URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 
 // PRODUCTS
 
 // Get all products
 export const getProducts = async () => {
   try {
-    const response = await fetch(URL);
+    const response = await fetch(`${URL}/products`);
     if (!response.ok) {
       throw new Error("Error al obtener los productos");
     }
@@ -21,7 +21,7 @@ export const getProducts = async () => {
 export const createProduct = async (product) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(URL, {
+    const response = await fetch(`${URL}/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ export const createProduct = async (product) => {
 export const deleteProduct = async (id) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(`${URL}/${id}`, {
+    const response = await fetch(`${URL}/products/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: bearerToken,
@@ -64,7 +64,7 @@ export const deleteProduct = async (id) => {
 export const updateProduct = async (product) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(URL, {
+    const response = await fetch(`${URL}/products/${product.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +92,7 @@ export const updateProduct = async (product) => {
 // Create user
 export const registerUser = async (user) => {
   try {
-    const response = await fetch("http://localhost:8080/api/auth/register", {
+    const response = await fetch(`${URL}/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export const registerUser = async (user) => {
 // Login user
 export const loginUser = async (user) => {
   try {
-    const response = await fetch("http://localhost:8080/api/auth/login", {
+    const response = await fetch(`${URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -143,7 +143,7 @@ export const loginUser = async (user) => {
 export const getProfile = async (token) => {
   try {
     const bearerToken = `Bearer ${token}`;
-    const response = await fetch("http://localhost:8080/users/profile", {
+    const response = await fetch(`${URL}/users/profile`, {
       headers: {
         Authorization: bearerToken,
       },
@@ -167,7 +167,7 @@ export const getProfile = async (token) => {
 export const getUsers = async () => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch("http://localhost:8080/users", {
+    const response = await fetch(`${URL}/users`, {
       headers: {
         Authorization: bearerToken,
       },
@@ -182,7 +182,7 @@ export const getUsers = async () => {
 export const updateUserRole = async (id, role) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(`http://localhost:8080/users/${id}/role`, {
+    const response = await fetch(`${URL}/users/${id}/role`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -210,7 +210,7 @@ export const assignCategory = async (id, categoryId) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
     const response = await fetch(
-      `http://localhost:8080/categories/${id}/assign/${categoryId}`,
+      `${URL}/categories/${id}/assign/${categoryId}`,
       {
         method: "POST",
         headers: {

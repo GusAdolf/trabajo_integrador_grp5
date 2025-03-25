@@ -26,7 +26,7 @@ import {
 // Se agrega SweetAlert2 sin eliminar nada existente
 import Swal from "sweetalert2";
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 const PLACEHOLDER_IMAGE = "https://picsum.photos/600/400";
 
 export const ProductDetail = () => {

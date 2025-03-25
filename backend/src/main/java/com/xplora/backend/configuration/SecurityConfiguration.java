@@ -39,8 +39,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers(HttpMethod.PUT, "/api/v1/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.DELETE, "/api/v1/products/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
 
-                    auth.requestMatchers(HttpMethod.GET, "/images/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST, "/images/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/api/v1/images/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
 
                     auth.requestMatchers("/api/v1/users").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers("/api/v1/users/*/role/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
@@ -52,15 +52,15 @@ public class SecurityConfiguration {
 
                     auth.requestMatchers(HttpMethod.GET, "/api/v1/reviews/product/**").permitAll();
 
-                    auth.requestMatchers(HttpMethod.GET, "/categories/**").permitAll();
-                    auth.requestMatchers(HttpMethod.POST, "/categories/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, "/categories/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/api/v1/categories/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, "/api/v1/categories/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
 
-                    auth.requestMatchers(HttpMethod.GET, "/features/product/**").permitAll();
-                    auth.requestMatchers(HttpMethod.GET, "/features").hasAnyAuthority("ADMIN", "SUPERADMIN");
-                    auth.requestMatchers(HttpMethod.POST, "/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
-                    auth.requestMatchers(HttpMethod.PUT, "/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
-                    auth.requestMatchers(HttpMethod.DELETE, "/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.GET, "/api/v1/features/product/**").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/api/v1/features").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.POST, "/api/v1/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.PUT, "/api/v1/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+                    auth.requestMatchers(HttpMethod.DELETE, "/api/v1/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
 
                     // Todos los demás endpoints requieren autenticación
                     //auth.requestMatchers("/api/v1/users/profile/**").authenticated();
