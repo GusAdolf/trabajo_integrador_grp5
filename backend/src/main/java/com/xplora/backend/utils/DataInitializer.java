@@ -56,6 +56,14 @@ public class DataInitializer implements CommandLineRunner {
         admin.setLastname("admin");
         admin.setRole(Role.SUPERADMIN);
         userRepository.save(admin);
+
+        User user = new User();
+        user.setEmail("user@user.com");
+        user.setPassword(passwordEncoder.encode("User12345678"));
+        user.setFirstname("user");
+        user.setLastname("user");
+        user.setRole(Role.USER);
+        userRepository.save(user);
     }
 
     void insertCities() {
@@ -130,7 +138,7 @@ public class DataInitializer implements CommandLineRunner {
                 "Tanto de día como de noche, dar un paseo en barco por el Sena es imprescindible para descubrir la belleza de París desde una perspectiva única. La embarcación es panorámica e incluye comentarios en español.",
                 180.0,
                 20,
-                "Adress",
+                "Calle Digital House 123, Certified Tech Developer",
                 1,
                 Set.of(
                         new Image(
@@ -178,7 +186,7 @@ public class DataInitializer implements CommandLineRunner {
                 "Helados, pizzas, vinos… Deleita tú paladar con las delicias gastronómicas del Trastevere, el barrio bohemio de Roma. ¡Culminarás este tour con un gran sabor de boca!",
                 30.55,
                 10,
-                "Adress",
+                "Calle Digital House 123, Certified Tech Developer",
                 3,
                 Set.of(
                         new Image(
@@ -226,7 +234,7 @@ public class DataInitializer implements CommandLineRunner {
                 "Machu Picchu,declarado patrimonio cultural de la humanidad por la UNESCO se considera uno de los lugares de interes mundial mas importantes que tiene que visitar en PERU.",
                 200.00,
                 15,
-                "Adress",
+                "Calle Digital House 123, Certified Tech Developer",
                 4,
                 Set.of(
                         new Image(
@@ -274,7 +282,7 @@ public class DataInitializer implements CommandLineRunner {
                 "¡Embárcate en una emocionante travesía con nuestro tour de snorkel en Cabo y visita al Arco del fin del mundo! Experimenta la emoción de tu vida mientras embarcaciones de alta velocidad te llevan al Arco, la Playa del Amor.",
                 120.00,
                 10,
-                "Adress",
+                "Calle Digital House 123, Certified Tech Developer",
                 5,
                 Set.of(
                         new Image(
@@ -322,7 +330,7 @@ public class DataInitializer implements CommandLineRunner {
                 "La atmósfera del barrio de Asakusa te transportará al antiguo Tokyo. La atracción principal de esta zona es el Templo Sensoji, uno de los templos budistas más famosos de Japón.",
                 180.00,
                 30,
-                "Adress",
+                "Calle Digital House 123, Certified Tech Developer",
                 6,
                 Set.of(
                         new Image(
@@ -370,7 +378,7 @@ public class DataInitializer implements CommandLineRunner {
                 "Vea lo mejor de Londres mientras viaja a bordo de un icónico autobús Routemaster de dos pisos. Disfrute de una experiencia de té con temática vespertina de Peppa Pig con delicias tradicionales británicas y bebidas calientes ilimitadas.",
                 90.00,
                 25,
-                "Adress",
+                "Calle Digital House 123, Certified Tech Developer",
                 2,
                 Set.of(
                         new Image(

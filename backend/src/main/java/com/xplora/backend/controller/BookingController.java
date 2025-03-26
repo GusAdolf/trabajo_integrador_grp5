@@ -7,6 +7,7 @@ import com.xplora.backend.service.IBookingService;
 import com.xplora.backend.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class BookingController {
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
     public ResponseEntity<BookingResponseDto> saveBookingOfAuthenticatedUser(@RequestHeader("Authorization") String authHeader,
-                                                                             @RequestBody @Valid BookingRequestDto bookingRequestDto) {
+                                                                             @RequestBody @Valid BookingRequestDto bookingRequestDto) throws MessagingException {
         User user = userService.getAuthenticatedUser(authHeader);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

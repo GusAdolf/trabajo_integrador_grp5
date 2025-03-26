@@ -8,7 +8,9 @@ import com.xplora.backend.exception.ResourceNotFoundException;
 import com.xplora.backend.repository.IBookingRepository;
 import com.xplora.backend.service.IAvailabilityService;
 import com.xplora.backend.service.IBookingService;
+import com.xplora.backend.service.IEmailService;
 import com.xplora.backend.service.IProductService;
+import jakarta.mail.MessagingException;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,17 +28,19 @@ public class BookingServiceImpl implements IBookingService  {
     private IBookingRepository bookingRepository;
     private IProductService productService;
     private IAvailabilityService availabilityService;
+    private IEmailService emailService;
     @Autowired
     private ModelMapper modelMapper;
 
-    public BookingServiceImpl(IBookingRepository bookingRepository, IProductService productService, IAvailabilityService availabilityService) {
+    public BookingServiceImpl(IBookingRepository bookingRepository, IProductService productService, IAvailabilityService availabilityService, IEmailService emailService) {
         this.bookingRepository = bookingRepository;
         this.productService = productService;
         this.availabilityService = availabilityService;
+        this.emailService = emailService;
     }
 
     @Override
-    public BookingResponseDto saveBooking(BookingRequestDto bookingRequestDto, User user) {
+    public BookingResponseDto saveBooking(BookingRequestDto bookingRequestDto, User user) throws MessagingException {
         logger.info("saveBookingOfUser - Guardando reservación: " + bookingRequestDto + " del usuario con id: " + user.getId());
 
         Product product = productService.findById(bookingRequestDto.getProduct_id());
@@ -59,8 +63,9 @@ public class BookingServiceImpl implements IBookingService  {
         booking.setProduct(product);
         Booking bookingDB = bookingRepository.save(booking);
 
-        // TODO: mandar correo
-        return bookingToResponse(bookingDB);
+        BookingResponseDto bookingResponseDto = bookingToResponse(bookingDB);
+        emailService.sendMailBooking(bookingResponseDto);
+        return bookingResponseDto;
     }
 
     @Override
