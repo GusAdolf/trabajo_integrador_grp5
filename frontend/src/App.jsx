@@ -16,11 +16,14 @@ import { Footer } from "./components/footer/Footer";
 import { SearchPage } from "./pages/search/SearchPage";
 import Favorites from "./pages/favorite/favorites";
 
+// 1) IMPORTAR BookingReview
+import BookingReview from "./pages/bookingReview/BookingReview";
 
 function App() {
   const location = useLocation();
   const isRestrictedPage = location.pathname.startsWith("/restricted");
   const isAdminPage = location.pathname.startsWith("/admin");
+
   return (
     <AuthProvider>
       {!isRestrictedPage && !isAdminPage && <Header />}
@@ -43,8 +46,12 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/favorites" element={<Favorites />} />
 
+        {/* 2) NUEVA RUTA HACIA BookingReview */}
+        <Route path="/booking-review" element={<BookingReview />} />
+
         {/*<Route path="*" element={<NotFoundPage />} />*/}
       </Routes>
+
       {!isRestrictedPage && !isAdminPage && <Footer />}
     </AuthProvider>
   );
