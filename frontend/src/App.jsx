@@ -15,12 +15,13 @@ import { AuthProvider } from "./context/AuthContext";
 import { Footer } from "./components/footer/Footer";
 import { SearchPage } from "./pages/search/SearchPage";
 import Favorites from "./pages/favorite/favorites";
-
+import BookingReview from "./pages/bookingReview/BookingReview";
 
 function App() {
   const location = useLocation();
   const isRestrictedPage = location.pathname.startsWith("/restricted");
   const isAdminPage = location.pathname.startsWith("/admin");
+
   return (
     <AuthProvider>
       {!isRestrictedPage && !isAdminPage && <Header />}
@@ -42,9 +43,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/favorites" element={<Favorites />} />
-
-        {/*<Route path="*" element={<NotFoundPage />} />*/}
+        <Route path="/booking-review" element={<BookingReview />} />
       </Routes>
+
       {!isRestrictedPage && !isAdminPage && <Footer />}
     </AuthProvider>
   );
