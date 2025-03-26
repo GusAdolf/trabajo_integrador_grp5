@@ -15,8 +15,6 @@ import { AuthProvider } from "./context/AuthContext";
 import { Footer } from "./components/footer/Footer";
 import { SearchPage } from "./pages/search/SearchPage";
 import Favorites from "./pages/favorite/favorites";
-
-// 1) IMPORTAR BookingReview
 import BookingReview from "./pages/bookingReview/BookingReview";
 
 function App() {
@@ -45,11 +43,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/favorites" element={<Favorites />} />
-
-        {/* 2) NUEVA RUTA HACIA BookingReview */}
         <Route path="/booking-review" element={<BookingReview />} />
-
-        {/*<Route path="*" element={<NotFoundPage />} />*/}
       </Routes>
 
       {!isRestrictedPage && !isAdminPage && <Footer />}
