@@ -7,8 +7,6 @@ import {
   Twitter,
   Phone,
   Email,
-  Android,
-  Start,
 } from "@mui/icons-material";
 import RecursosPoliticas from "../recursosPoliticas/RecursosPoliticas";
 import AppleIcon from "@mui/icons-material/Apple";
@@ -30,6 +28,7 @@ export const Footer = () => {
       sx={{
         bgcolor: "#1C274C",
         color: "white",
+        mt: 8, // Espacio entre el contenido de la página y el footer
       }}
     >
       <Grid
@@ -52,13 +51,13 @@ export const Footer = () => {
             justifyContent: "center",
           }}
         >
-          <box xs={{ with: "250px" }}>
+          <Box sx={{ width: "350px" }}>
             <img
               src="/assets/logowhite.svg"
               alt="logo xplora+"
               style={{ width: "100%" }}
             />
-          </box>
+          </Box>
 
           <Typography
             variant="subtitle1"
@@ -68,7 +67,7 @@ export const Footer = () => {
               cursor: "pointer",
               "&:hover": {
                 fontWeight: "bold",
-                color:"#6FFDFF"
+                color: "#6FFDFF",
               },
             }}
           >
@@ -78,12 +77,14 @@ export const Footer = () => {
             variant="subtitle1"
             fontWeight="regular"
             mb={2}
-            sx={{ cursor: "pointer", color: "white",
-                "&:hover": {
+            sx={{
+              cursor: "pointer",
+              color: "white",
+              "&:hover": {
                 fontWeight: "bold",
-                color:"#6FFDFF"
-              }
-             }}
+                color: "#6FFDFF",
+              },
+            }}
             onClick={handleOpen}
           >
             Políticas generales
@@ -92,10 +93,13 @@ export const Footer = () => {
             variant="subtitle1"
             fontWeight="regular"
             mb={2}
-            sx={{ cursor: "pointer","&:hover": {
+            sx={{
+              cursor: "pointer",
+              "&:hover": {
                 fontWeight: "bold",
-                color:"#6FFDFF"
-              } }}
+                color: "#6FFDFF",
+              },
+            }}
           >
             confianza y seguridad
           </Typography>
@@ -127,15 +131,18 @@ export const Footer = () => {
             Trabaja con nosotros
           </Typography>
 
-          <box>
+          <Box>
             <Typography
               variant="subtitle1"
               fontWeight="regular"
               mb={1}
-              sx={{ cursor: "pointer","&:hover": {
-                fontWeight: "bold",
-                color:"#6FFDFF"
-              } }}
+              sx={{
+                cursor: "pointer",
+                "&:hover": {
+                  fontWeight: "bold",
+                  color: "#6FFDFF",
+                },
+              }}
             >
               Proveedores
             </Typography>
@@ -143,10 +150,13 @@ export const Footer = () => {
               variant="subtitle1"
               fontWeight="regular"
               mb={1}
-              sx={{ cursor: "pointer", "&:hover": {
-                fontWeight: "bold",
-                color:"#6FFDFF"
-              }}}
+              sx={{
+                cursor: "pointer",
+                "&:hover": {
+                  fontWeight: "bold",
+                  color: "#6FFDFF",
+                },
+              }}
             >
               Afiliados
             </Typography>
@@ -154,10 +164,13 @@ export const Footer = () => {
               variant="subtitle1"
               fontWeight="regular"
               mb={1}
-              sx={{ cursor: "pointer","&:hover": {
-                fontWeight: "bold",
-                color:"#6FFDFF"
-              } }}
+              sx={{
+                cursor: "pointer",
+                "&:hover": {
+                  fontWeight: "bold",
+                  color: "#6FFDFF",
+                },
+              }}
             >
               Agencia de tours
             </Typography>
@@ -165,14 +178,17 @@ export const Footer = () => {
               variant="subtitle1"
               fontWeight="regular"
               mb={4}
-              sx={{ cursor: "pointer","&:hover": {
-                fontWeight: "bold",
-                color:"#6FFDFF"
-              }}}
+              sx={{
+                cursor: "pointer",
+                "&:hover": {
+                  fontWeight: "bold",
+                  color: "#6FFDFF",
+                },
+              }}
             >
               Alojamientos
             </Typography>
-          </box>
+          </Box>
 
           <Typography
             variant="subtitle1"
@@ -187,48 +203,64 @@ export const Footer = () => {
             Síguenos
           </Typography>
 
-          <box>
+          <Box>
             <IconButton
-              sx={{ color: "white", mx: 1,"&:hover": {
-                fontWeight: "bold",
-                color:"#6FFDFF"
-              }}}
+              sx={{
+                color: "white",
+                mx: 1,
+                "&:hover": {
+                  fontWeight: "bold",
+                  color: "#6FFDFF",
+                },
+              }}
               href="https://facebook.com"
               target="_blank"
             >
               <Facebook fontSize="large" />
             </IconButton>
             <IconButton
-              sx={{ color: "white", mx: 1, "&:hover": {
-                fontWeight: "bold",
-                color:"#6FFDFF"
-              } }}
+              sx={{
+                color: "white",
+                mx: 1,
+                "&:hover": {
+                  fontWeight: "bold",
+                  color: "#6FFDFF",
+                },
+              }}
               href="https://instagram.com"
               target="_blank"
             >
               <Instagram fontSize="large" />
             </IconButton>
             <IconButton
-              sx={{ color: "white", mx: 1,"&:hover": {
-                fontWeight: "bold",
-                color:"#6FFDFF"
-              } }}
+              sx={{
+                color: "white",
+                mx: 1,
+                "&:hover": {
+                  fontWeight: "bold",
+                  color: "#6FFDFF",
+                },
+              }}
               href="https://linkedin.com"
               target="_blank"
             >
               <LinkedIn fontSize="large" />
             </IconButton>
             <IconButton
-              sx={{ color: "white", mx: 1,"&:hover": {
-                fontWeight: "bold",
-                color:"#6FFDFF"
-              } }}
+              sx={{
+                color: "white",
+                mx: 1,
+                "&:hover": {
+                  fontWeight: "bold",
+                  color: "#6FFDFF",
+                },
+              }}
               href="https://twitter.com"
               target="_blank"
             >
               <Twitter fontSize="large" />
             </IconButton>
-          </box>
+          </Box>
         </Grid>
 
         {/* contactanos */}
@@ -253,7 +285,7 @@ export const Footer = () => {
           >
             Contáctanos
           </Typography>
-          <box>
+          <Box>
             <Box
               display="flex"
               justifyContent="start"
@@ -272,7 +304,7 @@ export const Footer = () => {
               <Email sx={{ mr: 2, fontSize: 30 }} />
               <Typography variant="body1">contacto@empresa.com</Typography>
             </Box>
-          </box>
+          </Box>
 
           <Typography
             variant="subtitle1"
@@ -285,21 +317,21 @@ export const Footer = () => {
           >
             Descarga nuestra APP
           </Typography>
-          <box>
+          <Box>
             <Box
               display="flex"
               justifyContent="start"
               alignItems="center"
               mb={1}
             >
-              <AppleIcon sx={{ mr: 2, fontSize: 30, }} />
+              <AppleIcon sx={{ mr: 2, fontSize: 30 }} />
               <Typography variant="body1">IOS App</Typography>
             </Box>
             <Box display="flex" justifyContent="start" alignItems="center">
               <AndroidIcon sx={{ mr: 2, fontSize: 30 }} />
               <Typography variant="body1">Android App</Typography>
             </Box>
-          </box>
+          </Box>
         </Grid>
       </Grid>
 
