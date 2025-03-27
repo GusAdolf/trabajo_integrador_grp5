@@ -2,8 +2,6 @@ package com.xplora.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -19,26 +17,25 @@ public class Review extends Timestamp {
     private Long id;
 
     @Column(nullable = false)
-    @Max(value = 5, message = "máximo 5 estrellas")
-    @Min(value = 1, message = "mínimo 1 estrella") // entero??
     private Integer score;
 
+    @Column(length = 1000)
     private String comment;
-
-    private String userFullName;
 
     /*@ManyToOne
     @JoinColumn(nullable = false)
     @JsonIgnore
     private User user;*/
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(nullable = false)
-    @JsonIgnore
+    //@JsonIgnore
     private Product product;
 
+    @ToString.Exclude
     @OneToOne
     @JoinColumn(nullable = false)
-    @JsonIgnore
+    //@JsonIgnore
     private Booking booking;
 }

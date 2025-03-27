@@ -1,7 +1,9 @@
 
 import Swal from "sweetalert2";
 
-const API_URL = "http://localhost:8080/features"
+const BASE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
+
+const API_URL = `${BASE_BACKEND_URL}/features`;
 
 // create feature
 export const createFeatures = async (feature) => {

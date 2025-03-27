@@ -1,6 +1,11 @@
 import Swal from "sweetalert2";
 
-const AVAILABILITY_URL = "http://localhost:8080/availabilities";
+// Obtén la URL base del backend usando variables de entorno:
+// Prioriza VITE_BACKEND_URL, y si no existe, usa VITE_APP_API_URL;
+const BASE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
+
+// Define la URL para availabilities
+const AVAILABILITY_URL = `${BASE_BACKEND_URL}/availabilities`;
 
 // Crear disponibilidad para un producto
 export const createAvailability = async (productId, availabilityData) => {

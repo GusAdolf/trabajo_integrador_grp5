@@ -65,7 +65,7 @@ export const HeaderMobile = () => {
             <Toolbar disableGutters>
               <Box sx={{ flexGrow: 1, display: "flex" }}>
                 <a href="/">
-                  <img src="src/assets/logo.svg" alt="logo xplora+" style={{ width: "150px", height: "auto" }} />
+                  <img src="assets/logo.svg" alt="logo xplora+" style={{ width: "150px", height: "auto" }} />
                 </a>
               </Box>
 

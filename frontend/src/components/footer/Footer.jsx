@@ -30,6 +30,7 @@ export const Footer = () => {
       sx={{
         bgcolor: "#1C274C",
         color: "white",
+        mt:8,
       }}
     >
       <Grid
@@ -54,7 +55,7 @@ export const Footer = () => {
         >
           <box xs={{ with: "250px" }}>
             <img
-              src="src/assets/logowhite.svg"
+              src="/assets/logowhite.svg"
               alt="logo xplora+"
               style={{ width: "100%" }}
             />

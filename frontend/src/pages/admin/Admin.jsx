@@ -37,6 +37,8 @@ import "./styles.css";
 import { useAuth } from "../../context/AuthContext";
 import { getCategories } from "../../services/categoryService";
 
+const FRONT_URL = import.meta.env.VITE_FRONT_DOMAIN || "http://localhost:5173";
+
 const emptyDataProvider = {
   getList: () => Promise.resolve({ data: [], total: 1 }),
   getOne: async (resource, params) => {
@@ -76,47 +78,47 @@ export const MyMenu = () => {
     >
       {/* 2) Añadimos el botón de Home */}
       <Menu.Item
-        to="http://localhost:5173/"
+        to={FRONT_URL}
         primaryText="Ir a Home"
         leftIcon={<HomeIcon />} // Icono de Home
       />
 
-      <Menu.Item
+      {/*<Menu.Item
         to="/admin/products/create"
         primaryText="Crear Producto"
         leftIcon={<AddBoxRoundedIcon />}
-      />
+      />*/}
       <Menu.Item
         to="/admin/products"
-        primaryText="Lista de productos"
+        primaryText="Productos"
         leftIcon={<AutoAwesomeMotionRoundedIcon />}
       />
       <Menu.Item
         to="/admin/users"
-        primaryText="Lista de usuarios"
+        primaryText="Usuarios"
         leftIcon={<GroupIcon />}
       />
-      <Menu.Item
+      {/*<Menu.Item
         to="/admin/categories/create"
         primaryText="Agregar categoria"
         leftIcon={<CategoryIcon />}
-      />
+      />*/}
       <Menu.Item
         to="/admin/categories/list"
-        primaryText="Lista de categorías"
+        primaryText="Categorías"
         leftIcon={<FormatListNumberedIcon />}
       />
 
       <Menu.Item
         to="/admin/features/list"
-        primaryText="Lista de características"
+        primaryText="Características"
         leftIcon={<ListAltIcon />}
       />
-      <Menu.Item
+      {/*<Menu.Item
         to="/admin/features/create"
         primaryText="Crear característica"
         leftIcon={<PostAddIcon />}
-      />
+      />*/}
       <Menu.Item
         to="/"
         primaryText="Cerrar sesión"

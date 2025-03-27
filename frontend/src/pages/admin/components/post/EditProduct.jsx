@@ -63,14 +63,14 @@ export const PostEdit = () => {
           description: foundProduct.description,
           price: foundProduct.price,
           imageSet: foundProduct.imageSet.map((image) => ({
-            imageUrl: image.imageUrl,
+            imageUrl: image.imageUrl, // TODO: las imagenes no se actualizan y categoria no se muestra
           })),
-          city: {
-            id: 1,
-          },
+          city_id: 1,
           availabilitySet: [{ date: "2025-11-22" }],
-          maxCapacity: 10,
+          capacity: 10,
           address: "Soy una direccion",
+          features_ids: [1, 2],
+          category_id: foundProduct.category.id,
         });
       }
     }
@@ -113,9 +113,9 @@ export const PostEdit = () => {
 
   const handleSubmit = (values) => {
     updateProduct(productEdit)
-      .then((response) => {
+      /*.then((response) => {
         return assignCategory(id, values.Categoría);
-      })
+      })*/
       .then((responseCategory) => {
         Swal.fire({
           icon: "success",
@@ -187,6 +187,7 @@ export const PostEdit = () => {
                     />
                     <Grid item xs={12} sm={6}>
                       <SelectInput
+                        name="category_id"
                         source="Categoría"
                         label="Categoría"
                         required
@@ -195,6 +196,7 @@ export const PostEdit = () => {
                           name: category.title,
                         }))}
                         fullWidth
+                        onChange={handleInputChange}
                       />
                     </Grid>
                     <Grid item xs={12}>

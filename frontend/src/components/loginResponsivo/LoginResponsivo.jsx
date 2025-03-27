@@ -76,7 +76,7 @@ const LoginResponsivo = ({ open, handleClose, handleLogin }) => {
             >
                 <Box sx={{ height: "90px", position: "relative" }}>
                     <img
-                        src="src/assets/logo.svg"
+                        src="assets/logo.svg"
                         alt="logo xplora+"
                         style={{
                             width: "150px",

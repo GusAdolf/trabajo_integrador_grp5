@@ -27,6 +27,7 @@ export const PostCreate = () => {
   const required = (value) => (value ? undefined : "Este campo es requerido");
 
   const handleSubmit = (values) => {
+    console.log(values);
     const productBody = {
       name: values.Nombre,
       description: values.Descripción,
@@ -35,20 +36,22 @@ export const PostCreate = () => {
         imageUrl: imgUrl,
         altText: `Imagen de ${values.Nombre}`,
       })),
-      city: { id: values.Ciudad },
+      city_id: values.Ciudad,
       availabilitySet: values.Disponibilidad?.map((availability) => ({
         date: availability.date,
       })),
-      maxCapacity: values.CapacidadMaxima, // Capacidad global para todas las fechas
+      capacity: values.CapacidadMaxima, // Capacidad global para todas las fechas
       address: "Soy una dirección",
+      features_ids: [1, 2],
+      category_id: values.Categoría,
     };
 
     createProduct(productBody)
-      .then((response) => {
+      /*.then((response) => {
         if (!response) return;
         const { id } = response;
         return assignCategory(id, values.Categoría);
-      })
+      })*/
       .then(() => {
         //if (!responseCategory) return;
 
@@ -137,7 +140,7 @@ export const PostCreate = () => {
                   label="Ciudad"
                   choices={cities.map((city) => ({
                     id: city.id,
-                    name: city.name,
+                    name: city.name + ", " + city.country,
                   }))}
                   fullWidth
                   validate={required}
