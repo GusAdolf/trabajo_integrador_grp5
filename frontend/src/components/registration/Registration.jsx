@@ -161,7 +161,7 @@ export const Registration = ({ open, setOpen }) => {
                 }}
             >
               <img
-                  src="src/assets/logo.svg"
+                  src="assets/logo.svg"
                   alt="logo xplora+"
                   style={{ width: "150px", height: "auto" }}
               />

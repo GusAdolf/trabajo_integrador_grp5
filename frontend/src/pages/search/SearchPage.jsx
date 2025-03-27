@@ -119,7 +119,7 @@ export const SearchPage = () => {
 
   const filteredProducts = products
     .filter((p)=> p.city?.id === selectedCity?.id)
-    .filter((p)=> p.availabilitySet?.some((ad)=> new Date(ad.date).getTime() >= new Date(params.from).getTime() && new Date(ad.date).getTime() <= new Date(params.to).getTime() && ad.capacity >= +params.people ))
+    .filter((p)=> p.availabilitySet?.some((ad)=> new Date(ad.date).getTime() >= new Date(params.from).getTime() && new Date(ad.date).getTime() <= new Date(params.to).getTime() && ad.remainingCapacity >= +params.people ))
 
 
   return (

@@ -90,7 +90,7 @@ const Login = ({ open, handleClose, handleLogin }) => {
                 { }
                 <Box sx={{ height: "90px" }}>
                     <img
-                        src="src/assets/logo.svg"
+                        src="assets/logo.svg"
                         alt="logo xplora+"
                         style={{
                             width: "150px",

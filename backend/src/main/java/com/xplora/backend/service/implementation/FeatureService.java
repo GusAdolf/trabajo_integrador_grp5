@@ -2,11 +2,13 @@ package com.xplora.backend.service.implementation;
 
 import com.xplora.backend.entity.Feature;
 import com.xplora.backend.entity.Product;
+import com.xplora.backend.exception.ResourceNotFoundException;
 import com.xplora.backend.repository.IFeatureRepository;
 import com.xplora.backend.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,5 +99,14 @@ public class FeatureService {
     // Obtener una Feature por ID
     public Optional<Feature> findById(Long featureId) {
         return featureRepository.findById(featureId);
+    }
+
+    public List<Feature> findByIds(List<Long> ids) {
+        List<Feature> features = new ArrayList<>();
+        for (Long id: ids) {
+            features.add(featureRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("La catacteristica con id: " + id + " no existe")));
+        }
+        return features;
     }
 }

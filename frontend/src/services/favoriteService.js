@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-const API_URL = "http://localhost:8080"
+const API_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 
 export const getFavorites = async (token) => {
     try {

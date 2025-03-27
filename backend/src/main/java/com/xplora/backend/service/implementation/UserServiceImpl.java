@@ -2,22 +2,31 @@ package com.xplora.backend.service.implementation;
 
 import com.xplora.backend.configuration.JwtService;
 import com.xplora.backend.dto.request.UserRoleRequestDto;
+import com.xplora.backend.dto.response.UserResponseDto;
 import com.xplora.backend.entity.Role;
 import com.xplora.backend.entity.User;
 import com.xplora.backend.exception.BadRequestException;
 import com.xplora.backend.exception.ResourceNotFoundException;
 import com.xplora.backend.repository.IUserRepository;
 import com.xplora.backend.service.IUserService;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService {
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private IUserRepository userRepository;
     private JwtService jwtService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public UserServiceImpl(IUserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
@@ -25,24 +34,30 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponseDto> getAllUsers() {
+        logger.info("getAllUsers - Obteniendo todos los usuarios ...");
+        List<User> usersDB = userRepository.findAll();
+
+        List<UserResponseDto> userResponseDtoList = new ArrayList<>();
+        for (User user : usersDB) {
+            userResponseDtoList.add(modelMapper.map(user, UserResponseDto.class));
+        }
+
+        return userResponseDtoList;
     }
 
     @Override
-    public User changeUserRole(Long id, UserRoleRequestDto request) {
-        if (request.getRole().equals("SUPERADMIN")) {
-            throw new DataIntegrityViolationException("No puedes cambiar el rol de un usuario a SUPERADMIN");
-        }
-
+    public UserResponseDto updateUserRole(Long id, UserRoleRequestDto userRoleRequestDto) {
+        logger.info("updateUserRole - Actualizando rol: " + userRoleRequestDto + " al usuario con id: " + id);
         Role roleFound = Arrays.stream(Role.values())
-                .filter(r -> r.name().equals(request.getRole()))
+                .filter(r -> r.name().equals(userRoleRequestDto.getRole()))
                 .findFirst()
                 .orElseThrow(() -> new BadRequestException("El rol no existe"));
 
-        if (id == null) {
-            throw new BadRequestException("El id del usuario no debe ser nulo");
+        if (userRoleRequestDto.getRole().equals("SUPERADMIN")) {
+            throw new DataIntegrityViolationException("No puedes cambiar el rol de un usuario a SUPERADMIN");
         }
+
         User userFound = userRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("El usuario no existe"));
 
@@ -51,14 +66,17 @@ public class UserServiceImpl implements IUserService {
         }
 
         userFound.setRole(roleFound);
-        return userRepository.save(userFound);
+        User userDB = userRepository.save(userFound);
+        return modelMapper.map(userDB, UserResponseDto.class);
     }
 
     @Override
-    public User getUserByToken(String token) {
+    public User getAuthenticatedUser(String authHeader) {
+        logger.info("getAuthenticatedUser - Obteniendo usuario autenticado por Bearer Token: " + authHeader);
+        String token = authHeader.substring(7); // asegurarse q es bearer
         String userEmail = jwtService.extractUsername(token);
         return userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("El email del usuario no existe"));
     }
 
     @Override
