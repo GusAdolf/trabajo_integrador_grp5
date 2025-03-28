@@ -23,6 +23,7 @@ import {
     MonetizationOn as MonetizationOnIcon
 } from "@mui/icons-material";
 
+// Se agrega SweetAlert2 sin eliminar nada existente
 import Swal from "sweetalert2";
 import RedesSociales from "../../components/redesSociales/RedesSociales";
 
@@ -163,10 +164,11 @@ export const ProductDetail = () => {
 
     return (
         <Box sx={{ width: "90%", margin: "0 auto", mt: 4 }}>
+            {/* Contenedor para los botones de RedesSociales y/o cualquier otro elemento en top-right */}
             <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
                 <RedesSociales />
             </Box>
-
+            {/* Sección de imágenes con cuadrícula */}
             <Grid container spacing={2}>
                 <Grid item xs={12} md={8} sx={{ mt: 6 }}>
                     <img
@@ -221,6 +223,7 @@ export const ProductDetail = () => {
                 </Grid>
             </Grid>
 
+            {/* Sección de descripción y detalles */}
             <Typography variant="h4" fontWeight="bold" sx={{ mt: 2 }}>
                 {product.name}
             </Typography>
@@ -277,6 +280,7 @@ export const ProductDetail = () => {
                     </Box>
                 </Grid>
 
+                {/* Sección de reserva con selector de fechas y personas */}
                 <Grid item xs={12} md={4}>
                     <Box
                         sx={{
@@ -294,6 +298,7 @@ export const ProductDetail = () => {
                             Reserva tu experiencia
                         </Typography>
 
+                        {/* Botón que abre el calendario y muestra la fecha si está seleccionada */}
                         <Button
                             variant="outlined"
                             fullWidth
@@ -327,12 +332,14 @@ export const ProductDetail = () => {
                             />
                         </Popover>
 
+                        {/* Mostrar mensaje de error si la fecha no está disponible */}
                         {dateError && (
                             <Typography color="error" sx={{ mt: 1 }}>
                                 {dateError}
                             </Typography>
                         )}
 
+                        {/* Selector de personas: botones + campo para ingresar cantidad */}
                         <Box sx={{ display: "flex", alignItems: "center", mt: 3, mb: 3 }}>
                             <IconButton
                                 onClick={() => handlePeopleChange(-1)}
@@ -382,7 +389,7 @@ export const ProductDetail = () => {
                             Reservar
                         </Button>
 
-
+                        {/* Estilos personalizados para fechas disponibles y no disponibles */}
                         <style>
                             {`
                                 .available-date {
