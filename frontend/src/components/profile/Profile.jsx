@@ -15,14 +15,13 @@ export const Profile = () => {
     <div
       style={{
         maxWidth: "500px",
-        margin: "150px auto 80px",
+        margin: "50px auto 80px",
         padding: "40px",
         borderRadius: "12px",
         backgroundColor: "#fff",
         boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
         textAlign: "center",
         fontFamily: "'Arial', sans-serif",
-        height: "50%"
       }}
     >
       <div
