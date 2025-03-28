@@ -83,42 +83,42 @@ export const MyMenu = () => {
         leftIcon={<HomeIcon />} // Icono de Home
       />
 
-      <Menu.Item
+      {/*<Menu.Item
         to="/admin/products/create"
         primaryText="Crear Producto"
         leftIcon={<AddBoxRoundedIcon />}
-      />
+      />*/}
       <Menu.Item
         to="/admin/products"
-        primaryText="Lista de productos"
+        primaryText="Productos"
         leftIcon={<AutoAwesomeMotionRoundedIcon />}
       />
       <Menu.Item
         to="/admin/users"
-        primaryText="Lista de usuarios"
+        primaryText="Usuarios"
         leftIcon={<GroupIcon />}
       />
-      <Menu.Item
+      {/*<Menu.Item
         to="/admin/categories/create"
         primaryText="Agregar categoria"
         leftIcon={<CategoryIcon />}
-      />
+      />*/}
       <Menu.Item
         to="/admin/categories/list"
-        primaryText="Lista de categorías"
+        primaryText="Categorías"
         leftIcon={<FormatListNumberedIcon />}
       />
 
       <Menu.Item
         to="/admin/features/list"
-        primaryText="Lista de características"
+        primaryText="Características"
         leftIcon={<ListAltIcon />}
       />
-      <Menu.Item
+      {/*<Menu.Item
         to="/admin/features/create"
         primaryText="Crear característica"
         leftIcon={<PostAddIcon />}
-      />
+      />*/}
       <Menu.Item
         to="/"
         primaryText="Cerrar sesión"

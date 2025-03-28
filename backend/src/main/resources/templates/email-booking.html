@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mensaje de Xplora+ - Confirmación de reserva</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; max-width: 700px; margin: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+            <tr>
+                <td style="background-color: #00CED1; padding: 10px 10px; text-align: center;">
+                    <img src="cid:attachment2.png" alt="Logo de Xplora+" width="30%">
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 25px;">
+                    <p style="color: #555; font-size: 16px;">
+                        <strong>Hola <span th:text="${user_firstname}"></span>  <span th:text="${user_lastname}"></span>, ¡Tu reserva ha sido confirmada!</strong>
+                    </p>
+                    <p style="color: #555; font-size: 16px;">
+                        Aquí están los detalles de tu próxima aventura:
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 25px; text-align: center;">
+                    <h1 style="color: #333;"><span th:text="${product_name}"></span></h1>
+                    <img th:src="${product_image}" alt="Imagen del producto" width="100%">
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 25px;">
+                    <p style="color: #555; font-size: 16px;">
+                        📍 <strong>DESTINO:</strong> <span th:text="${product_address}"></span> - <span th:text="${product_city}"></span>, <span th:text="${product_country}"></span>
+                    </p>
+
+                    <p style="color: #555; font-size: 16px;">
+                        🗓️ <strong>FECHA:</strong> <span th:text="${availability_date}"></span>
+                    </p>
+
+                    <p style="color: #555; font-size: 16px;">
+                        ‍👥 <strong>CANTIDAD DE PERSONAS:</strong> <span th:text="${product_quantity}"></span>
+                    </p>
+
+                    <p style="color: #555; font-size: 16px;">
+                        💸 <strong>TOTAL PAGADO:</strong> $<span th:text="${product_total}"></span>
+                    </p>
+
+                    <p style="color: #555; font-size: 16px;">
+                        ◼️ <strong>CÓDIGO DE RESERVACIÓN:</strong> ABSLLOX
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 25px; text-align: center;">
+                    <p style="color: #555; font-size: 18px;">
+                        <strong>¡Nos vemos pronto para vivir una experiencia inolvidable!</strong>
+                    </p>
+                    <a href="#" target="_blank" style="display: inline-block; background-color: #FD346E; color: #ffffff; text-decoration: none; padding: 12px 24px; font-size: 16px; border-radius: 5px; margin-top: 10px;">
+                        Cambia tu reservación
+                    </a>
+                    <p style="color: #555; font-size: 16px;">
+                        Reserva realizada el <span th:text="${booking_created_date}"></span>, a las <span th:text="${booking_created_time}"></span>
+                    </p>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="background-color: #000000; padding: 15px; text-align: center; font-size: 14px; color: white;">
+                    <p><strong>Gracias por confiar en Xplora+</strong></p>
+                    <p>Para consultas, escribenos a <a href="mailto:soporte@xplora.com" style="color: #00CED1; text-decoration: none;">soporte@xplora.com</a></p>
+                    <p>O comunícate al <a href="tel:+51987654321" style="color: #00CED1; text-decoration: none;">+51 987654321</a></p>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="background-color: rgba(0,0,0,0.8); padding: 0px; text-align: center; font-size: 14px; color: white;">
+                    <p>&copy; 2025 Xplora+. Todos los derechos reservados.</p>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

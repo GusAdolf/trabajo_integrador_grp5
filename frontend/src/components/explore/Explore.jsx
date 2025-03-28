@@ -242,7 +242,7 @@ export const Explore = () => {
                                 variant="contained"
                                 fullWidth
                                 sx={{ mt: 2, backgroundColor: "#00CED1" }}
-                                onClick={() => navigate(`/product/${product.id}`)}
+                                onClick={() => navigate(`/product/${product.id}`)} /// TODO: no olvidar cambiar esto
                               >
                                 Reservar
                               </Button>

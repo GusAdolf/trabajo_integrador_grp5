@@ -64,7 +64,7 @@ const AvailabilityField = ({ source }) => {
               whiteSpace: "nowrap",
             }}
           >
-            {dateFormatted} ({availability.capacity})
+            {dateFormatted} ({availability.remainingCapacity})
           </Box>
         );
       })}

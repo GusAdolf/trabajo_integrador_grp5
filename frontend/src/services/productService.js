@@ -1,25 +1,13 @@
 import Swal from "sweetalert2";
 
-// Usa la variable de entorno VITE_BACKEND_URL (debe comenzar con VITE_ en Vite)
-// Si no se define, se usa "http://localhost:8080" por defecto.
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
-
-// Define las URLs de tus endpoints a partir de BASE_URL
-const URL_PRODUCTS = `${BASE_URL}/products`;
-const URL_AUTH_REGISTER = `${BASE_URL}/api/auth/register`;
-const URL_AUTH_LOGIN = `${BASE_URL}/api/auth/login`;
-const URL_USER_PROFILE = `${BASE_URL}/users/profile`;
-const URL_USERS = `${BASE_URL}/users`;
-const URL_UPDATE_USER_ROLE = (id) => `${BASE_URL}/users/${id}/role`;
-const URL_ASSIGN_CATEGORY = (id, categoryId) =>
-  `${BASE_URL}/categories/${id}/assign/${categoryId}`;
+const URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 
 // PRODUCTS
 
 // Get all products
 export const getProducts = async () => {
   try {
-    const response = await fetch(URL_PRODUCTS);
+    const response = await fetch(`${URL}/products`);
     if (!response.ok) {
       throw new Error("Error al obtener los productos");
     }
@@ -33,7 +21,7 @@ export const getProducts = async () => {
 export const createProduct = async (product) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(URL_PRODUCTS, {
+    const response = await fetch(`${URL}/products`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +48,7 @@ export const createProduct = async (product) => {
 export const deleteProduct = async (id) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(`${URL_PRODUCTS}/${id}`, {
+    const response = await fetch(`${URL}/products/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: bearerToken,
@@ -76,13 +64,13 @@ export const deleteProduct = async (id) => {
 export const updateProduct = async (product) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(URL_PRODUCTS, {
+    const response = await fetch(`${URL}/products/${product.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: bearerToken,
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(product ),
     });
     if (response.status === 400) {
       const responseText = await response.text();
@@ -104,7 +92,7 @@ export const updateProduct = async (product) => {
 // Create user
 export const registerUser = async (user) => {
   try {
-    const response = await fetch(URL_AUTH_REGISTER, {
+    const response = await fetch(`${URL}/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +117,7 @@ export const registerUser = async (user) => {
 // Login user
 export const loginUser = async (user) => {
   try {
-    const response = await fetch(URL_AUTH_LOGIN, {
+    const response = await fetch(`${URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -155,7 +143,7 @@ export const loginUser = async (user) => {
 export const getProfile = async (token) => {
   try {
     const bearerToken = `Bearer ${token}`;
-    const response = await fetch(URL_USER_PROFILE, {
+    const response = await fetch(`${URL}/users/profile`, {
       headers: {
         Authorization: bearerToken,
       },
@@ -179,7 +167,7 @@ export const getProfile = async (token) => {
 export const getUsers = async () => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(URL_USERS, {
+    const response = await fetch(`${URL}/users`, {
       headers: {
         Authorization: bearerToken,
       },
@@ -194,7 +182,7 @@ export const getUsers = async () => {
 export const updateUserRole = async (id, role) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(URL_UPDATE_USER_ROLE(id), {
+    const response = await fetch(`${URL}/users/${id}/role`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -209,6 +197,7 @@ export const updateUserRole = async (id, role) => {
         title: "Error",
         text: responseText,
       });
+
       return;
     }
   } catch (error) {
@@ -220,13 +209,16 @@ export const updateUserRole = async (id, role) => {
 export const assignCategory = async (id, categoryId) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(URL_ASSIGN_CATEGORY(id, categoryId), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: bearerToken,
-      },
-    });
+    const response = await fetch(
+      `${URL}/categories/${id}/assign/${categoryId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: bearerToken,
+        },
+      }
+    );
     if (response.status === 400) {
       const responseText = await response.text();
       Swal.fire({
@@ -234,6 +226,7 @@ export const assignCategory = async (id, categoryId) => {
         title: "Error",
         text: responseText,
       });
+
       return;
     }
   } catch (error) {

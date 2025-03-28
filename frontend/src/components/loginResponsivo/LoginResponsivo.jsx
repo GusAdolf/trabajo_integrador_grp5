@@ -1,3 +1,4 @@
+// src/components/LoginResponsivo.jsx
 import { useState } from "react";
 import {
     Modal,
@@ -12,48 +13,36 @@ import CloseIcon from "@mui/icons-material/Close";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-// eslint-disable-next-line react/prop-types
-const Login = ({ open, handleClose, handleLogin }) => {
+const LoginResponsivo = ({ open, handleClose, handleLogin }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-
-
     const [showPassword, setShowPassword] = useState(false);
 
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    // Se puede activar la validación completa de contraseña si se desea:
+    // const passwordRegex = /^(?=.[a-z])(?=.[A-Z])(?=.*\d).{8,}$/;
 
     const validateFields = (emailValue, passwordValue) => {
         const messages = [];
-
         if (!emailValue.trim()) {
             messages.push("El email es obligatorio.");
         } else if (!emailRegex.test(emailValue)) {
             messages.push("Ingresa un email válido.");
         }
-
         if (!passwordValue) {
             messages.push("La contraseña es obligatoria.");
-        }/*  else if (!passwordRegex.test(passwordValue)) {
-            messages.push(
-                "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número."
-            );
-        } */
-
+        }
         return messages;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const validationErrors = validateFields(email, password);
-
         if (validationErrors.length > 0) {
             setError(validationErrors.join(" "));
             return;
         }
-
         handleLogin(email, password);
         setError("");
         setEmail("");
@@ -61,12 +50,10 @@ const Login = ({ open, handleClose, handleLogin }) => {
         handleClose();
     };
 
-
     const handleInputChange = (setter) => (e) => {
         setter(e.target.value);
         setError("");
     };
-
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -80,15 +67,14 @@ const Login = ({ open, handleClose, handleLogin }) => {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    width: 400,
+                    width: { xs: "90%", sm: 400 },
                     bgcolor: "white",
                     boxShadow: 24,
                     p: 4,
                     borderRadius: 2,
                 }}
             >
-                { }
-                <Box sx={{ height: "90px" }}>
+                <Box sx={{ height: "90px", position: "relative" }}>
                     <img
                         src="assets/logo.svg"
                         alt="logo xplora+"
@@ -114,12 +100,10 @@ const Login = ({ open, handleClose, handleLogin }) => {
                     </IconButton>
                 </Box>
 
-                { }
                 <Typography variant="h6" textAlign="center" fontWeight="bold" gutterBottom>
                     Inicia sesión para acceder a lo mejor de Xplora+
                 </Typography>
 
-                { }
                 <form onSubmit={handleSubmit}>
                     <TextField
                         fullWidth
@@ -177,4 +161,4 @@ const Login = ({ open, handleClose, handleLogin }) => {
     );
 };
 
-export default Login;
+export default LoginResponsivo;

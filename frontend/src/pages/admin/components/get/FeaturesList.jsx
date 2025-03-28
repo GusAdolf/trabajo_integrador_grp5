@@ -57,6 +57,7 @@ export const FeaturesList = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          paddingTop: "150px",
         }}
         title="Lista de características"
         actions={<CustomListActions />}

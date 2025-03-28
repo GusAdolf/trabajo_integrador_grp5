@@ -125,6 +125,7 @@ export const CategoriesList = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          paddingTop: "140px",
         }}
         title="Lista de categorías"
         actions={<CustomListActions />}

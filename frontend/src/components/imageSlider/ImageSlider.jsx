@@ -4,9 +4,12 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
 const images = [
-  "https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s",
-  "https://fastly.picsum.photos/id/15/2500/1667.jpg?hmac=Lv03D1Y3AsZ9L2tMMC1KQZekBVaQSDc1waqJ54IHvo4",
-  "https://fastly.picsum.photos/id/27/3264/1836.jpg?hmac=p3BVIgKKQpHhfGRRCbsi2MCAzw8mWBCayBsKxxtWO8g"
+  "https://cdn.sanity.io/images/esqfj3od/production/7a7aa6676241761c308dde292b09825be25e6328-2132x1200.webp",
+  "https://www.peru.travel/Contenido/Noticia/Imagen/es/1973/1.0/Principal/gastronomia-desktop.jpg",
+  "https://www.discoverhongkong.com/content/dam/dhk/intl/explore/attractions/the-ultimate-guide-to-hong-kong-disneyland/momentous-nighttime-spectacular-at-hong-kong-disneyland-1920x1080.jpg",
+  "https://checkyeti.imgix.net/images/prod/products/14209/off-piste-skiing-tour-mont-blanc-discovery-esf-chamonix-hero.jpg",
+  "https://as2.ftcdn.net/v2/jpg/08/12/17/47/1000_F_812174715_3ivZyMrO2GDV6OCPyZc0wqMTKEP4mDG5.jpg",
+  "https://www.discoverhongkong.com/content/dam/dhk/intl/explore/attractions/the-ultimate-guide-to-hong-kong-disneyland/celebrate-sparkling-spectaculars-1920x1080.jpg",
 ];
 
 export const ImageSlider = () => {
@@ -65,7 +68,7 @@ export const ImageSlider = () => {
               alt={`Slide ${index + 1}`}
               style={{ 
                 width: "100%", 
-                height: "450px",
+                height: "520px",
                 borderRadius: 10, 
                 objectFit: "cover" 
               }}

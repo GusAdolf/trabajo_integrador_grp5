@@ -1,7 +1,8 @@
 import Swal from "sweetalert2";
 
+
 // Usa la variable de entorno VITE_BACKEND_URL y, si no existe, usa localhost por defecto.
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 
 // create category
 export const createCategories = async (category) => {
@@ -34,14 +35,10 @@ export const createCategories = async (category) => {
 // get categories
 export const getCategories = async () => {
   try {
-    //const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(`${BASE_URL}/categories`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        //Authorization: bearerToken,
-      },
-    });
+    const response = await fetch(`${BASE_URL}/categories`);
+    if (!response.ok) {
+      throw new Error("Error al obtener las categorias");
+    }
     return await response.json();
   } catch (error) {
     return null;
@@ -67,14 +64,15 @@ export const deleteCategory = async (id) => {
       });
       return true;
     } else {
-      let errorMessage = "Ocurrió un error al intentar eliminar la categoría.";
-      if (response.status === 404) {
+      const responseText = await response.text();
+      let errorMessage = JSON.parse(responseText).message //"Ocurrió un error al intentar eliminar la categoría.";
+      /*if (response.status === 404) {
         errorMessage = "La categoría no fue encontrada.";
       } else if (response.status === 401 || response.status === 403) {
         errorMessage = "Está categoría no se puede eliminar";
       } else if (response.status === 500) {
         errorMessage = "Error interno del servidor.";
-      }
+      }*/
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -90,5 +88,5 @@ export const deleteCategory = async (id) => {
     });
 
     return null;
-    }
-  };
+  }
+};

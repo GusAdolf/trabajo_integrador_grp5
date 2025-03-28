@@ -1,9 +1,13 @@
 package com.xplora.backend.controller;
 
-import com.xplora.backend.entity.Booking;
+import com.xplora.backend.dto.request.BookingRequestDto;
+import com.xplora.backend.dto.response.BookingResponseDto;
+import com.xplora.backend.entity.User;
 import com.xplora.backend.service.IBookingService;
+import com.xplora.backend.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,29 +16,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("api/v1/bookings")
 public class BookingController {
     private IBookingService bookingService;
+    private IUserService userService;
 
-    public BookingController(IBookingService bookingService) {
+    public BookingController(IBookingService bookingService, IUserService userService) {
         this.bookingService = bookingService;
+        this.userService = userService;
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping
-    public ResponseEntity<Booking> saveBooking(@RequestHeader("Authorization") String authHeader,
-                                                  @RequestBody @Valid Booking booking) {
-        String userToken = authHeader.substring(7);
+    public ResponseEntity<BookingResponseDto> saveBookingOfAuthenticatedUser(@RequestHeader("Authorization") String authHeader,
+                                                                             @RequestBody @Valid BookingRequestDto bookingRequestDto) throws MessagingException {
+        User user = userService.getAuthenticatedUser(authHeader);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(bookingService.saveBooking(booking, userToken));
+                .body(bookingService.saveBooking(bookingRequestDto, user));
     }
 
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/user")
-    public ResponseEntity<List<Booking>> getBookingsByUserToken(@RequestHeader("Authorization") String authHeader) {
-        String userToken = authHeader.substring(7);
+    public ResponseEntity<List<BookingResponseDto>> getBookingsByAuthenticatedUser(@RequestHeader("Authorization") String authHeader) {
+        User user = userService.getAuthenticatedUser(authHeader);
         return ResponseEntity
-                .ok(bookingService.getBookingsByUserToken(userToken));
+                .ok(bookingService.getBookingsByUserId(user.getId()));
     }
 }

@@ -23,12 +23,10 @@ import {
     MonetizationOn as MonetizationOnIcon
 } from "@mui/icons-material";
 
-// Se agrega SweetAlert2 sin eliminar nada existente
 import Swal from "sweetalert2";
+import RedesSociales from "../../components/redesSociales/RedesSociales";
 
-const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
-
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 const PLACEHOLDER_IMAGE = "https://picsum.photos/600/400";
 
 export const ProductDetail = () => {
@@ -45,7 +43,7 @@ export const ProductDetail = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`${BASE_URL}/products/${id}`);
+                const response = await fetch(`${API_BASE_URL}/products/${id}`);
                 if (!response.ok) throw new Error("No se pudo cargar el producto.");
 
                 const data = await response.json();
@@ -138,9 +136,9 @@ export const ProductDetail = () => {
         }
     };
 
-    // >>> Agregamos el manejador de reserva <<<
-    const handleReservation = () => {
-        // Si no hay fecha seleccionada o la fecha es "no disponible"
+
+    const handleGoToReview = () => {
+        // Validar fecha seleccionada
         if (!selectedDate || dateError) {
             Swal.fire({
                 icon: "error",
@@ -152,18 +150,23 @@ export const ProductDetail = () => {
             return;
         }
 
-        // Si todo está correcto, simulamos la reserva exitosa
-        Swal.fire({
-            icon: "success",
-            title: "¡Reserva Exitosa!",
-            text: "Tu reserva se ha realizado con éxito.",
-            confirmButtonColor: "#FD346E",
+        // Navegar hacia la nueva página de revisión de reserva
+        navigate("/booking-review", {
+            state: {
+                product,
+                selectedDate,
+                selectedPeople,
+                totalPrice
+            }
         });
     };
 
     return (
         <Box sx={{ width: "90%", margin: "0 auto", mt: 4 }}>
-            {/* Sección de imágenes con cuadrícula */}
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+                <RedesSociales />
+            </Box>
+
             <Grid container spacing={2}>
                 <Grid item xs={12} md={8} sx={{ mt: 6 }}>
                     <img
@@ -218,7 +221,6 @@ export const ProductDetail = () => {
                 </Grid>
             </Grid>
 
-            {/* Sección de descripción y detalles */}
             <Typography variant="h4" fontWeight="bold" sx={{ mt: 2 }}>
                 {product.name}
             </Typography>
@@ -275,7 +277,6 @@ export const ProductDetail = () => {
                     </Box>
                 </Grid>
 
-                {/* Sección de reserva con selector de fechas y personas */}
                 <Grid item xs={12} md={4}>
                     <Box
                         sx={{
@@ -293,7 +294,6 @@ export const ProductDetail = () => {
                             Reserva tu experiencia
                         </Typography>
 
-                        {/* Botón que abre el calendario y muestra la fecha si está seleccionada */}
                         <Button
                             variant="outlined"
                             fullWidth
@@ -327,14 +327,12 @@ export const ProductDetail = () => {
                             />
                         </Popover>
 
-                        {/* Mostrar mensaje de error si la fecha no está disponible */}
                         {dateError && (
                             <Typography color="error" sx={{ mt: 1 }}>
                                 {dateError}
                             </Typography>
                         )}
 
-                        {/* Selector de personas: botones + campo para ingresar cantidad */}
                         <Box sx={{ display: "flex", alignItems: "center", mt: 3, mb: 3 }}>
                             <IconButton
                                 onClick={() => handlePeopleChange(-1)}
@@ -379,13 +377,12 @@ export const ProductDetail = () => {
                                 fontSize: "1.1rem",
                                 backgroundColor: "#FD346E"
                             }}
-                            // Llamamos a la nueva función
-                            onClick={() => handleReservation()}
+                            onClick={handleGoToReview}
                         >
                             Reservar
                         </Button>
 
-                        {/* Estilos personalizados para fechas disponibles y no disponibles */}
+
                         <style>
                             {`
                                 .available-date {
