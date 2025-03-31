@@ -1,3 +1,16 @@
 .registration-title {
-    width: 80%;
+    width: 100% !important;
 }
+
+.registration-mobile .textfield {
+    border-radius: 5px !important;
+}
+
+.registration-mobile .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input, .registration-mobile .css-1dune0f-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 5px 10px;
+}
+
+.registration-mobile .css-1ll44ll-MuiOutlinedInput-notchedOutline {
+    border-color: transparent ;
+}
+

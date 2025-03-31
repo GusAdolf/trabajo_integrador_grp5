@@ -28,10 +28,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 0,
-  width: { xs: "90%", sm: "600px" },
-  minHeight: "auto",
+  width: { xs: "95%", sm: "600px" },
   borderRadius: "10px",
 };
 
@@ -59,6 +56,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        className="registration-mobile"
       >
         <Box sx={style}>
           <Box
@@ -66,7 +64,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              m: 2,
+              m: 1,
             }}
           >
             <img
@@ -85,10 +83,10 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
               backgroundColor: "#00CED1",
               borderRadius: "80px 0 10px 10px",
               height: "auto",
-              p: 4,
+              padding: "20px 40px",
               display: "flex",
               flexDirection: "column",
-              gap: 2,
+              gap: 1,
               alignItems: "center",
             }}
           >
@@ -100,7 +98,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
                 sx={{
                   color: "white",
                   fontWeight: "bold",
-                  fontSize: { xs: "32px", sm: "40px" },
+                  fontSize: { xs: "25px" },
                 }}
               >
                 Hola, crea tu cuenta de Xplora+
@@ -108,7 +106,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
             </div>
             <Typography
               id="modal-modal-description"
-              sx={{ mt: 2, color: "white" }}
+              sx={{ mt: 1, color: "white", fontSize: "14px" }}
             >
               Regístrate para acceder a las mejores experiencias
             </Typography>
@@ -116,11 +114,12 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 2,
-                width: "95%",
+                gap: 1,
+                width: "100%",
               }}
             >
               <TextField
+                className="textfield"
                 sx={{ backgroundColor: "white", width: "100%" }}
                 placeholder="Nombre"
                 onChange={handleInputChange}
@@ -133,7 +132,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
                 <Typography
                   sx={{
                     color: "red",
-                    fontSize: "16px",
+                    fontSize: "12px",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}
@@ -142,6 +141,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
                 </Typography>
               )}
               <TextField
+                className="textfield"
                 sx={{ backgroundColor: "white", width: "100%" }}
                 placeholder="Apellido"
                 onChange={handleInputChange}
@@ -154,7 +154,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
                 <Typography
                   sx={{
                     color: "red",
-                    fontSize: "16px",
+                    fontSize: "12px",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}
@@ -163,6 +163,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
                 </Typography>
               )}
               <TextField
+                className="textfield"
                 sx={{ backgroundColor: "white", width: "100%" }}
                 placeholder="Email"
                 onChange={handleInputChange}
@@ -175,7 +176,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
                 <Typography
                   sx={{
                     color: "red",
-                    fontSize: "16px",
+                    fontSize: "12px",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}
@@ -184,6 +185,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
                 </Typography>
               )}
               <TextField
+                className="textfield"
                 sx={{ backgroundColor: "white", width: "100%" }}
                 placeholder="Contraseña"
                 onChange={handleInputChange}
@@ -228,7 +230,11 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
                   }}
                 />
               }
-              label="Estoy de acuerdo con la privacidad y la política"
+              label={
+                <Typography sx={{ fontSize: "12px", color: "white" }}>
+                  Estoy de acuerdo con la privacidad y la política
+                </Typography>
+              }
               sx={{ color: "white" }}
             />
             {errors.checkbox && (
@@ -241,18 +247,18 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
               sx={{
                 backgroundColor: "#1C274C",
                 borderRadius: "10px",
-                width: "315px",
-                height: "62px",
               }}
               onClick={handleSubmit}
             >
               Regístrate
             </Button>
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <Typography sx={{ mt: 2, color: "white" }}>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Typography sx={{ mt: 1, color: "white", fontSize: "12px" }}>
                 ¿Ya tienes una cuenta?
               </Typography>
-              <Typography sx={{ mt: 2 }}>Inicia Sesión</Typography>
+              <Typography sx={{ mt: 1, fontSize: "12px" }}>
+                Inicia Sesión
+              </Typography>
             </Box>
           </Box>
         </Box>
