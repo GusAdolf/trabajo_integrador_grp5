@@ -18,6 +18,7 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import LoginIcon from "@mui/icons-material/Login";
 import LoginResponsivo from "../loginResponsivo/LoginResponsivo.jsx"; // Modal de login responsivo
 import RegistrationResponsivo from "../registrationResponsivo/RegistrationResponsivo"; // Modal de registro responsivo
+import LogoutIcon from "@mui/icons-material/Logout";
 import "./styles.css";
 import { AuthContext } from "../../context/AuthContext.jsx";
 
@@ -29,6 +30,7 @@ const pages = [
   { name: "Recomendaciones", id: "recomendaciones", icon: GradeIcon },
   { name: "Inicio de sesión", id: "inicio", icon: LoginIcon },
   { name: "Registro", id: "registro", icon: AppRegistrationIcon },
+  { name: "Cerrar sesión", id: "logout", icon: LogoutIcon },
 ];
 
 export const HeaderMobile = () => {
@@ -37,7 +39,7 @@ export const HeaderMobile = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegistration, setOpenRegistration] = useState(false);
-    const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -116,30 +118,34 @@ export const HeaderMobile = () => {
                 >
                   <CloseIcon sx={{ color: "white" }} />
                 </div>
-                {pages.map(({ name, id, icon: Icon }) => (
-                  <MenuItem
-                    key={id}
-                    onClick={() => {
-                      handleCloseNavMenu();
-                      if (id === "inicio") {
-                        setOpenModal(true);
-                      } else if (id === "registro") {
-                        setOpenRegistration(true);
-                      }
-                    }}
-                    sx={{ backgroundColor: "#FD346E" }}
-                  >
-                    <div
-                      style={{ display: "flex", gap: "10px", width: "100%" }}
+                {pages
+                  .filter(({ id }) => id !== "logout" || user) // Filtra logout si no hay user
+                  .map(({ name, id, icon: Icon }) => (
+                    <MenuItem
+                      key={id}
+                      onClick={() => {
+                        handleCloseNavMenu();
+                        if (id === "inicio") {
+                          setOpenModal(true);
+                        } else if (id === "registro") {
+                          setOpenRegistration(true);
+                        } else if (id === "logout" && user) {
+                          logout();
+                        }
+                      }}
+                      sx={{ backgroundColor: "#FD346E" }}
                     >
-                      <Icon sx={{ color: "white" }} />
-                      <Typography textAlign="center" sx={{ color: "white" }}>
-                        {name}
-                      </Typography>
-                    </div>
-                    <hr style={{ display: "flex", gap: "10px" }} />
-                  </MenuItem>
-                ))}
+                      <div
+                        style={{ display: "flex", gap: "10px", width: "100%" }}
+                      >
+                        <Icon sx={{ color: "white" }} />
+                        <Typography textAlign="center" sx={{ color: "white" }}>
+                          {name}
+                        </Typography>
+                      </div>
+                      <hr style={{ display: "flex", gap: "10px" }} />
+                    </MenuItem>
+                  ))}
               </Menu>
             </Box>
           </Toolbar>
