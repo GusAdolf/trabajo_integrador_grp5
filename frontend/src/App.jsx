@@ -15,6 +15,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { Footer } from "./components/footer/Footer";
 import { SearchPage } from "./pages/search/SearchPage";
 import Favorites from "./pages/favorite/favorites";
+import Booking from "./pages/booking/booking";
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/booking" element={<Booking />} />
 
         {/*<Route path="*" element={<NotFoundPage />} />*/}
       </Routes>
