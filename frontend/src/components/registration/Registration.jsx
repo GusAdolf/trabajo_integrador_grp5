@@ -126,7 +126,7 @@ export const Registration = ({ open, setOpen }) => {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "No se pudo crear el usuario.",
+        text:error.message,
       });
     }
   };
