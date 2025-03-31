@@ -12,52 +12,20 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import useLogin from "../../hooks/useLogin";
 
-const LoginResponsivo = ({ open, handleClose, handleLogin }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // Se puede activar la validación completa de contraseña si se desea:
-    // const passwordRegex = /^(?=.[a-z])(?=.[A-Z])(?=.*\d).{8,}$/;
-
-    const validateFields = (emailValue, passwordValue) => {
-        const messages = [];
-        if (!emailValue.trim()) {
-            messages.push("El email es obligatorio.");
-        } else if (!emailRegex.test(emailValue)) {
-            messages.push("Ingresa un email válido.");
-        }
-        if (!passwordValue) {
-            messages.push("La contraseña es obligatoria.");
-        }
-        return messages;
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const validationErrors = validateFields(email, password);
-        if (validationErrors.length > 0) {
-            setError(validationErrors.join(" "));
-            return;
-        }
-        handleLogin(email, password);
-        setError("");
-        setEmail("");
-        setPassword("");
-        handleClose();
-    };
-
-    const handleInputChange = (setter) => (e) => {
-        setter(e.target.value);
-        setError("");
-    };
-
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+const LoginResponsivo = ({ open, handleClose }) => {
+    const {
+        handleSubmit,
+        email,
+        handleInputChange,
+        setEmail,
+        password,
+        setPassword,
+        showPassword,
+        togglePasswordVisibility,
+        error,
+      } = useLogin();
 
     return (
         <Modal open={open} onClose={handleClose}>

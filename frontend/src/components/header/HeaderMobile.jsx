@@ -150,7 +150,6 @@ export const HeaderMobile = () => {
       <LoginResponsivo
         open={openModal}
         handleClose={() => setOpenModal(false)}
-        handleLogin={login}
       />
 
       {/* Modal responsivo de registro */}
