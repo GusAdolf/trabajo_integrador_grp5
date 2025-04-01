@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
       token = response.token;
       localStorage.setItem("token", token);
       await fetchUserProfile(token); // Obtener perfil después de loguearse
-      window.location.href = "/profile";
+      window.location.href = "/";
     }
   };
 

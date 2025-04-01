@@ -1,18 +1,24 @@
 import { 
-  Create, 
+  Edit, 
   SimpleForm, 
   TextInput, 
-  required,
+  required, 
+  useRecordContext, 
 } from 'react-admin';
 import { useState } from "react";
 
 const ImageFieldWithPreview = ({ source, label }) => {
-  const [imageUrl, setImageUrl] = useState('');
+  const record = useRecordContext();
+  const [imageUrl, setImageUrl] = useState(record[source]);
   console.log("ImageFieldWithPreview")
 
   const handleImageUrlChange = (event) => {
     setImageUrl(event.target.value);
   };
+  
+  if (!record) {
+    return null;
+  }
 
   return (
     <>
@@ -37,11 +43,13 @@ const ImageFieldWithPreview = ({ source, label }) => {
   );
 };
 
-export const FeatureCreate = () => (
-  <Create title="Añadir característica" >
+export const CategoryEdit = () => (
+  <Edit title="Editar categoría" mutationMode='pessimistic'>
     <SimpleForm>
-      <TextInput source="name" label="Nombre" />
-      <ImageFieldWithPreview source="iconUrl" label="URL de ícono" />
+      <TextInput source="id" disabled />
+      <TextInput source="title" label="Título" validate={required()} />
+      <TextInput source="description" label="Descripción" validate={required()} />
+      <ImageFieldWithPreview source="imageUrl" label="URL de imagen" />
     </SimpleForm>
-  </Create>
+  </Edit>
 );

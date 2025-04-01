@@ -1,8 +1,8 @@
 import { 
-  Create, 
+  Create,
   SimpleForm, 
   TextInput, 
-  required,
+  required, 
 } from 'react-admin';
 import { useState } from "react";
 
@@ -37,11 +37,12 @@ const ImageFieldWithPreview = ({ source, label }) => {
   );
 };
 
-export const FeatureCreate = () => (
-  <Create title="Añadir característica" >
+export const CategoryCreate = () => (
+  <Create title="Añadir categoría" >
     <SimpleForm>
-      <TextInput source="name" label="Nombre" />
-      <ImageFieldWithPreview source="iconUrl" label="URL de ícono" />
+      <TextInput source="title" label="Título" validate={required()} />
+      <TextInput source="description" label="Descripción" validate={required()} />
+      <ImageFieldWithPreview source="imageUrl" label="URL de imagen" />
     </SimpleForm>
   </Create>
 );

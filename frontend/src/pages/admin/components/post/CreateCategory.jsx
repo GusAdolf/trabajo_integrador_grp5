@@ -3,7 +3,7 @@ import { TextField, Button, Container, Grid } from "@mui/material";
 import Swal from "sweetalert2";
 import './styles.css';
 
-import { createCategories } from "../../../../services/categoryService";
+import { createCategory } from "../../../../services/categoryService";
 
 const namespace = "categories";
 
@@ -25,7 +25,7 @@ export const CreateCategory = () => {
     event.preventDefault();
 
     try {
-      const response = await createCategories(category);
+      const response = await createCategory(category);
       if (!response) {
         return;
       }
