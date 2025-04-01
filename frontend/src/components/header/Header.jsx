@@ -20,7 +20,7 @@ const pages = [
 ];
 
 export const Header = () => {
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [openModal, setOpenModal] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -155,7 +155,6 @@ export const Header = () => {
               <Login
                 open={openModal}
                 handleClose={() => setOpenModal(false)}
-                handleLogin={login}
               />
             </Box>
           </Toolbar>
