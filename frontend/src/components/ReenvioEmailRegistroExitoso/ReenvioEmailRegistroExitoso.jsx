@@ -5,6 +5,8 @@ import {Modal, Box, Typography, Button, IconButton} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
+import { resendRegistrationEmail } from "../../services/resendRegistrationEmail";
+import Swal from "sweetalert2";
 
 const modalStyle = {
     position: "absolute",
@@ -25,12 +27,27 @@ export const ReenvioEmailRegistroExitoso = ({ open, onClose }) => {
     const navigate = useNavigate();
 
 
-    const handleResend = () => {
-        // Aquí se debería llamar a un servicio API para reenviar el correo
-        // Ejemplo:
-        // await resendRegistrationEmail();
-        // Por el momento, queda comentado.
-        onClose();
+    const handleResend = async() => {
+        try {
+            await resendRegistrationEmail();
+            Swal.fire({
+                icon: "success",
+                title: "Correo reenviado",
+                text: "El correo de registro exitoso ha sido reenviado.",
+            });
+
+            onClose();
+        }catch (error) {
+           
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.message,
+            });
+
+        }
+        
+        
         navigate("/");
     };
 
