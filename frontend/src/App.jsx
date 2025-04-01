@@ -16,6 +16,10 @@ import { Footer } from "./components/footer/Footer";
 import { SearchPage } from "./pages/search/SearchPage";
 import Favorites from "./pages/favorite/favorites";
 import BookingReview from "./pages/bookingReview/BookingReview";
+import Booking from "./pages/booking/booking";
+
+// Importacion el botón de WhatsApp
+import WhatsAppButton from "./components/WhatsAppButton";
 
 function App() {
   const location = useLocation();
@@ -43,8 +47,12 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/favorites" element={<Favorites />} />
+        <Route path="/booking" element={<Booking />} />
         <Route path="/booking-review" element={<BookingReview />} />
       </Routes>
+
+      {/*Botón flotante de WhatsApp */}
+      {!isRestrictedPage && !isAdminPage && <WhatsAppButton />}
 
       {!isRestrictedPage && !isAdminPage && <Footer />}
     </AuthProvider>

@@ -154,7 +154,6 @@ export const updateProduct = async (product, id) => {
 
 // Create user
 export const registerUser = async (user) => {
-  try {
     const response = await fetch(`${URL}/auth/register`, {
       method: "POST",
       headers: {
@@ -162,19 +161,15 @@ export const registerUser = async (user) => {
       },
       body: JSON.stringify(user),
     });
-    if (response.status === 400) {
-      const responseText = await response.text();
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: responseText,
-      });
-      return;
+
+    if(response.ok == false){
+      if(response.status === 409){
+        throw new Error("El usuario ya existe");
+      }
+      throw new Error("Error al registrar el usuario");
     }
+    
     return await response.json();
-  } catch (error) {
-    console.error(error);
-  }
 };
 
 // Login user

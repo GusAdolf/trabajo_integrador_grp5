@@ -15,6 +15,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { green } from "@mui/material/colors";
+import { EventAvailable } from "@mui/icons-material";
 
 export default function UserMenu() {
   const { user } = useContext(AuthContext);
@@ -42,6 +43,11 @@ export default function UserMenu() {
 
   const navigateToFavorites = () => {
     navigate("/favorites");
+    handleClose();
+  };
+
+  const navigateToBooking = () => {
+    navigate("/booking");
     handleClose();
   };
 
@@ -108,7 +114,16 @@ export default function UserMenu() {
           </ListItemIcon>
           Favoritos
         </MenuItem>
-
+        <MenuItem onClick={navigateToBooking}>
+          <ListItemIcon>
+            <EventAvailable
+              sx={{
+                color: "#FD346E",
+              }}
+            />
+          </ListItemIcon>
+            Reservas
+        </MenuItem>
         {user.isAdmin && (
           <div>
             <Divider />

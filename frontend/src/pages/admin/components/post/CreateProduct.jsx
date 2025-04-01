@@ -161,7 +161,7 @@ export const PostCreate = () => {
 
               {/* Precio */}
               <Grid item xs={12} md={6}>
-                <TextInput source="Precio" label="Precio" fullWidth validate={required}/>
+                <NumberInput source="Precio" label="Precio" fullWidth validate={required}  min={1}/>
               </Grid>
 
               {/* Capacidad Global */}
