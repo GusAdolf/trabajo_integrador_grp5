@@ -1,5 +1,5 @@
 import { 
-  Datagrid, 
+  DatagridConfigurable, 
   List, 
   TextField, 
   ImageField, 
@@ -101,13 +101,13 @@ export const CategoryList = () => (
       margin: "0px 50px"
     }}
   >
-    <Datagrid rowClick={false} bulkActionButtons={false} >
+    <DatagridConfigurable rowClick={false} bulkActionButtons={false} >
       <TextField source="id" />
       <TitleField source="title" label="Nombre" />
       <ImageCategoryField source="imageUrl" label="Imagen" />
       <DescriptionField source="description" label="Descripción" />
       <ReferenceManyCount label="Productos" reference="products" target="category_id" />
       <Actions label="Acciones" />
-    </Datagrid>
+    </DatagridConfigurable>
   </List>
 );

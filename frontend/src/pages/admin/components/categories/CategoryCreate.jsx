@@ -3,6 +3,8 @@ import {
   SimpleForm, 
   TextInput, 
   required, 
+  Toolbar, 
+  SaveButton, 
 } from 'react-admin';
 import { useState } from "react";
 
@@ -37,9 +39,15 @@ const ImageFieldWithPreview = ({ source, label }) => {
   );
 };
 
+const MyToolbar = () => (
+  <Toolbar>
+    <SaveButton label="Guardar" />
+  </Toolbar>
+);
+
 export const CategoryCreate = () => (
   <Create title="Añadir categoría" >
-    <SimpleForm>
+    <SimpleForm toolbar={<MyToolbar />} >
       <TextInput source="title" label="Título" validate={required()} />
       <TextInput source="description" label="Descripción" validate={required()} />
       <ImageFieldWithPreview source="imageUrl" label="URL de imagen" />

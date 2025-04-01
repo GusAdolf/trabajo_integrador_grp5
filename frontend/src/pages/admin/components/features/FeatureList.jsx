@@ -1,6 +1,6 @@
 import { 
   List, 
-  Datagrid, 
+  DatagridConfigurable, 
   TextField, 
   ImageField, 
   EditButton, 
@@ -81,12 +81,12 @@ export const FeatureList = () => (
       margin: "0px 50px"
     }}
   >
-    <Datagrid rowClick={false} bulkActionButtons={false} >
+    <DatagridConfigurable rowClick={false} bulkActionButtons={false} >
       <TextField source="id" label="Id" />
       <IconFeatureField source="iconUrl" label="Ícono" />
       <TextField source="name" label="Nombre" />
       {/* <ReferenceManyCount label="Productos" reference="products" target="feature_id" /> */}
       <Actions label="Acciones" />
-    </Datagrid>
+    </DatagridConfigurable>
   </List>
 );

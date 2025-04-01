@@ -4,6 +4,9 @@ import {
   TextInput, 
   required, 
   useRecordContext, 
+  Toolbar, 
+  SaveButton, 
+  DeleteButton
 } from 'react-admin';
 import { useState } from "react";
 
@@ -43,9 +46,16 @@ const ImageFieldWithPreview = ({ source, label }) => {
   );
 };
 
+const MyToolbar = () => (
+  <Toolbar>
+    <SaveButton label="Guardar" />
+    <DeleteButton label="Eliminar" />
+  </Toolbar>
+);
+
 export const CategoryEdit = () => (
   <Edit title="Editar categoría" mutationMode='pessimistic'>
-    <SimpleForm>
+    <SimpleForm toolbar={<MyToolbar />} >
       <TextInput source="id" disabled />
       <TextInput source="title" label="Título" validate={required()} />
       <TextInput source="description" label="Descripción" validate={required()} />

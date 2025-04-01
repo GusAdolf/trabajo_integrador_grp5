@@ -15,7 +15,9 @@ import {
   useRecordContext, 
   Button, 
   useNotify, 
-  useRefresh, 
+  Toolbar, 
+  SaveButton, 
+  DeleteButton
 } from 'react-admin';
 import { useState } from "react";
 import { 
@@ -161,10 +163,17 @@ const CityInput = ({ source, reference }) => {
   );
 }
 
+const MyToolbar = () => (
+  <Toolbar>
+    <SaveButton label="Guardar" />
+    <DeleteButton label="Eliminar" />
+  </Toolbar>
+);
+
 export const ProductEdit = () => {
   return (
     <Edit title="Editar producto" mutationMode='pessimistic'>
-      <TabbedForm>
+      <TabbedForm toolbar={<MyToolbar />} >
         <TabbedForm.Tab label="Información">
           {/* <SimpleForm> */}
 

@@ -14,7 +14,8 @@ import {
   SelectArrayInput, 
   Button, 
   useNotify, 
-  useRefresh, 
+  Toolbar, 
+  SaveButton, 
 } from "react-admin";
 import { useState } from "react";
 import { 
@@ -149,11 +150,17 @@ const CityInput = ({ source, reference }) => {
   );
 }
 
+const MyToolbar = () => (
+  <Toolbar>
+    <SaveButton label="Guardar" />
+  </Toolbar>
+);
+
 export const ProductCreate = () => {
 
   return (
     <Create title="Crear producto" >
-      <SimpleForm
+      <SimpleForm toolbar={<MyToolbar />}
         defaultValues={{
           imageSet: ["", "", "", "", ""],
           availabilitySet: [""],
@@ -221,6 +228,7 @@ export const ProductCreate = () => {
           <SelectArrayInput label="Características"/>
           {/* <AutocompleteArrayInput label="code" /> */}
         </ReferenceArrayInput>
+        {/* <SaveButton label="Guardar" /> */}
       </SimpleForm>
     </Create>
   );

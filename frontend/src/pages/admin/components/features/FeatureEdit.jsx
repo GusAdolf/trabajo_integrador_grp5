@@ -3,7 +3,10 @@ import {
   SimpleForm, 
   TextInput, 
   required, 
-  useRecordContext,
+  useRecordContext, 
+  Toolbar, 
+  SaveButton, 
+  DeleteButton
 } from 'react-admin';
 import { useState } from "react";
 
@@ -22,9 +25,7 @@ const ImageFieldWithPreview = ({ source, label }) => {
 
   return (
     <>
-      <TextInput 
-        source={source} 
-        label={label} 
+      <TextInput source={source} label={label} 
         validate={required()} 
         onChange={handleImageUrlChange} 
       />
@@ -43,15 +44,17 @@ const ImageFieldWithPreview = ({ source, label }) => {
   );
 };
 
+const MyToolbar = () => (
+  <Toolbar>
+    <SaveButton label="Guardar" />
+    <DeleteButton label="Eliminar" />
+  </Toolbar>
+);
+
 export const FeatureEdit = () => {
-
-  const handleFieldChange = (value, name) => {
-    console.log(`Campo ${name} cambiado a:`, value);
-  };
-
   return (
     <Edit title="Editar característica" mutationMode='pessimistic'>
-      <SimpleForm onChange={(e) => handleFieldChange(e.target.form, 'edit')}>
+      <SimpleForm toolbar={<MyToolbar />} >
         <TextInput source="id" label="Id" readOnly />
         <TextInput source="name" label="Nombre" validate={required()} />
         <ImageFieldWithPreview source="iconUrl" label="URL de ícono" />

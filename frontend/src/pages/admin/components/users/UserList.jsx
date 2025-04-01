@@ -1,5 +1,5 @@
 import { 
-  Datagrid, 
+  DatagridConfigurable, 
   DateField, 
   EmailField, 
   List, 
@@ -60,7 +60,7 @@ export const UserList = () => (
       margin: "0px 50px"
     }}
   >
-    <Datagrid rowClick={false} bulkActionButtons={false} >
+    <DatagridConfigurable rowClick={false} bulkActionButtons={false} >
       
       <TextField source="id" label="Id" />
       <DateField source="createdAt" label="Fecha creación" showTime />
@@ -71,6 +71,6 @@ export const UserList = () => (
       <EmailField source="email" label="Correo electrónico" />
 
       <EditableRoleField label="Rol" />
-    </Datagrid>
+    </DatagridConfigurable>
   </List>
 );

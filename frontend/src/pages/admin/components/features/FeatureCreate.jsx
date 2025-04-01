@@ -2,7 +2,9 @@ import {
   Create, 
   SimpleForm, 
   TextInput, 
-  required,
+  required, 
+  Toolbar, 
+  SaveButton, 
 } from 'react-admin';
 import { useState } from "react";
 
@@ -37,9 +39,15 @@ const ImageFieldWithPreview = ({ source, label }) => {
   );
 };
 
+const MyToolbar = () => (
+  <Toolbar>
+    <SaveButton label="Guardar" />
+  </Toolbar>
+);
+
 export const FeatureCreate = () => (
   <Create title="Añadir característica" >
-    <SimpleForm>
+    <SimpleForm toolbar={<MyToolbar />} >
       <TextInput source="name" label="Nombre" />
       <ImageFieldWithPreview source="iconUrl" label="URL de ícono" />
     </SimpleForm>

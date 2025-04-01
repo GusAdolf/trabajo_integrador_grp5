@@ -247,31 +247,42 @@ export const ProductList = () => {
             render={record => {
               return (
                 <>
-                  <img
-                    key={record.imageSet[0].id|| 0}
-                    src={record.imageSet[0].imageUrl}
-                    alt={`Imagen 1`}
-                    style={{
-                      width: "200px",
-                      height: "auto",
-                      objectFit: "cover",
-                      borderRadius: "5px",
-                    }}
-                  />
-                  <Button label="Ver más"
-                    onClick={() => handleOpenModal(record.name, record.imageSet)}
+                  <Box 
                     sx={{
-                      backgroundColor: "#00CED1",
-                      borderRadius: "10px",
-                      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-                      padding: "5px 20px",
-                      fontWeight: "bold",
-                      textTransform: "none",
-                      "&:hover": {
-                        backgroundColor: "#00B3B3",
-                      },
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
-                  />
+                  >
+                    <img
+                      key={record.imageSet[0].id|| 0}
+                      src={record.imageSet[0].imageUrl}
+                      alt={`Imagen 1`}
+                      style={{
+                        width: "200px",
+                        height: "130px",
+                        objectFit: "cover",
+                        borderRadius: "7px 7px 0px 0px",
+                      }}
+                    />
+                    <Button label="Ver más"
+                      onClick={() => handleOpenModal(record.name, record.imageSet)}
+                      sx={{
+                        backgroundColor: "#000000",
+                        color: "#ffffff",
+                        width: "200px",
+                        borderRadius: "0px 0px 7px 7px",
+                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                        padding: "5px 20px",
+                        fontWeight: "bold",
+                        textTransform: "none",
+                        "&:hover": {
+                          backgroundColor: "#f44336",
+                        },
+                      }}
+                    />
+                  </Box>
                 </>
               )
             }}
