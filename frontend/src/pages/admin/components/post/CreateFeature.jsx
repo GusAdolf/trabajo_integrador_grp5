@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TextField, Button, Container, Grid, Typography, Box } from "@mui/material";
 import Swal from "sweetalert2";
 import './styles.css';
-import { createFeatures } from "../../../../services/featuresService";
+import { createFeature } from "../../../../services/featuresService";
 
 const namespace = "features";
 
@@ -23,7 +23,7 @@ export const CreateFeature = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await createFeatures(feature);
+      const response = await createFeature(feature);
       if (!response) return;
 
       Swal.fire({

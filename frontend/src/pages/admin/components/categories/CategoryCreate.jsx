@@ -1,31 +1,26 @@
 import { 
-  Edit, 
+  Create,
   SimpleForm, 
   TextInput, 
   required, 
-  useRecordContext, 
   Toolbar, 
   SaveButton, 
-  DeleteButton
 } from 'react-admin';
 import { useState } from "react";
 
 const ImageFieldWithPreview = ({ source, label }) => {
-  const record = useRecordContext();
-  const [imageUrl, setImageUrl] = useState(record[source]);
+  const [imageUrl, setImageUrl] = useState('');
   console.log("ImageFieldWithPreview")
 
   const handleImageUrlChange = (event) => {
     setImageUrl(event.target.value);
   };
-  
-  if (!record) {
-    return null;
-  }
 
   return (
     <>
-      <TextInput source={source} label={label} 
+      <TextInput 
+        source={source} 
+        label={label} 
         validate={required()} 
         onChange={handleImageUrlChange} 
       />
@@ -47,18 +42,15 @@ const ImageFieldWithPreview = ({ source, label }) => {
 const MyToolbar = () => (
   <Toolbar>
     <SaveButton label="Guardar" />
-    <DeleteButton label="Eliminar" />
   </Toolbar>
 );
 
-export const FeatureEdit = () => {
-  return (
-    <Edit title="Editar característica" mutationMode='pessimistic'>
-      <SimpleForm toolbar={<MyToolbar />} >
-        <TextInput source="id" label="Id" readOnly />
-        <TextInput source="name" label="Nombre" validate={required()} />
-        <ImageFieldWithPreview source="iconUrl" label="URL de ícono" />
-      </SimpleForm>
-    </Edit>
-  )
-};
+export const CategoryCreate = () => (
+  <Create title="Añadir categoría" >
+    <SimpleForm toolbar={<MyToolbar />} >
+      <TextInput source="title" label="Título" validate={required()} />
+      <TextInput source="description" label="Descripción" validate={required()} />
+      <ImageFieldWithPreview source="imageUrl" label="URL de imagen" />
+    </SimpleForm>
+  </Create>
+);

@@ -25,7 +25,9 @@ const ImageFieldWithPreview = ({ source, label }) => {
 
   return (
     <>
-      <TextInput source={source} label={label} 
+      <TextInput 
+        source={source} 
+        label={label} 
         validate={required()} 
         onChange={handleImageUrlChange} 
       />
@@ -51,14 +53,13 @@ const MyToolbar = () => (
   </Toolbar>
 );
 
-export const FeatureEdit = () => {
-  return (
-    <Edit title="Editar característica" mutationMode='pessimistic'>
-      <SimpleForm toolbar={<MyToolbar />} >
-        <TextInput source="id" label="Id" readOnly />
-        <TextInput source="name" label="Nombre" validate={required()} />
-        <ImageFieldWithPreview source="iconUrl" label="URL de ícono" />
-      </SimpleForm>
-    </Edit>
-  )
-};
+export const CategoryEdit = () => (
+  <Edit title="Editar categoría" mutationMode='pessimistic'>
+    <SimpleForm toolbar={<MyToolbar />} >
+      <TextInput source="id" disabled />
+      <TextInput source="title" label="Título" validate={required()} />
+      <TextInput source="description" label="Descripción" validate={required()} />
+      <ImageFieldWithPreview source="imageUrl" label="URL de imagen" />
+    </SimpleForm>
+  </Edit>
+);
