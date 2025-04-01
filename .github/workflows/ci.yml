@@ -13,9 +13,9 @@ jobs:
       DB_DRIVER: com.mysql.cj.jdbc.Driver
       DB_HOST: trolley.proxy.rlwy.net
       DB_NAME: railway
-      DB_PASSWORD: RBDinrWjMfwWDwxeZbUHCkDPSEqXtQop
-      DB_PORT: 30061
-      DB_URL: mysql://root:RBDinrWjMfwWDwxeZbUHCkDPSEqXtQop@trolley.proxy.rlwy.net:30061/railway
+      DB_PASSWORD: BWXQybmRfxnornnnIRGQarwrQsfCEObt
+      DB_PORT: 36194
+      DB_URL: mysql://root:BWXQybmRfxnornnnIRGQarwrQsfCEObt@nozomi.proxy.rlwy.net:36194/railway
       DB_USERNAME: root
       EMAIL_FROM: xplora.hello@gmail.com
       EMAIL_PASSWORD: "ztee jjqv oenb kxfq"
