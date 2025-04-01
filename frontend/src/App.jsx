@@ -18,6 +18,8 @@ import Favorites from "./pages/favorite/favorites";
 import BookingReview from "./pages/bookingReview/BookingReview";
 import Booking from "./pages/booking/booking";
 
+// Importacion el botón de WhatsApp
+import WhatsAppButton from "./components/WhatsAppButton";
 
 function App() {
   const location = useLocation();
@@ -48,6 +50,9 @@ function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/booking-review" element={<BookingReview />} />
       </Routes>
+
+      {/*Botón flotante de WhatsApp */}
+      {!isRestrictedPage && !isAdminPage && <WhatsAppButton />}
 
       {!isRestrictedPage && !isAdminPage && <Footer />}
     </AuthProvider>
