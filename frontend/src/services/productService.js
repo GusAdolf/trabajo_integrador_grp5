@@ -169,7 +169,10 @@ export const registerUser = async (user) => {
       throw new Error("Error al registrar el usuario");
     }
     
-    return await response.json();
+    const data = await response.json();
+    const token = data.token;
+    localStorage.setItem("resend-token", token);
+    return data;
 };
 
 // Login user
