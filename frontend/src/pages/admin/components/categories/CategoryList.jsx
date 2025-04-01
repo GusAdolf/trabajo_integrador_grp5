@@ -106,7 +106,7 @@ export const CategoryList = () => (
       <TitleField source="title" label="Nombre" />
       <ImageCategoryField source="imageUrl" label="Imagen" />
       <DescriptionField source="description" label="Descripción" />
-      <ReferenceManyCount label="Productos" reference="products" target="category_id" />
+      <ReferenceManyCount label="Productos asignados" reference="products" target="category_id" />
       <Actions label="Acciones" />
     </DatagridConfigurable>
   </List>
