@@ -8,7 +8,8 @@ import {
     IconButton, 
     Popover, 
     CircularProgress,
-    TextField 
+    TextField, 
+    Avatar
 } from "@mui/material";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -235,7 +236,39 @@ export const ProductDetail = () => {
                     <Typography variant="h6" fontWeight="bold" sx={{ mt: 2 }}>
                         Detalles
                     </Typography>
-                    <Box sx={{ mt: 2 }}>
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
+                    {product.features.map((feature) => (
+                        <Box 
+                        key={feature.id} 
+                        sx={{ 
+                            display: "flex", 
+                            alignItems: "center", 
+                            gap: 1, 
+                            pb: 1,
+                            borderBottom: "2px solid #FD346E", 
+                            width: "100%",
+                        }}
+                        >
+                        <Avatar 
+                            src={feature.iconUrl} 
+                            alt={feature.name} 
+                            sx={{ 
+                                width: 18, 
+                                height: 18, 
+                                bgcolor: "#FFD1DC",
+                                p: 1,
+                                // bgcolor: "transparent",
+                                // filter: "invert(17%) sepia(98%) saturate(747%) hue-rotate(-20deg) brightness(97%) contrast(92%)" 
+                            }} 
+                        />
+                        <Typography variant="body1" fontWeight="bold">
+                            {feature.name}
+                        </Typography>
+                        </Box>
+                    ))}
+                    </Box>
+
+                    {/* <Box sx={{ mt: 2 }}>
                         {[
                             {
                                 icon: <HourglassBottomIcon sx={{ color: "#FD346E" }} />,
@@ -274,7 +307,7 @@ export const ProductDetail = () => {
                                 <Typography color="textSecondary">{detail.value}</Typography>
                             </Box>
                         ))}
-                    </Box>
+                    </Box> */}
                 </Grid>
 
                 <Grid item xs={12} md={4}>
