@@ -5,8 +5,10 @@ import {
   addFavorite,
   removeFavorite,
 } from "../services/favoriteService";
+import { useAuth } from "../context/AuthContext";
 
 const useFavorites = () => {
+  const { user } = useAuth();
   const [favorites, setFavorites] = useState([]);
 
   const isFavorite = (productId) =>
