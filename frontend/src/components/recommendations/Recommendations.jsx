@@ -174,7 +174,7 @@ export const Recommendations = () => {
                   >
                     <Typography variant="body2">⏳ {availableDate}</Typography>
                     <Typography variant="body2">
-                      ⭐ {product.rating || "N/A"}
+                    ⭐{product.averageScore.toFixed(1) ?? "N/A"}
                     </Typography>
                   </Box>
 

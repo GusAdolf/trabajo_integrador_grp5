@@ -1,4 +1,3 @@
-// src/services/reviewService.js
 import Swal from "sweetalert2";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
