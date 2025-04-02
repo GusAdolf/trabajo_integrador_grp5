@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
-import { Box, Typography, CircularProgress, Card, CardContent, Rating } from "@mui/material";
-import Swal from "sweetalert2";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Card,
+  CardContent,
+  CardMedia,
+  Rating,
+  IconButton
+} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import { getBookings } from "../../services/bookingService";
 
@@ -42,16 +51,35 @@ const MyReviews = () => {
     );
   }
 
-  // Filtrar las reservas que tienen una reseña
   const bookingsWithReview = bookings.filter((b) => b.review);
 
   if (bookingsWithReview.length === 0) {
     return (
       <Box sx={{ mt: 5, textAlign: "center" }}>
-        <Typography variant="h6">No has dejado ninguna reseña aún.</Typography>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          No has dejado ninguna reseña aún.
+        </Typography>
+        <IconButton
+          color="primary"
+          onClick={() => navigate("/")}
+          sx={{
+            border: "1px",
+            padding: 2,
+            borderRadius: 2,
+            "&:hover": {
+              backgroundColor: "#003366"
+            }
+          }}
+        >
+          <HomeIcon fontSize="large" />
+        </IconButton>
       </Box>
     );
   }
+
+  const handleGoToProduct = (productId) => {
+    navigate(`/product/${productId}`);
+  };
 
   return (
     <Box sx={{ width: "90%", margin: "0 auto", mt: 4 }}>
@@ -61,36 +89,71 @@ const MyReviews = () => {
 
       {bookingsWithReview.map((booking) => {
         const { review, product } = booking;
-        // Por si quieres la fecha de la reseña
         const createdAtDate = new Date(review.createdAt).toLocaleDateString();
+
+        const productImage = product?.imageSet?.[0]?.imageUrl;
 
         return (
           <Card key={review.id} sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 1 }}>
-                {product?.name}
-              </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Rating
-                  value={review.score || 0}
-                  precision={1}
-                  readOnly
-                />
-                <Typography variant="body2">
-                  {review.score} estrellas
-                </Typography>
-              </Box>
+            <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
+              <CardMedia
+                component="img"
+                image={productImage}
+                alt={product?.name}
+                sx={{
+                  width: "40%",
+                  height: "50%",
+                  maxWidth: "100%",
+                  objectFit: "cover",
+                  borderRadius: 2,
+                  mr: 2,
+                  cursor: "pointer",
+                  flexShrink: 0,
+                  "&:hover": {
+                    opacity: 0.8
+                  }
+                }}
+                onClick={() => handleGoToProduct(product.id)}
+              />
 
-              <Typography variant="body2" sx={{ mt: 1, fontStyle: "italic" }}>
-                Fecha de la reseña: {createdAtDate}
-              </Typography>
-
-              {review.comment && (
-                <Typography variant="body1" sx={{ mt: 2 }}>
-                  {review.comment}
+              <CardContent sx={{ flex: 1, paddingBottom: "16px !important" }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    mb: 1,
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#00CED1"
+                    }
+                  }}
+                  onClick={() => handleGoToProduct(product.id)}
+                >
+                  {product?.name}
                 </Typography>
-              )}
-            </CardContent>
+
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                  <Rating
+                    value={review.score || 0}
+                    precision={1}
+                    readOnly
+                  />
+                  <Typography variant="body2">
+                    {review.score} estrellas
+                  </Typography>
+                </Box>
+
+                <Typography variant="body2" sx={{ mt: 1, fontStyle: "italic" }}>
+                  Fecha de la reseña: {createdAtDate}
+                </Typography>
+
+                {review.comment && (
+                  <Typography variant="body1" sx={{ mt: 2 }}>
+                    {review.comment}
+                  </Typography>
+                )}
+              </CardContent>
+            </Box>
           </Card>
         );
       })}
