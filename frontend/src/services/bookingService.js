@@ -18,7 +18,7 @@ export const createBooking = async (bookingData) => {
       throw new Error("No estás autenticado. Por favor inicia sesión.");
     }
 
-    const response = await fetch(`${BASE_URL}/bookings`, {
+    const response = await fetch(`${API_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,39 +34,44 @@ export const createBooking = async (bookingData) => {
 
     return await response.json();
   } catch (error) {
-    // Manejar el errores
     Swal.fire({
       icon: "error",
       title: "Error al crear la reserva",
       text: error.message || "Ha ocurrido un error",
     });
-    throw error; 
+    throw error;
   }
 };
 
+/**
+ * Obtiene las reservas del usuario autenticado
+ * @returns {Promise<Array>} - Lista de reservas (BookingResponseDto)
+ */
 export const getBookings = async () => {
   try {
-    const bearerToken = `Bearer ${localStorage.getItem("token")}`;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No estás autenticado. Por favor inicia sesión.");
+    }
+
     const response = await fetch(`${API_URL}/user`, {
-      method: "GET",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: bearerToken,
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
-      throw new Error("Error al obtener las reservas");
+      const errorData = await response.json();
+      throw new Error(errorData.message || "No se pudieron obtener las reservas.");
     }
 
     return await response.json();
   } catch (error) {
-    console.error(error);
     Swal.fire({
       icon: "error",
       title: "Error",
-      text: "No se pudieron obtener las reservas",
+      text: error.message || "No se pudieron obtener las reservas",
     });
+    return [];
   }
 };
-

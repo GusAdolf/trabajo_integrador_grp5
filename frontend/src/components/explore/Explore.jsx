@@ -260,6 +260,11 @@ export const Explore = () => {
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   {product.name}
                 </Typography>
+                
+                {/* Rating o averageScore */}
+                  <Typography variant="body2" sx={{ mt: 1 }}>
+                  ⭐ {product.averageScore?.toFixed(1) ?? "N/A"}
+                  </Typography>
 
                 {/* Disponibilidad */}
                 <Box

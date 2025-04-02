@@ -200,12 +200,12 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
                           {formatDate(product)}
                         </Typography>
                       </Box>
-                      <Rating
-                        value={product.averageScore || 0}
-                        precision={0.1}
-                        readOnly
-                        size="small"
-                      />
+
+                      {/* Rating o averageScore */}
+                      <Typography variant="body2" sx={{ mt: 1 }}>
+                      ⭐ {product.averageScore?.toFixed(1) ?? "N/A"}
+                      </Typography>
+
                     </Box>
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                       {product.name}
