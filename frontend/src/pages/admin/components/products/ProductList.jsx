@@ -86,6 +86,7 @@ const Actions = ({ label }) => {
     <Box display="flex" gap={1} label={label} >
       <EditButton label={false}
         sx={{
+            color: "white",
             backgroundColor: "#00CED1",
             borderRadius: "10px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
@@ -283,7 +284,7 @@ export const ProductList = () => {
                         fontWeight: "bold",
                         textTransform: "none",
                         "&:hover": {
-                          backgroundColor: "#444444",
+                          backgroundColor: "#FD346E",
                         },
                       }}
                     />

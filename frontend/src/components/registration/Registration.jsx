@@ -15,6 +15,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import SyncIcon from "@mui/icons-material/Sync";
 import "./styles.css";
 import useRegister from "../../hooks/useRegister";
 
@@ -33,6 +34,7 @@ const style = {
   borderRadius: "10px",
 };
 
+
 export const Registration = ({ open, setOpen }) => {
   const {
     handleClose,
@@ -46,8 +48,10 @@ export const Registration = ({ open, setOpen }) => {
     showEmailConfirmModal,
     handleTimerEnd,
     showReenvioModal,
+    setShowReenvioModal,
     setChecked,
     setShowEmailConfirmModal,
+    submitting
   } = useRegister(setOpen);
 
   return (
@@ -232,6 +236,7 @@ export const Registration = ({ open, setOpen }) => {
               </Typography>
             )}
             <Button
+              disabled={submitting}
               variant="contained"
               sx={{
                 backgroundColor: "#1C274C",
@@ -241,7 +246,9 @@ export const Registration = ({ open, setOpen }) => {
               }}
               onClick={handleSubmit}
             >
-              Regístrate
+            
+              {submitting ? <><SyncIcon size={24} className="spinner"/> Registrandote</> : "Registrate"} 
+
             </Button>
             <Box sx={{ display: "flex", gap: 2 }}>
               <Typography sx={{ mt: 2, color: "white" }}>
@@ -261,7 +268,7 @@ export const Registration = ({ open, setOpen }) => {
       />
 
       {/* Modal de Reenvío de Email, se dispara cuando el timer llega a 0 */}
-      <ReenvioEmailRegistroExitoso
+      <ReenvioEmailRegistroExitoso 
         open={showReenvioModal}
         onClose={() => setShowReenvioModal(false)}
       />
