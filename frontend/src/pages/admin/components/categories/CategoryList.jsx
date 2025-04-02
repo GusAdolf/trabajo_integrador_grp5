@@ -1,23 +1,46 @@
 import { 
-  List, 
   DatagridConfigurable, 
+  List, 
   TextField, 
   ImageField, 
-  EditButton, 
   DeleteWithConfirmButton, 
+  ReferenceManyCount, 
   TopToolbar, 
   SelectColumnsButton, 
-  CreateButton,
+  CreateButton, 
 } from 'react-admin';
 import { Box } from "@mui/material";
 
-const IconFeatureField = ({source, label}) => {
+const TitleField = ({source, label}) => {
   return (
-    <ImageField source={source} label={label} 
+    <TextField source={source} label={label}
+      sx={{ 
+        width: "200px" 
+      }}
+    />
+  )
+}
+
+const DescriptionField = ({source, label}) => {
+  return (
+    <TextField source={source} label={label} 
+      sx={{
+        maxWidth: "300px",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      }}
+    />
+  )
+}
+
+const ImageCategoryField = ({source, label}) => {
+  return (
+    <ImageField source={source} label={label}
       sx={{ 
         '& img': { 
-          maxWidth: 30, 
-          maxHeight: 30, 
+          maxWidth: 140, 
+          maxHeight: 100, 
           objectFit: 'contain' 
         } 
       }}
@@ -28,8 +51,7 @@ const IconFeatureField = ({source, label}) => {
 const Actions = ({ label }) => {
   return (
     <Box display="flex" gap={1} label={label} >
-      <EditButton 
-        label={false}
+      {/* <EditButton label={false} 
         sx={{
             backgroundColor: "#00CED1",
             borderRadius: "10px",
@@ -41,10 +63,8 @@ const Actions = ({ label }) => {
               backgroundColor: "#00B3B3",
             },
         }}
-      />
-      <DeleteWithConfirmButton 
-        label={false} 
-        confirmContent="¿Estás seguro?" 
+      /> */}
+      <DeleteWithConfirmButton confirmContent="¿Estás seguro?" label={false} 
         sx={{
           backgroundColor: "#d33",
           color: "white",
@@ -61,18 +81,18 @@ const Actions = ({ label }) => {
       />
     </Box>
   )
-}
+};
 
-const CustomListActions = () => (
+const ListActions = () => (
   <TopToolbar>
     <SelectColumnsButton />
     {/* <FilterButton /> */}
-    <CreateButton label="Añadir característica" />
+    <CreateButton label="Añadir categoría" />
   </TopToolbar>
 );
 
-export const FeatureList = () => (
-  <List title="Características" actions={<CustomListActions />}
+export const CategoryList = () => (
+  <List title="Categorías" actions={<ListActions />}
     sx={{
       height: "80vh",
       display: "flex",
@@ -82,10 +102,11 @@ export const FeatureList = () => (
     }}
   >
     <DatagridConfigurable rowClick={false} bulkActionButtons={false} >
-      <TextField source="id" label="Id" />
-      <IconFeatureField source="iconUrl" label="Ícono" />
-      <TextField source="name" label="Nombre" />
-      {/* <ReferenceManyCount label="Productos" reference="products" target="feature_id" /> */}
+      <TextField source="id" />
+      <TitleField source="title" label="Nombre" />
+      <ImageCategoryField source="imageUrl" label="Imagen" />
+      <DescriptionField source="description" label="Descripción" />
+      <ReferenceManyCount label="Productos asignados" reference="products" target="category_id" />
       <Actions label="Acciones" />
     </DatagridConfigurable>
   </List>

@@ -389,25 +389,37 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new Image(
                                 null,
-                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                "https://cdn.getyourguide.com/img/tour/642ad74c09c36.jpeg/145.jpg",
                                 null,
                                 null
                         ),
                         new Image(
                                 null,
-                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                "https://cdn.getyourguide.com/img/tour/642ad74c04828.jpeg/145.jpg",
                                 null,
                                 null
                         ),
                         new Image(
                                 null,
-                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                "https://cdn.getyourguide.com/img/tour/642ad6dab2d26.jpeg/145.jpg",
                                 null,
                                 null
                         ),
                         new Image(
                                 null,
-                                "https://cdn.getyourguide.com/img/tour/642ad74c100f4.jpeg/98.jpg",
+                                "https://cdn.getyourguide.com/img/review/47914883aacbacc765411f8ef6e0be2ad0a903f81138756e5a27f11b7d79675c.jpg/145.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.getyourguide.com/img/review/2ec4724f248e1b26687c710d3c77cf29ed5550b19f5160bbaf1c7c2eb820531c.jpg/145.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.getyourguide.com/img/review/5b9038dceed78db9d95e8416c31967b835c082a9ff3c5cb5a1f8034cf67a3444.jpg/145.jpg",
                                 null,
                                 null
                         )

@@ -29,7 +29,22 @@ export const createProduct = async (product) => {
       },
       body: JSON.stringify(product),
     });
-    if (response.status === 400) {
+    if (response.ok) {
+      Swal.fire({
+        icon: "success",
+        title: "Producto creado",
+        text: "El producto se creó correctamente.",
+      });
+    } else {
+      const responseText = await response.text();
+      let errorMessage = JSON.parse(responseText).message 
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: errorMessage,
+      });
+    }
+    /* if (response.status === 400) {
       const responseText = await response.text();
       Swal.fire({
         icon: "error",
@@ -37,10 +52,24 @@ export const createProduct = async (product) => {
         text: responseText,
       });
       return;
-    }
+    } */
     return await response.json();
   } catch (error) {
     console.error(error);
+  }
+};
+
+
+// Get product
+export const getProduct = async (id) => {
+  try {
+    const response = await fetch(`${URL}/products/${id}`);
+    if (!response.ok) {
+      throw new Error("Error al obtener producto");
+    }
+    return await response.json();
+  } catch (error) {
+   return null;
   }
 };
 
@@ -54,25 +83,59 @@ export const deleteProduct = async (id) => {
         Authorization: bearerToken,
       },
     });
-    return await response.json();
+    /* return await response.text(); */
+    if (response.ok) {
+      Swal.fire({
+        icon: "success",
+        title: "Producto eliminado",
+        text: `El producto con id: ${id} se eliminó correctamente.`,
+      });
+      return true;
+    } else {
+      const responseText = await response.text();
+      let errorMessage = JSON.parse(responseText).message 
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: errorMessage,
+      });
+      return false;
+    }
   } catch (error) {
     console.error(error);
   }
 };
 
 // Update product
-export const updateProduct = async (product) => {
+export const updateProduct = async (product, id) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(`${URL}/products/${product.id}`, {
+    const response = await fetch(`${URL}/products/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: bearerToken,
       },
-      body: JSON.stringify(product ),
+      body: JSON.stringify(product),
     });
-    if (response.status === 400) {
+
+    if (response.ok) {
+      Swal.fire({
+        icon: "success",
+        title: "Producto actualizado",
+        text: `El producto con id: ${id} se actualizó correctamente.`,
+      });
+    } else {
+      const responseText = await response.text();
+      let errorMessage = JSON.parse(responseText).message 
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: errorMessage,
+      });
+    }
+
+    /* if (response.status === 400) {
       const responseText = await response.text();
       Swal.fire({
         icon: "error",
@@ -80,7 +143,7 @@ export const updateProduct = async (product) => {
         text: responseText,
       });
       return;
-    }
+    } */
     return await response.json();
   } catch (error) {
     console.error(error);
@@ -106,7 +169,10 @@ export const registerUser = async (user) => {
       throw new Error("Error al registrar el usuario");
     }
     
-    return await response.json();
+    const data = await response.json();
+    const token = data.token;
+    localStorage.setItem("resend-token", token);
+    return data;
 };
 
 // Login user
@@ -154,6 +220,9 @@ export const getProfile = async (token) => {
     }
     return await response.json();
   } catch (error) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.assign("/");
     console.error(error);
   }
 };
@@ -185,16 +254,27 @@ export const updateUserRole = async (id, role) => {
       },
       body: JSON.stringify({ role }),
     });
-    if (response.status === 400) {
-      const responseText = await response.text();
+
+    if (!response.ok) {
+      const responseError = await response.json();
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: responseText,
-      });
-
-      return;
+        title: "Error al cambiar rol",
+        text: responseError.message,
+      })/* .then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      }) */;
+       return false;
     }
+
+    Swal.fire({
+      icon: "success",
+      title: "Rol cambiado con éxito",
+      text: `Usuario con id: ${id} cambió su rol`,
+    });
+    return true;
   } catch (error) {
     console.error(error);
   }
@@ -214,7 +294,29 @@ export const assignCategory = async (id, categoryId) => {
         },
       }
     );
-    if (response.status === 400) {
+
+    if (!response.ok) {
+      const responseError = await response.json();
+      Swal.fire({
+        icon: "error",
+        title: "Error al cambiar categoía al producto",
+        text: responseError.message,
+      })/* .then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      }) */;
+       return false;
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Categoría del producto cambiado con éxito",
+      text: `Producto con id: ${id} cambió su categoría`,
+    });
+    return true;
+
+    /* if (response.status === 400) {
       const responseText = await response.text();
       Swal.fire({
         icon: "error",
@@ -223,7 +325,7 @@ export const assignCategory = async (id, categoryId) => {
       });
 
       return;
-    }
+    } */
   } catch (error) {
     console.error(error);
   }
