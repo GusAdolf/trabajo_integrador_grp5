@@ -194,6 +194,11 @@ const ImageModal = ({ open, onClose, selectProduct, images, selectedImage, handl
   );
 };
 
+/* const productFilters = [
+  <SearchInput source="q" alwaysOn />,
+  <TextInput label="Name" source="name" />,
+]; */
+
 export const ProductList = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectProduct, setSelectedProduct] = useState('');
@@ -216,7 +221,7 @@ export const ProductList = () => {
 
   return (
     <>
-      <List title="Productos" actions={<ListActions />}
+      <List title="Productos" actions={<ListActions />} /* filters={productFilters} */
         sx={{
           flex: 1,
           display: "flex",
@@ -278,7 +283,7 @@ export const ProductList = () => {
                         fontWeight: "bold",
                         textTransform: "none",
                         "&:hover": {
-                          backgroundColor: "#f44336",
+                          backgroundColor: "#444444",
                         },
                       }}
                     />
@@ -323,7 +328,7 @@ export const ProductList = () => {
           selectedImage={selectedImage} 
           handleThumbnailClick={handleThumbnailClick} 
         />
-    </List>
-  </>
+      </List>
+    </>
   )
 };
