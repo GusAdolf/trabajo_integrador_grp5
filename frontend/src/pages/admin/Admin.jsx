@@ -43,6 +43,7 @@ import { getUsers } from "../../services/productService";
   Header,
 } from "../../components/header/Header"; */
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { getReviewsByProduct } from "../../services/reviewService";
 
 const FRONT_URL = import.meta.env.VITE_FRONT_DOMAIN || "http://localhost:5173";
 
@@ -295,6 +296,13 @@ const dataProvider = {
         total: response.length
       } */
       return Promise.reject(); // falta endpoint
+    } else if (resource === "reviews") {
+      console.log("getManyReference getReviewsByProduct")
+      const response = await getReviewsByProduct(params.id);
+      return {
+        data: response,
+        total: response.length
+      }
     } else {
       console.log("getManyReference")
     }
@@ -411,7 +419,7 @@ const theme = createTheme({
     }, */
     secondary: {
       light: '#f44336',
-      main: '#f44336', // Cambia el color secundario (rojo en este caso)
+      main: '#000000', // Cambia el color secundario (rojo en este caso)
     },
   },
   /* typography: {
@@ -457,12 +465,12 @@ export const AdminPage = () => {
   }
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme} >
     <Admin
       basename="/admin"
       dataProvider={dataProvider}
       theme={theme}
-      darkTheme={houseDarkTheme}
+      darkTheme={null}
       layout={MyLayout}
     >
 

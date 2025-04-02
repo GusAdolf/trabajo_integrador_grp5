@@ -42,7 +42,7 @@ const Login = ({ open, handleClose }) => {
           borderRadius: 2,
         }}
       >
-        {}
+        {/* Encabezado con logo y botón de cerrar */}
         <Box sx={{ height: "90px" }}>
           <img
             src="assets/logo.svg"
@@ -69,7 +69,7 @@ const Login = ({ open, handleClose }) => {
           </IconButton>
         </Box>
 
-        {}
+        {/* Título */}
         <Typography
           variant="h6"
           textAlign="center"
@@ -79,7 +79,7 @@ const Login = ({ open, handleClose }) => {
           Inicia sesión para acceder a lo mejor de Xplora+
         </Typography>
 
-        {}
+        {/* Formulario */}
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
@@ -109,8 +109,9 @@ const Login = ({ open, handleClose }) => {
             }}
           />
 
+          {/* Mensaje de error si las credenciales son inválidas */}
           {error && (
-            <Typography color="error" textAlign="center">
+            <Typography color="error" textAlign="center" sx={{ mt: 1 }}>
               {error}
             </Typography>
           )}

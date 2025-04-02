@@ -13,6 +13,7 @@ export { CategoriesList } from "./get/CategoriesList";
 export { ProductList } from "./products/ProductList";
 export { ProductCreate } from "./products/ProductCreate";
 export { ProductEdit } from "./products/ProductEdit";
+export { ProductSidebar } from "./products/ProductSidebar";
 export { UserList } from "./users/UserList";
 export { CategoryList } from "./categories/CategoryList";
 export { CategoryCreate } from "./categories/CategoryCreate";
