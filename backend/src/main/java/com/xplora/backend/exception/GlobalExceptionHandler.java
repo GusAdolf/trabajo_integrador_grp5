@@ -91,7 +91,7 @@ public class GlobalExceptionHandler {
                 errors
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
-    } //AuthenticationException
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> processGeneralException(Exception e, HttpServletRequest request) {

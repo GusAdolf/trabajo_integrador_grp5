@@ -86,6 +86,7 @@ const Actions = ({ label }) => {
     <Box display="flex" gap={1} label={label} >
       <EditButton label={false}
         sx={{
+            color: "white",
             backgroundColor: "#00CED1",
             borderRadius: "10px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
@@ -194,6 +195,11 @@ const ImageModal = ({ open, onClose, selectProduct, images, selectedImage, handl
   );
 };
 
+/* const productFilters = [
+  <SearchInput source="q" alwaysOn />,
+  <TextInput label="Name" source="name" />,
+]; */
+
 export const ProductList = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectProduct, setSelectedProduct] = useState('');
@@ -216,7 +222,7 @@ export const ProductList = () => {
 
   return (
     <>
-      <List title="Productos" actions={<ListActions />}
+      <List title="Productos" actions={<ListActions />} /* filters={productFilters} */
         sx={{
           flex: 1,
           display: "flex",
@@ -278,7 +284,7 @@ export const ProductList = () => {
                         fontWeight: "bold",
                         textTransform: "none",
                         "&:hover": {
-                          backgroundColor: "#f44336",
+                          backgroundColor: "#FD346E",
                         },
                       }}
                     />
@@ -323,7 +329,7 @@ export const ProductList = () => {
           selectedImage={selectedImage} 
           handleThumbnailClick={handleThumbnailClick} 
         />
-    </List>
-  </>
+      </List>
+    </>
   )
 };

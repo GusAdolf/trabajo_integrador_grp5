@@ -139,7 +139,6 @@ export const ProductDetail = () => {
         );
     }
 
-
     // Lógica de RESERVA
 
     const price = product.price ?? 0;
@@ -220,7 +219,6 @@ export const ProductDetail = () => {
             }
         });
     };
-
 
     // Ordenar reseñas
 
@@ -319,13 +317,13 @@ export const ProductDetail = () => {
 
     return (
         <Box sx={{ width: "90%", margin: "0 auto", mt: 4 }}>
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <RedesSociales />
             </Box>
 
             {/* Sección principal: Imágenes */}
             <Grid container spacing={2}>
-                <Grid item xs={12} md={8} sx={{ mt: 6 }}>
+                <Grid item xs={12} md={8} sx={{ mt: 3 }}>
                     <img
                         src={product.imageSet?.[0]?.imageUrl || PLACEHOLDER_IMAGE}
                         alt="Principal"
@@ -338,7 +336,7 @@ export const ProductDetail = () => {
                     />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <Grid container spacing={1} sx={{ mt: 5 }}>
+                    <Grid container spacing={1} sx={{ mt: 2 }}>
                         {product.imageSet?.slice(1, 5).map((img, index, arr) => (
                             <Grid item xs={6} key={index} sx={{ position: "relative" }}>
                                 <img
@@ -364,7 +362,13 @@ export const ProductDetail = () => {
                                             right: 10,
                                             fontSize: "0.8rem",
                                             padding: "5px 10px",
-                                            backgroundColor: "#FD346E"
+                                            backgroundColor: "#ffff",
+                                            color: "#FD346E",
+                                            width: "60%",
+                                            "&:hover": {
+                                                backgroundColor: "#FD346E",
+                                                color: "#ffff",
+                                            },
                                         }}
                                     >
                                         Ver Más
@@ -376,22 +380,55 @@ export const ProductDetail = () => {
                 </Grid>
             </Grid>
 
-            <Typography variant="h4" fontWeight="bold" sx={{ mt: 2 }}>
+            <Typography variant="h4" fontWeight="bold" sx={{ mt: 2, color: "#1C274C" }}>
                 {product.name}
             </Typography>
 
+            {/* Sección Descripción/Detalles + Sección Reserva */}
             <Grid container spacing={3} sx={{ mt: 2 }}>
                 {/* Descripción y detalles */}
                 <Grid item xs={12} md={8}>
-                    <Typography variant="h6" fontWeight="bold">
+                    <Typography variant="h6" fontWeight="bold" sx={{ color: "#1C274C"}}>
                         Descripción
                     </Typography>
                     <Typography>{product.description}</Typography>
 
-                    <Typography variant="h6" fontWeight="bold" sx={{ mt: 2 }}>
+                    <Typography variant="h6" fontWeight="bold" sx={{ mt: 2, color: "#1C274C"}}>
                         Detalles
                     </Typography>
-                    <Box sx={{ mt: 2 }}>
+
+                    {/* Aquí unimos la parte dinámica de features con la parte fija de Adriana */}
+                    <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 2 }}>
+                        {/* Mapeo de features dinámicas */}
+                        {product.features?.map((feature) => (
+                            <Box 
+                                key={feature.id} 
+                                sx={{ 
+                                    display: "flex", 
+                                    alignItems: "center", 
+                                    gap: 1, 
+                                    pb: 1,
+                                    borderBottom: "1px solid #FD346E", 
+                                    width: "100%",
+                                }}
+                            >
+                                <Avatar 
+                                    src={feature.iconUrl} 
+                                    alt={feature.name} 
+                                    sx={{ 
+                                        width: 18, 
+                                        height: 18, 
+                                        bgcolor: "#FFD1DC",
+                                        p: 1,
+                                    }} 
+                                />
+                                <Typography variant="body1" fontWeight="bold">
+                                    {feature.name}
+                                </Typography>
+                            </Box>
+                        ))}
+
+                        {/* Detalles fijos (duración, cupo, precio, etc.) */}
                         {[
                             {
                                 icon: <HourglassBottomIcon sx={{ color: "#FD346E" }} />,
@@ -422,7 +459,8 @@ export const ProductDetail = () => {
                                     gap: 1,
                                     mb: 1,
                                     borderBottom: "2px solid #FD346E",
-                                    pb: 1
+                                    pb: 1,
+                                    width: "100%"
                                 }}
                             >
                                 {detail.icon}
@@ -433,7 +471,7 @@ export const ProductDetail = () => {
                     </Box>
                 </Grid>
 
-                {/*Box de reserva */}
+                {/* Box de reserva */}
                 <Grid item xs={12} md={4}>
                     <Box
                         sx={{
@@ -447,7 +485,7 @@ export const ProductDetail = () => {
                             alignItems: "center"
                         }}
                     >
-                        <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
+                        <Typography variant="h5" fontWeight="bold" sx={{ mb: 4, color: "#1C274C", fontSize: "1.8rem"}}>
                             Reserva tu experiencia
                         </Typography>
 
@@ -507,7 +545,7 @@ export const ProductDetail = () => {
                                 inputProps={{
                                     min: 1,
                                     max: maxCapacity,
-                                    style: { textAlign: "center" }
+                                    style: { textAlign: "center", paddingLeft: "20px" }
                                 }}
                             />
 
@@ -521,14 +559,18 @@ export const ProductDetail = () => {
                             </IconButton>
                         </Box>
 
-                        <Typography fontWeight="bold" sx={{ mb: 3 }}>
+                        <Typography fontWeight="bold" sx={{ mb: 3, fontSize: "1.5rem", color: "#1C274C"}}>
                             Total: ${totalPrice.toFixed(2)}
                         </Typography>
 
                         <Button
                             variant="contained"
                             fullWidth
-                            sx={{ p: 2, fontSize: "1.1rem", backgroundColor: "#FD346E" }}
+                            sx={{
+                                p: 1.5,
+                                fontSize: "1.1rem",
+                                backgroundColor: "#FD346E"
+                            }}
                             onClick={handleGoToReview}
                         >
                             Reservar
@@ -552,7 +594,6 @@ export const ProductDetail = () => {
 
             {/* SECCIÓN de Reseñas */}
             <Box sx={{ mt: 6 }}>
-               
                 <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
                     Danos tu opinión
                 </Typography>
@@ -705,7 +746,6 @@ export const ProductDetail = () => {
                         borderRadius: 2,
                         boxShadow: 24,
                         p: 4,
-                        // Para usar #00CED1 en títulos, etc.
                         color: "#00CED1"
                     }}
                 >
@@ -755,7 +795,6 @@ export const ProductDetail = () => {
                         Cuéntanos más acerca de tu experiencia
                     </Typography>
 
-                    {/* Solo Comentario (mín. 15, máx. 250) */}
                     <TextField
                         fullWidth
                         multiline

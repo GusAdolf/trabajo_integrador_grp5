@@ -7,21 +7,30 @@ import {
   Pagination,
   InputAdornment,
   Chip,
+  Tooltip,
 } from "@mui/material";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import useFavorites from "../../hooks/useFavorites";
 
 export const Explore = () => {
-  const { products, categories: allCategories } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const { products, categories: allCategories, user } = useAuth();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
+
   const [page, setPage] = useState(1);
   const itemsPerPage = 6;
   const navigate = useNavigate();
+
+  /*   useEffect(() => {
+    fetchFavorites();
+  }, [user]); */
 
   useEffect(() => {
     setFilteredProducts(products);
@@ -188,6 +197,42 @@ export const Explore = () => {
                     display: "block",
                   }}
                 />
+                <Tooltip
+                  title={
+                    !user
+                      ? "Primero inicia sesión"
+                      : isFavorite(product.id)
+                      ? "Quitar de favoritos"
+                      : "Agregar a favoritos"
+                  }
+                  arrow
+                  placement="top"
+                >
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      zIndex: 2,
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      padding: "6px",
+                      boxShadow: 2,
+                      opacity: user ? 1 : 0.6,
+                      cursor: user ? "pointer" : "not-allowed",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (user) toggleFavorite(product.id);
+                    }}
+                  >
+                    {user && isFavorite(product.id) ? (
+                      <Favorite sx={{ color: "red" }} />
+                    ) : (
+                      <FavoriteBorder sx={{ color: "gray" }} />
+                    )}
+                  </Box>
+                </Tooltip>
                 {product.category?.title && (
                   <Chip
                     label={product.category.title}
@@ -204,7 +249,14 @@ export const Explore = () => {
               </Box>
 
               {/* Contenido de la tarjeta */}
-              <Box sx={{ p: 2, flexGrow: 1, display: "flex", flexDirection: "column" }}>
+              <Box
+                sx={{
+                  p: 2,
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   {product.name}
                 </Typography>
@@ -215,15 +267,21 @@ export const Explore = () => {
                   </Typography>
 
                 {/* Disponibilidad */}
-                <Box sx={{ display: "flex", alignItems: "center", mt: 1, gap: 1 }}>
-                  <CalendarMonthIcon sx={{ fontSize: "18px", color: "#00CED1" }} />
+                <Box
+                  sx={{ display: "flex", alignItems: "center", mt: 1, gap: 1 }}
+                >
+                  <CalendarMonthIcon
+                    sx={{ fontSize: "18px", color: "#00CED1" }}
+                  />
                   <Typography variant="body2">
                     {formattedDate || "No disponible"}
                   </Typography>
                 </Box>
 
                 {/* Ubicación */}
-                <Box sx={{ display: "flex", alignItems: "center", mt: 1, gap: 1 }}>
+                <Box
+                  sx={{ display: "flex", alignItems: "center", mt: 1, gap: 1 }}
+                >
                   <LocationOnIcon sx={{ fontSize: "18px", color: "#00CED1" }} />
                   <Typography variant="body2">
                     {product.city?.name || "Ubicación no especificada"},{" "}
@@ -233,24 +291,24 @@ export const Explore = () => {
 
                 {/* Precio */}
                 <Typography
-                  variant="h6"
+                  variant="h5"
                   sx={{
                     mt: "auto", // empuja el precio a la parte de abajo del contenedor
                     fontWeight: "bold",
-                    color: "#00CED1",
+                    color: "#1C274C",
                   }}
                 >
                   ${product.price}
                 </Typography>
 
                 <Button
-                                variant="contained"
-                                fullWidth
-                                sx={{ mt: 2, backgroundColor: "#00CED1" }}
-                                onClick={() => navigate(`/product/${product.id}`)} /// TODO: no olvidar cambiar esto
-                              >
-                                Reservar
-                              </Button>
+                  variant="contained"
+                  fullWidth
+                  sx={{ mt: 2, backgroundColor: "#00CED1" }}
+                  onClick={() => navigate(`/product/${product.id}`)} /// TODO: no olvidar cambiar esto
+                >
+                  Reservar
+                </Button>
               </Box>
             </Box>
           );
