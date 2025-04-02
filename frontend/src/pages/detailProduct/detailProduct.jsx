@@ -36,8 +36,6 @@ import {
 
 import Swal from "sweetalert2";
 import RedesSociales from "../../components/redesSociales/RedesSociales";
-
-// Servicios
 import { getBookings } from "../../services/bookingService";
 import { getReviewsByProduct, createReview } from "../../services/reviewService";
 
@@ -75,7 +73,7 @@ export const ProductDetail = () => {
     const [score, setScore] = useState(0);
     const [reviewComment, setReviewComment] = useState("");
 
-    // 1) Cargar producto
+    // Cargar producto
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -92,7 +90,7 @@ export const ProductDetail = () => {
         fetchProduct();
     }, [id]);
 
-    // 2) Cargar reseñas del producto
+    // Cargar reseñas del producto
     useEffect(() => {
         const loadReviews = async () => {
             if (!id) return;
@@ -102,7 +100,7 @@ export const ProductDetail = () => {
         loadReviews();
     }, [id]);
 
-    // 3) Verificar si el usuario tiene booking para este producto
+    //Verificar si el usuario tiene booking para este producto
     useEffect(() => {
         const checkUserBooking = async () => {
             try {
@@ -141,9 +139,9 @@ export const ProductDetail = () => {
         );
     }
 
-    // ----------------------------------------------------
+
     // Lógica de RESERVA
-    // ----------------------------------------------------
+
     const price = product.price ?? 0;
     const availableDates = product.availabilitySet?.map((avail) => avail.date) || [];
     const maxCapacity =
@@ -223,9 +221,9 @@ export const ProductDetail = () => {
         });
     };
 
-    // ----------------------------------------------------
+
     // Ordenar reseñas
-    // ----------------------------------------------------
+
     const sortedReviews = [...reviews];
     if (orderBy === "relevante") {
         // score DESC, luego fecha DESC
@@ -250,9 +248,8 @@ export const ProductDetail = () => {
         setCurrentPage(value);
     };
 
-    // ----------------------------------------------------
     // Manejo del Modal "Escribir una opinión"
-    // ----------------------------------------------------
+
     const handleOpenReviewModal = () => {
         // Verifica si hay token
         const token = localStorage.getItem("token");
@@ -305,11 +302,11 @@ export const ProductDetail = () => {
 
             handleCloseReviewModal();
 
-            // 1) Recargar reseñas
+            // Recargar reseñas
             const updatedReviews = await getReviewsByProduct(id);
             setReviews(updatedReviews || []);
 
-            // 2) Recargar producto para refrescar el averageScore
+            // Recargar producto para refrescar el averageScore
             const response = await fetch(`${API_BASE_URL}/products/${id}`);
             if (response.ok) {
                 const updatedProduct = await response.json();
@@ -384,7 +381,7 @@ export const ProductDetail = () => {
             </Typography>
 
             <Grid container spacing={3} sx={{ mt: 2 }}>
-                {/* COLUMNA IZQUIERDA: descripción y detalles */}
+                {/* Descripción y detalles */}
                 <Grid item xs={12} md={8}>
                     <Typography variant="h6" fontWeight="bold">
                         Descripción
@@ -436,7 +433,7 @@ export const ProductDetail = () => {
                     </Box>
                 </Grid>
 
-                {/* COLUMNA DERECHA: Box de reserva */}
+                {/*Box de reserva */}
                 <Grid item xs={12} md={4}>
                     <Box
                         sx={{
@@ -555,7 +552,11 @@ export const ProductDetail = () => {
 
             {/* SECCIÓN de Reseñas */}
             <Box sx={{ mt: 6 }}>
-                {/* Botón para abrir el modal de nueva reseña */}
+               
+                <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
+                    Danos tu opinión
+                </Typography>
+            
                 <Button 
                     variant="contained" 
                     onClick={handleOpenReviewModal}
@@ -564,7 +565,6 @@ export const ProductDetail = () => {
                     Escribir una opinión
                 </Button>
 
-                {/* Título: Opiniones de nuestros clientes */}
                 <Typography variant="h5" sx={{ mb: 3, fontWeight: "bold" }}>
                     Opiniones de nuestros clientes
                 </Typography>
@@ -709,7 +709,6 @@ export const ProductDetail = () => {
                         color: "#00CED1"
                     }}
                 >
-                    {/* Botón "X" para cerrar modal */}
                     <IconButton
                         onClick={handleCloseReviewModal}
                         sx={{ position: "absolute", top: 8, right: 8, color: "#00CED1" }}

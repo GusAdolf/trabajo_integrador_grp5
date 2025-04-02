@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
@@ -26,7 +25,6 @@ import {
 import Swal from 'sweetalert2';
 import { createBooking } from '../../services/bookingService';
 import Login from "../../components/login/Login";
-// Importamos el modal de confirmación de reserva
 import ReservaConfirmada from "../../components/reservaConfirmada/ReservaConfirmada";
 
 // Función para obtener los datos del usuario desde localStorage
