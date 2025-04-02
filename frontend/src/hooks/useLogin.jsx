@@ -6,7 +6,6 @@ const useLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -27,9 +26,8 @@ const useLogin = () => {
     return messages;
   };
 
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log("Se llamó esstá función *****");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const validationErrors = validateFields(email, password);
 
     if (validationErrors.length > 0) {
@@ -37,10 +35,14 @@ const useLogin = () => {
       return;
     }
 
-    login(email, password);
-    setError("");
-    setEmail("");
-    setPassword("");
+    try {
+      await login(email, password);
+      setError("");
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const handleInputChange = (setter) => (e) => {
@@ -51,6 +53,7 @@ const useLogin = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   return {
     handleSubmit,
     handleInputChange,
