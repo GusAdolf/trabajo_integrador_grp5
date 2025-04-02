@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   getFavorites,
@@ -11,14 +11,20 @@ const useFavorites = () => {
   const { user } = useAuth();
   const [favorites, setFavorites] = useState([]);
 
+  useEffect(() => {
+    if (user) {
+      fetchFavorites();
+    }
+  }, [user]);
+
   const isFavorite = (productId) =>
-    favorites.some((fav) => fav.product.id === productId);
+    favorites.some((fav) => fav.product.id == productId);
 
   const toggleFavorite = async (productId) => {
     if (!user) return;
 
     try {
-      const favorite = favorites.find((fav) => fav.product.id === productId);
+      const favorite = favorites.find((fav) => fav.product.id == productId);
       if (favorite) {
         await removeFavorite(favorite.id);
       } else {
