@@ -165,7 +165,7 @@ export const ProductDetail = () => {
     return (
         <Box sx={{ width: "90%", margin: "0 auto", mt: 4 }}>
             <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-                <RedesSociales />
+                <RedesSociales productId={id}/>
             </Box>
 
             <Grid container spacing={2}>
