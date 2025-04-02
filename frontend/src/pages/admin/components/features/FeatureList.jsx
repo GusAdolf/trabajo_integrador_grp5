@@ -27,16 +27,18 @@ const IconFeatureField = ({source, label}) => {
 
 const Actions = ({ label }) => {
   return (
-    <Box display="flex" gap={1} label={label} >
+    <Box display="flex" gap={2} label={label} alignItems={"center"}>
       <EditButton 
         label={false}
         sx={{
+            color: "white",
             backgroundColor: "#00CED1",
             borderRadius: "10px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
             padding: "10px 10px 10px 20px",
             fontWeight: "bold",
             textTransform: "none",
+            width: "25%",
             "&:hover": {
               backgroundColor: "#00B3B3",
             },
@@ -53,7 +55,7 @@ const Actions = ({ label }) => {
           padding: "10px 10px 10px 20px",
           fontWeight: "bold",
           textTransform: "none",
-          width: "100%",
+          width: "25%",
           "&:hover": {
             backgroundColor: "#a00",
           },

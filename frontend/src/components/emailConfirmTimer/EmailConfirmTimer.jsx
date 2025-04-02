@@ -28,7 +28,7 @@ function formatTime(totalSeconds) {
 
 // eslint-disable-next-line react/prop-types
 export const EmailConfirmTimer = ({ open, onClose, onTimerEnd }) => {
-    const [timeLeft, setTimeLeft] = useState(60);
+    const [timeLeft, setTimeLeft] = useState(10);
 
     useEffect(() => {
         if (!open) return;

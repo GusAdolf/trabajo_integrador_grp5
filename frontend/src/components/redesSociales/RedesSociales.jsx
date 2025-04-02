@@ -71,6 +71,13 @@ const RedesSociales = () => {
                     variant="outlined"
                     onClick={handleOpenMenu}
                     startIcon={<ShareIcon />}
+                    sx={{
+                        color:"#1C274C",
+                        borderColor:"#1C274C",
+                        "&:hover": {
+                            borderColor:"#1C274C",
+                        },
+                    }}
                 >
                     Redes sociales
                 </Button>
@@ -113,7 +120,7 @@ const RedesSociales = () => {
             </Box>
 
             {/* Botón "Guardar" */}
-            <Button variant="outlined" startIcon={<FavoriteIcon />}>
+            <Button variant="outlined" startIcon={<FavoriteIcon />} sx={{ color:"#1C274C", borderColor:"#1C274C"}}>
                 Guardar
             </Button>
         </Box>
