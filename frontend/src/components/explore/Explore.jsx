@@ -15,55 +15,22 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import {
-  getFavorites,
-  addFavorite,
-  removeFavorite,
-} from "../../services/favoriteService";
+import useFavorites from "../../hooks/useFavorites";
 
 export const Explore = () => {
+  const { isFavorite, toggleFavorite } = useFavorites();
   const { products, categories: allCategories, user } = useAuth();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
-  const [favorites, setFavorites] = useState([]);
+
   const [page, setPage] = useState(1);
   const itemsPerPage = 6;
   const navigate = useNavigate();
 
-  const isFavorite = (productId) =>
-    favorites.some((fav) => fav.product.id === productId);
-
-  const toggleFavorite = async (productId) => {
-    if (!user) return;
-
-    try {
-      const favorite = favorites.find((fav) => fav.product.id === productId);
-      if (favorite) {
-        await removeFavorite(favorite.id);
-      } else {
-        await addFavorite(productId);
-      }
-      fetchFavorites();
-    } catch (error) {
-      console.error("Error al modificar favorito:", error);
-    }
-  };
-
-    const fetchFavorites = async () => {
-      if (!user) return;
-      
-      try {
-        const favorites = await getFavorites();
-        setFavorites(favorites);
-      } catch (error) {
-        console.error("Error al obtener favoritos:", error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchFavorites();
-    }, [user]);
+  /*   useEffect(() => {
+    fetchFavorites();
+  }, [user]); */
 
   useEffect(() => {
     setFilteredProducts(products);
