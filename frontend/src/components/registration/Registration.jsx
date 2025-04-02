@@ -98,9 +98,9 @@ export const Registration = ({ open, setOpen }) => {
             <div className={`${namespace}-title`}>
               <Typography
                 id="modal-modal-title"
-                variant="h6"
+                variant="h5"
                 component="h2"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "40px" }}
+                sx={{ color: "white", fontWeight: "bold", fontSize: "40px", fontFamily:"Outfit", textAlign: "center" }}
               >
                 Hola, crea tu cuenta de Xplora+
               </Typography>
@@ -254,7 +254,7 @@ export const Registration = ({ open, setOpen }) => {
               <Typography sx={{ mt: 2, color: "white" }}>
                 ¿Ya tienes una cuenta?
               </Typography>
-              <Typography sx={{ mt: 2 }}>Inicia Sesión</Typography>
+              <Typography sx={{ mt: 2, fontWeight:"Bold" }}>Inicia Sesión</Typography>
             </Box>
           </Box>
         </Box>
