@@ -178,14 +178,15 @@ const Search = ({defaultValues}) => {
 
   return (
     <Card sx={{ 
-      maxWidth: '100%', 
+      minWidth: '65%', 
       margin: 'auto 3rem', 
       boxShadow: 3,
       borderRadius: 2,
-      my:"40px"
+      my:"20px"
     }}>
       <CardHeader 
-        title="Explora y reserva" 
+        title="Explora y reserva"
+        titleTypographyProps={{ variant: 'h5', fontWeight: 'bold', color: '#fff' }} 
         sx={{ 
           backgroundColor:"#00CED1",
           color: '#fff',
@@ -360,7 +361,11 @@ const Search = ({defaultValues}) => {
                   py: 1.5,
                   textTransform: 'none',
                   fontWeight: 'bold',
-                  backgroundColor:"#00CED1"
+                  backgroundColor:"#00CED1",
+                  "&:hover": {
+                    backgroundColor: "#00B3B3",
+                  }
+                  
                   
                 }}
               >

@@ -38,6 +38,7 @@ import "./styles.css";
 import { useAuth } from "../../context/AuthContext";
 import { getCategories, getProductsByCategory, createCategory, deleteCategory } from "../../services/categoryService";
 import { getFeatures, createFeature, updateFeature, deleteFeature } from "../../services/featuresService";
+import WarningIcon from '@mui/icons-material/Warning';
 import { getUsers } from "../../services/productService";
 /* import {
   Header,
@@ -418,8 +419,8 @@ const theme = createTheme({
       main: '#4caf50', // Cambia el color principal (verde en este caso)
     }, */
     secondary: {
-      light: '#f44336',
-      main: '#000000', // Cambia el color secundario (rojo en este caso)
+      light: '#FD346E',
+      main: '#FD346E', // Cambia el color secundario (rojo en este caso)
     },
   },
   /* typography: {
@@ -456,10 +457,21 @@ export const AdminPage = () => {
           padding: "20px",
           color: "red",
           fontSize: "18px",
+          display: "flex", justifyContent: "center", alignItems: "center", 
+          height: "100vh",
         }}
       >
-        ❌ No puedes acceder al panel de administración desde un dispositivo
-        móvil. Usa un ordenador.
+        <div style={{ width: "100%", maxWidth: "400px", backgroundColor: "#ffff", borderRadius: "10px", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)" }}>  
+          <div style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "10px", backgroundColor: "#FD346E", color: "white", height: "80%", padding: "10px", borderRadius: "10px 10px 0 0" }}> 
+            <WarningIcon style={{ fontSize: "40px", marginRight: "10px" }} />
+            
+          </div>
+          <p style={{color:"#616161"}}>❌ No puedes acceder al panel de administración desde un dispositivo
+          móvil. Usa un ordenador.
+          </p>
+          
+        </div>
+        
       </div>
     );
   }

@@ -286,11 +286,11 @@ export const Explore = () => {
 
                 {/* Precio */}
                 <Typography
-                  variant="h6"
+                  variant="h5"
                   sx={{
                     mt: "auto", // empuja el precio a la parte de abajo del contenedor
                     fontWeight: "bold",
-                    color: "#00CED1",
+                    color: "#1C274C",
                   }}
                 >
                   ${product.price}
