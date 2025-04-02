@@ -57,8 +57,8 @@ export const ImageSlider = () => {
       width: "90%", 
       margin: "auto", 
       overflow: "hidden",
-      mt: 2, 
-      mb: 4
+      mt: 3, 
+      mb: 1
     }}>
       <Slider {...settings}>
         {images.map((src, index) => (
@@ -80,6 +80,8 @@ export const ImageSlider = () => {
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
+                fontSize: "3rem",
+                fontFamily:"Outfit",
                 color: "white",
                 fontWeight: "bold",
                 textAlign: "center",
