@@ -53,13 +53,13 @@ export const Footer = () => {
             justifyContent: "center",
           }}
         >
-          <box xs={{ with: "250px" }}>
+          <Box xs={{ with: "250px" }}>
             <img
               src="/assets/logowhite.svg"
               alt="logo xplora+"
               style={{ width: "100%" }}
             />
-          </box>
+          </Box>
 
           <Typography
             variant="subtitle1"
@@ -128,7 +128,7 @@ export const Footer = () => {
             Trabaja con nosotros
           </Typography>
 
-          <box>
+          <Box>
             <Typography
               variant="subtitle1"
               fontWeight="regular"
@@ -173,7 +173,7 @@ export const Footer = () => {
             >
               Alojamientos
             </Typography>
-          </box>
+          </Box>
 
           <Typography
             variant="subtitle1"
@@ -188,7 +188,7 @@ export const Footer = () => {
             Síguenos
           </Typography>
 
-          <box>
+          <Box>
             <IconButton
               sx={{ color: "white", mx: 1,"&:hover": {
                 fontWeight: "bold",
@@ -229,7 +229,7 @@ export const Footer = () => {
             >
               <Twitter fontSize="large" />
             </IconButton>
-          </box>
+          </Box>
         </Grid>
 
         {/* contactanos */}
@@ -254,7 +254,7 @@ export const Footer = () => {
           >
             Contáctanos
           </Typography>
-          <box>
+          <Box>
             <Box
               display="flex"
               justifyContent="start"
@@ -273,7 +273,7 @@ export const Footer = () => {
               <Email sx={{ mr: 2, fontSize: 30 }} />
               <Typography variant="body1">contacto@empresa.com</Typography>
             </Box>
-          </box>
+          </Box>
 
           <Typography
             variant="subtitle1"
@@ -286,7 +286,7 @@ export const Footer = () => {
           >
             Descarga nuestra APP
           </Typography>
-          <box>
+          <Box>
             <Box
               display="flex"
               justifyContent="start"
@@ -300,7 +300,7 @@ export const Footer = () => {
               <AndroidIcon sx={{ mr: 2, fontSize: 30 }} />
               <Typography variant="body1">Android App</Typography>
             </Box>
-          </box>
+          </Box>
         </Grid>
       </Grid>
 
