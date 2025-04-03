@@ -23,7 +23,6 @@ html {
   z-index: 9999 !important;
 }
 
-<<<<<<< HEAD
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -41,7 +40,8 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
-=======
+}
+
 /* spinner anitmation */
 @keyframes spinner {
   0% {
@@ -53,5 +53,4 @@ html {
 }
 .spinner {
   animation: spinner 1s linear infinite;
->>>>>>> 09c2f901b8fa8807ab4c0f6037c25609120a1e4b
 }
