@@ -35,14 +35,14 @@ const Login = ({ open, handleClose }) => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 400,
+          width: 430,
           bgcolor: "white",
           boxShadow: 24,
           p: 4,
           borderRadius: 2,
         }}
       >
-        {}
+        {/* Encabezado con logo y botón de cerrar */}
         <Box sx={{ height: "90px" }}>
           <img
             src="assets/logo.svg"
@@ -69,17 +69,18 @@ const Login = ({ open, handleClose }) => {
           </IconButton>
         </Box>
 
-        {}
+        {/* Título */}
         <Typography
-          variant="h6"
+          variant="h5"
           textAlign="center"
           fontWeight="bold"
           gutterBottom
+          sx={{ mt: 2, color: "#1C274C", fontFamily: "Outfit", fontSize: "28px", mb: 5 }}
         >
           Inicia sesión para acceder a lo mejor de Xplora+
         </Typography>
 
-        {}
+        {/* Formulario */}
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
@@ -109,8 +110,9 @@ const Login = ({ open, handleClose }) => {
             }}
           />
 
+          {/* Mensaje de error si las credenciales son inválidas */}
           {error && (
-            <Typography color="error" textAlign="center">
+            <Typography color="error" textAlign="center" sx={{ mt: 1 }}>
               {error}
             </Typography>
           )}
@@ -118,7 +120,7 @@ const Login = ({ open, handleClose }) => {
           <Typography
             variant="body2"
             textAlign="right"
-            sx={{ color: "#00CED1", cursor: "pointer", mt: 1 }}
+            sx={{ color: "#00CED1", cursor: "pointer", mt: 3,  }}
           >
             ¿Has olvidado tu contraseña?
           </Typography>
@@ -126,7 +128,7 @@ const Login = ({ open, handleClose }) => {
           <Button
             fullWidth
             variant="contained"
-            sx={{ mt: 2, backgroundColor: "#00CED1", color: "white" }}
+            sx={{ mt: 3, backgroundColor: "#00CED1", color: "white", fontWeight: "bold", padding: "10px 0", "&:hover": { backgroundColor: "#45D0D2" } }}
             type="submit"
           >
             Iniciar sesión
