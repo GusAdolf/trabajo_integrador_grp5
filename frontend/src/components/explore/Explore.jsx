@@ -303,7 +303,7 @@ export const Explore = () => {
                   sx={{ mt: 2, backgroundColor: "#00CED1" }}
                   onClick={() => navigate(`/product/${product.id}`)} /// TODO: no olvidar cambiar esto
                 >
-                  Reservar
+                  Ver detalles
                 </Button>
               </Box>
             </Box>
