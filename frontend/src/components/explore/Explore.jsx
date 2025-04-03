@@ -87,7 +87,7 @@ export const Explore = () => {
         >
           Explora más
         </Typography>
-        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap",backgroundColor:"#ffff" }}>
           <TextField
             variant="outlined"
             size="small"
