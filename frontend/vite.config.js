@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // Usa la variable de entorno para el dominio del frontend, con un fallback
-const frontDomain = process.env.VITE_FRONT_DOMAIN || 'frontend-production-bdd1.up.railway.app'
+const frontDomain = process.env.VITE_FRONT_DOMAIN || 'exploramas.com'
 
 export default defineConfig({
   plugins: [react()],
