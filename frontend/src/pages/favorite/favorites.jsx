@@ -11,11 +11,13 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import useFavorites from "../../hooks/useFavorites";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const Favorites = () => {
   const { user } = useAuth();
   const { isFavorite, toggleFavorite, favorites } = useFavorites();
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   return (
     <Box sx={{ p: 4, height: "44%" }}>
