@@ -50,10 +50,15 @@ const ImageCategoryField = ({source, label}) => {
 
 const Actions = ({ label }) => {
   return (
-    <Box display="flex" gap={1} label={label} >
+    <Box gap={2} label={label} sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
       {/* <EditButton label={false} 
         sx={{
             backgroundColor: "#00CED1",
+            color: "white",
             borderRadius: "10px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
             padding: "10px 10px 10px 20px",
@@ -73,7 +78,6 @@ const Actions = ({ label }) => {
           padding: "10px 10px 10px 20px",
           fontWeight: "bold",
           textTransform: "none",
-          width: "100%",
           "&:hover": {
             backgroundColor: "#a00",
           },
@@ -92,22 +96,45 @@ const ListActions = () => (
 );
 
 export const CategoryList = () => (
-  <List title="Categorías" actions={<ListActions />}
+  <List title="CATEGORÍAS" actions={<ListActions />}
     sx={{
-      height: "80vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "0px 50px"
+      margin: "20px"
     }}
   >
-    <DatagridConfigurable rowClick={false} bulkActionButtons={false} >
-      <TextField source="id" />
-      <TitleField source="title" label="Nombre" />
-      <ImageCategoryField source="imageUrl" label="Imagen" />
-      <DescriptionField source="description" label="Descripción" />
-      <ReferenceManyCount label="Productos asignados" reference="products" target="category_id" />
-      <Actions label="Acciones" />
+    <DatagridConfigurable rowClick={false} bulkActionButtons={false} 
+      empty={
+        <div style={{ 
+            textAlign: "center", 
+            padding: "20px" 
+          }}
+        >
+          Aún no se ha registrado ninguna categoría.
+        </div>
+      }
+      sx={{
+        "& .RaDatagrid-headerCell": {
+          fontWeight: "bold",
+          backgroundColor: "#000000",
+          color: "white",
+          textAlign: "center",
+          minWidth: "200px"
+        },
+        '& .column-id': { 
+          minWidth: '100px' 
+        },
+        '& .column-description': { 
+          minWidth: '400px'
+        },
+        "& .RaDatagrid-rowCell": {
+          textAlign: "center"
+        }
+      }}>
+      <TextField source="id" label="ID" sortable={false} />
+      <TitleField source="title" label="TÍTULO" sortable={false} />
+      <ImageCategoryField source="imageUrl" label="IMAGEN" sortable={false} />
+      <DescriptionField source="description" label="DESCRIPCIÓN" sortable={false} />
+      <ReferenceManyCount label="CANT. PRODUCTOS ASIGNADOS" reference="products" target="category_id" sortable={false} />
+      <Actions label="ACCIONES" />
     </DatagridConfigurable>
   </List>
 );

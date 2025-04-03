@@ -7,17 +7,25 @@ import {
   Typography,
   IconButton,
   Button,
+  Tooltip,
 } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import useFavorites from "../../hooks/useFavorites";
 
 export const Recommendations = () => {
-  const { products: allProducts } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const { products: allProducts, user } = useAuth();
   const [products, setProducts] = useState([]);
   const [index, setIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
   const navigate = useNavigate();
+
+  /*       useEffect(() => {
+        fetchFavorites();
+      }, [user]); */
 
   useEffect(() => {
     // Prepara los productos con la primera imagen o un placeholder
@@ -122,16 +130,54 @@ export const Recommendations = () => {
                   flex: "0 0 auto",
                 }}
               >
-                <CardMedia
-                  component="img"
-                  sx={{
-                    height: 220,
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                  image={product.imageUrl}
-                  alt={product.name}
-                />
+                <Box sx={{ position: "relative" }}>
+                  <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    style={{
+                      width: "100%",
+                      height: 220,
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                  <Tooltip
+                    title={
+                      !user
+                        ? "Primero inicia sesión"
+                        : isFavorite(product.id)
+                        ? "Quitar de favoritos"
+                        : "Agregar a favoritos"
+                    }
+                    arrow
+                    placement="top"
+                  >
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        zIndex: 2,
+                        backgroundColor: "white",
+                        borderRadius: "50%",
+                        padding: "6px",
+                        boxShadow: 2,
+                        opacity: user ? 1 : 0.6,
+                        cursor: user ? "pointer" : "not-allowed",
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (user) toggleFavorite(product.id);
+                      }}
+                    >
+                      {user && isFavorite(product.id) ? (
+                        <Favorite sx={{ color: "red" }} />
+                      ) : (
+                        <FavoriteBorder sx={{ color: "gray" }} />
+                      )}
+                    </Box>
+                  </Tooltip>
+                </Box>
 
                 <CardContent
                   sx={{
@@ -174,7 +220,7 @@ export const Recommendations = () => {
                   >
                     <Typography variant="body2">⏳ {availableDate}</Typography>
                     <Typography variant="body2">
-                      ⭐ {product.rating || "N/A"}
+                    ⭐{product.averageScore.toFixed(1) ?? "N/A"}
                     </Typography>
                   </Box>
 

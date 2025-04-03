@@ -23,6 +23,8 @@ import {
   DialogActions, 
   DialogContent, 
   DialogTitle, 
+  Grid, 
+  Stack,
 } from '@mui/material'
 import { createCity } from "../../../../services/citiesService";
 
@@ -35,11 +37,8 @@ const ImageFieldWithPreview = ({ source }) => {
 
   return (
     <>
-      <TextInput source={source} label="URL de imagen" validate={required()} onChange={handleImageUrlChange} />
-
       {imageUrl && (
-        <div style={{ marginTop: '20px' }}>
-          <h3>Vista previa:</h3>
+        <div style={{ marginTop: '15px' }}>
           <img
             src={imageUrl}
             alt="Vista previa"
@@ -47,6 +46,7 @@ const ImageFieldWithPreview = ({ source }) => {
           />
         </div>
       )}
+      <TextInput source={source} label="URL de imagen" validate={required()} onChange={handleImageUrlChange} />
     </>
   );
 };
@@ -119,34 +119,60 @@ const CityInput = ({ source, reference }) => {
 
   return (
     <>
-      {!openModal ?
-      (<ReferenceInput source={source} reference={reference} >
-        <SelectInput label="Ciudad" 
-          optionText={(record) => `${record.name}, ${record.country}`} 
-        />
-        {/* <AutocompleteInput label="Ciudad" optionText={(record) => `${record.name} - ${record.country}`} /> */}
-      </ReferenceInput>
-      ): (
-        console.log("no render")  
-      )}
-      <Button label="Añadir Ciudad" onClick={handleOpenModal} 
-        sx={{
-          backgroundColor: "#00CED1",
-          borderRadius: "10px",
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
-          padding: "10px 10px 10px 20px",
-          fontWeight: "bold",
-          textTransform: "none",
-          "&:hover": {
-            backgroundColor: "#00B3B3",
-          },
-        }}
-      />
-      <CreateCityModal 
-        open={openModal}
-        onClose={handleCloseModal}
-      />
-    </>
+          <Grid container sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}>
+            <Grid sx={{ width: "20%" }}>
+            <Button label="Añadir Ciudad" onClick={handleOpenModal} 
+              /* sx={{
+                backgroundColor: "#00CED1",
+                borderRadius: "10px",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                padding: "10px 10px 10px 20px",
+                fontWeight: "bold",
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: "#00B3B3",
+                },
+              }} */
+              sx={{
+                backgroundColor: "#FD346E",
+                color: "#ffffff",
+                width: "160px",
+                height: "44px", 
+                borderRadius: "22px",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
+                padding: "5px 5px",
+                fontWeight: "bold",
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: "#ED346E",
+                },
+                margin: "7px 0px 0px 0px",
+              }}
+            />
+            </Grid>
+            {!openModal ?
+              (
+                <Grid sx={{ width: "80%" }}>
+              <ReferenceInput source={source} reference={reference}>
+                <SelectInput label="Ciudad" 
+                  optionText={(record) => `${record.name}, ${record.country}`}
+                />
+                {/* <AutocompleteInput label="Ciudad" optionText={(record) => `${record.name} - ${record.country}`} /> */}
+              </ReferenceInput>
+            </Grid>
+              ) : (
+                console.log("no render")  
+              )
+            }
+          </Grid>
+          <CreateCityModal 
+            open={openModal}
+            onClose={handleCloseModal}
+          />
+        </>
   );
 }
 
@@ -159,30 +185,34 @@ const MyToolbar = () => (
 export const ProductCreate = () => {
 
   return (
-    <Create title="Crear producto" >
-      <SimpleForm toolbar={<MyToolbar />}
+    <Create title="Crear producto" 
+    sx={{
+      margin: "20px 20px",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}>
+      <SimpleForm toolbar={<MyToolbar />} direction="row" gap={2}
         defaultValues={{
           imageSet: ["", "", "", "", ""],
           availabilitySet: [""],
         }}
       >
+
+      <Grid sx={{
+            minWidth: '55rem',
+          }}>
         <TextInput source="name" label="Nombre" fullWidth />
         <TextInput source="description" label="Descripción"
           multiline
-          rows={3}
-          fullWidth
-        />
-
-        <TextInput source="price" label="Precio" fullWidth />
-        <NumberInput source="capacity" label="Capacidad Máxima (global)"
-          fullWidth
-          min={1}
+          rows={5}
+          /* fullWidth */
         />
 
         <TextInput source="address" label="Dirección"
           multiline
           rows={2}
-          fullWidth
+          /* fullWidth */
         />
         {/* <ReferenceInput source="city_id" reference="cities" >
           <SelectInput label="Ciudad" 
@@ -190,12 +220,63 @@ export const ProductCreate = () => {
           />
         </ReferenceInput> */}
         <CityInput source="city_id" reference="cities" />
+
+        <Grid sx={{
+          display: "flex",
+          alignItems: "initial",
+          justifyContent: "center",
+          gap: "20px",
+        }} >
+          <Grid sx={{ width: "50%" }}>
+        <Stack direction="row" gap={2} >
+          <TextInput source="price" label="Precio (USD)" /* fullWidth */ />
+          <NumberInput source="capacity" label="Capacidad Máxima (global)"
+            /* fullWidth */
+            min={1}
+          />
+        </Stack>
         
         <ReferenceInput source="category_id" reference="categories" >
           <SelectInput label="Categoría" />
         </ReferenceInput>
-              
-        {/* Imágenes */}
+
+        <ReferenceArrayInput source="features_ids" reference="features" label="Características" >
+          <SelectArrayInput label="Características"/>
+          {/* <AutocompleteArrayInput label="code" /> */}
+        </ReferenceArrayInput>
+        </Grid>
+
+        <Grid sx={{
+            width: "50%",
+            maxHeight: '30vh',
+            overflowY: 'auto',
+            padding: '5px 0px',
+          }}
+          >
+        <Typography variant="subtitle1"  fontWeight="bold">
+          Disponibilidad
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 1 }}>
+          Seleccione las fechas en las que estará disponible el
+          producto.
+        </Typography>
+        <ArrayInput source="availabilitySet" label="" >
+          <SimpleFormIterator disableReordering getItemLabel={index => `#${index + 1}`} >
+            <DateInput label="Fecha" source="date" />
+          </SimpleFormIterator>
+        </ArrayInput>
+        </Grid>
+        </Grid>
+        </Grid>
+
+        <Grid 
+          sx={{
+            maxHeight: '80vh',
+            overflowY: 'auto',
+            padding: '8px', 
+            minWidth: '36rem'
+          }}
+        >
         <Typography
           variant="subtitle1"
           fontWeight="bold"
@@ -206,29 +287,11 @@ export const ProductCreate = () => {
         <ArrayInput source="imageSet" label="" >
           {/* initialCount={5} para 5 campos por defecto, 
               aunque ya creamos 5 con defaultValues */}
-          <SimpleFormIterator initialCount={5}>
+          <SimpleFormIterator initialCount={5} disableReordering getItemLabel={index => `#${index + 1}`} >
             <ImageFieldWithPreview source="imageUrl" />
           </SimpleFormIterator>
         </ArrayInput>
-
-        <Typography variant="h6" sx={{ mt: 2 }} fontWeight="bold">
-          Disponibilidad
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 1 }}>
-          Seleccione las fechas en las que estará disponible el
-          producto. Puede agregar más con el botón “Agregar”.
-        </Typography>
-        <ArrayInput source="availabilitySet" label="" >
-          <SimpleFormIterator>
-            <DateInput label="Fecha" source="date" />
-          </SimpleFormIterator>
-        </ArrayInput>
-
-        <ReferenceArrayInput source="features_ids" reference="features" label="Características" >
-          <SelectArrayInput label="Características"/>
-          {/* <AutocompleteArrayInput label="code" /> */}
-        </ReferenceArrayInput>
-        {/* <SaveButton label="Guardar" /> */}
+        </Grid>
       </SimpleForm>
     </Create>
   );

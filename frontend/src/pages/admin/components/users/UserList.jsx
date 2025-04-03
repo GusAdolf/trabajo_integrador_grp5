@@ -51,26 +51,47 @@ const ListActions = () => (
 );
 
 export const UserList = () => (
-  <List title="Usuarios" actions={<ListActions />} 
+  <List title="USUARIOS" actions={<ListActions />} 
     sx={{
-      height: "80vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "0px 50px"
+      margin: "20px"
     }}
   >
-    <DatagridConfigurable rowClick={false} bulkActionButtons={false} >
+    <DatagridConfigurable rowClick={false} bulkActionButtons={false} 
+      empty={
+        <div style={{ 
+            textAlign: "center", 
+            padding: "20px" 
+          }}
+        >
+          No se encontraron usuarios.
+        </div>
+      }
+      sx={{
+        "& .RaDatagrid-headerCell": {
+          fontWeight: "bold",
+          backgroundColor: "#000000",
+          color: "white",
+          textAlign: "center",
+          minWidth: "200px"
+        },
+        '& .column-id': { 
+          minWidth: '100px' 
+        },
+        "& .RaDatagrid-rowCell": {
+          textAlign: "center"
+        }
+      }}
+    >
       
-      <TextField source="id" label="Id" />
-      <DateField source="createdAt" label="Fecha creación" showTime />
-      <DateField source="updatedAt" label="Fecha edición" showTime />
+      <TextField source="id" label="ID" sortable={false} />
+      <DateField source="createdAt" label="FECHA CREACIÓN" showTime sortable={false} />
+      <DateField source="updatedAt" label="FECHA EDICIÓN" showTime sortable={false} />
 
-      <TextField source="firstname" label="Nombre" />
-      <TextField source="lastname" label="Apellido" />
-      <EmailField source="email" label="Correo electrónico" />
+      <TextField source="firstname" label="NOMBRE" />
+      <TextField source="lastname" label="APELLIDO" />
+      <EmailField source="email" label="CORREO ELECTRÓNICO" />
 
-      <EditableRoleField label="Rol" />
+      <EditableRoleField label="ROL" />
     </DatagridConfigurable>
   </List>
 );

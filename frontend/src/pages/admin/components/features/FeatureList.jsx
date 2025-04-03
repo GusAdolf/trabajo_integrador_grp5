@@ -27,10 +27,15 @@ const IconFeatureField = ({source, label}) => {
 
 const Actions = ({ label }) => {
   return (
-    <Box display="flex" gap={1} label={label} >
+    <Box gap={2} label={label} sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
       <EditButton 
         label={false}
         sx={{
+            color: "white",
             backgroundColor: "#00CED1",
             borderRadius: "10px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
@@ -42,8 +47,7 @@ const Actions = ({ label }) => {
             },
         }}
       />
-      <DeleteWithConfirmButton 
-        label={false} 
+      <DeleteWithConfirmButton label={false} 
         confirmContent="¿Estás seguro?" 
         sx={{
           backgroundColor: "#d33",
@@ -53,7 +57,6 @@ const Actions = ({ label }) => {
           padding: "10px 10px 10px 20px",
           fontWeight: "bold",
           textTransform: "none",
-          width: "100%",
           "&:hover": {
             backgroundColor: "#a00",
           },
@@ -63,7 +66,7 @@ const Actions = ({ label }) => {
   )
 }
 
-const CustomListActions = () => (
+const ListActions = () => (
   <TopToolbar>
     <SelectColumnsButton />
     {/* <FilterButton /> */}
@@ -72,21 +75,42 @@ const CustomListActions = () => (
 );
 
 export const FeatureList = () => (
-  <List title="Características" actions={<CustomListActions />}
+  <List title="CARACTERÍSTICAS" actions={<ListActions />}
     sx={{
-      height: "80vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      margin: "0px 50px"
+      margin: "20px"
     }}
   >
-    <DatagridConfigurable rowClick={false} bulkActionButtons={false} >
-      <TextField source="id" label="Id" />
-      <IconFeatureField source="iconUrl" label="Ícono" />
-      <TextField source="name" label="Nombre" />
+    <DatagridConfigurable rowClick={false} bulkActionButtons={false} 
+      empty={
+        <div style={{ 
+            textAlign: "center", 
+            padding: "20px" 
+          }}
+        >
+          Aún no se ha registrado ninguna característica.
+        </div>
+      }
+      sx={{
+        "& .RaDatagrid-headerCell": {
+          fontWeight: "bold",
+          backgroundColor: "#000000",
+          color: "white",
+          textAlign: "center",
+          minWidth: "200px"
+        },
+        '& .column-id': { 
+          minWidth: '50px' 
+        },
+        "& .RaDatagrid-rowCell": {
+          textAlign: "center"
+        }
+      }}
+    >
+      <TextField source="id" label="ID" sortable={false} />
+      <IconFeatureField source="iconUrl" label="ÍCONO" sortable={false} />
+      <TextField source="name" label="NOMBRE" sortable={false} />
       {/* <ReferenceManyCount label="Productos" reference="products" target="feature_id" /> */}
-      <Actions label="Acciones" />
+      <Actions label="ACCIONES" />
     </DatagridConfigurable>
   </List>
 );

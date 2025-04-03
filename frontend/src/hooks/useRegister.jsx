@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { registerUser } from "../services/productService";
 
 const useRegister = (setOpen) => {
+  const [ submitting, setSubmitting ] = useState(false);
   const [registrationData, setRegistrationData] = useState({
     firstname: "",
     lastname: "",
@@ -75,9 +76,11 @@ const useRegister = (setOpen) => {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     if (!validateFields()) return;
 
+    setSubmitting(true);
     try {
       await registerUser(registrationData);
       setRegistrationData({
@@ -98,6 +101,7 @@ const useRegister = (setOpen) => {
         text: error.message,
       });
     }
+    setSubmitting(false);
   };
 
   const handleTimerEnd = () => {
@@ -122,6 +126,8 @@ const useRegister = (setOpen) => {
     showReenvioModal,
     setChecked,
     setShowEmailConfirmModal,
+    setShowReenvioModal,
+    submitting,
   };
 };
 
