@@ -176,46 +176,55 @@ const BookingReview = () => {
       cancelButtonText: 'Cancelar',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          // Revisar si hay token
-          const token = localStorage.getItem('token');
-          if (!token) {
-            setOpenLogin(true);
-            return;
+        const swalInstance = Swal.fire({
+          title: 'Procesando reserva',
+          text: 'Por favor espera...',
+          icon: 'info',
+          showConfirmButton: false,
+          didOpen: async () => {
+            // Revisar si hay token
+            const token = localStorage.getItem('token');
+            if (!token) {
+              setOpenLogin(true);
+              return;
+            }
+
+            // Buscar disponibilidad según fecha
+            const formattedSelectedDate = new Date(selectedDate).toISOString().split('T')[0];
+            const selectedAvailability = product.availabilitySet?.find(
+              (a) => a.date === formattedSelectedDate
+            );
+
+            if (!selectedAvailability) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error de disponibilidad',
+                text: 'No se encontró disponibilidad para la fecha elegida.'
+              });
+              return;
+            }
+
+            // Armar payload
+            const bookingData = {
+              product_id: product.id,
+              availability_id: selectedAvailability.id,
+              quantity: selectedPeople
+            };
+
+            try {
+              /// Crear la reserva
+              const bookingResponse = await createBooking(bookingData);
+              if (bookingResponse) {
+                swalInstance.close();
+                // Mostramos modal de reserva confirmada
+                setReservaConfirmada(bookingResponse);
+                setOpenConfirmModal(true);
+              }
+            } catch (error) {
+              Swal.fire('Error', error.message, 'error');
+            }
           }
-
-          // Buscar disponibilidad según fecha
-          const formattedSelectedDate = new Date(selectedDate).toISOString().split('T')[0];
-          const selectedAvailability = product.availabilitySet?.find(
-            (a) => a.date === formattedSelectedDate
-          );
-
-          if (!selectedAvailability) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error de disponibilidad',
-              text: 'No se encontró disponibilidad para la fecha elegida.'
-            });
-            return;
-          }
-
-          // Armar payload
-          const bookingData = {
-            product_id: product.id,
-            availability_id: selectedAvailability.id,
-            quantity: selectedPeople
-          };
-
-          // Crear la reserva
-          const bookingResponse = await createBooking(bookingData);
-          if (bookingResponse) {
-            // Mostramos modal de reserva confirmada
-            setReservaConfirmada(bookingResponse);
-            setOpenConfirmModal(true);
-          }
-        } catch (error) {
-          console.error(error);
-        }
+        })
       }
     });
   };

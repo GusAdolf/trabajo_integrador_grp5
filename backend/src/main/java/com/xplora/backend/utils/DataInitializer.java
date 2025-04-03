@@ -73,6 +73,8 @@ public class DataInitializer implements CommandLineRunner {
         City city4 = new City(null, "Cuzco", "Perú", null);
         City city5 = new City(null, "Mar de Cortés", "Océano Pacífico", null);
         City city6 = new City(null, "Tokyo", "Japón", null);
+        City city7 = new City(null, "Agra", "India", null);
+        City city8 = new City(null, "Ica", "Perú", null);
 
         cityRepository.save(city1);
         cityRepository.save(city2);
@@ -80,6 +82,8 @@ public class DataInitializer implements CommandLineRunner {
         cityRepository.save(city4);
         cityRepository.save(city5);
         cityRepository.save(city6);
+        cityRepository.save(city7);
+        cityRepository.save(city8);
     }
 
     void insertCategories() {
@@ -566,12 +570,6 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new Image(
                                 null,
-                                "https://cdn.getyourguide.com/img/tour/642ad6dab2d26.jpeg/145.jpg",
-                                null,
-                                null
-                        ),
-                        new Image(
-                                null,
                                 "https://cdn.getyourguide.com/img/review/47914883aacbacc765411f8ef6e0be2ad0a903f81138756e5a27f11b7d79675c.jpg/145.jpg",
                                 null,
                                 null
@@ -605,7 +603,7 @@ public class DataInitializer implements CommandLineRunner {
                 "Velero de Lujo al Atardecer en Los Cabos",
                 "Disfruta de una de las impresionantes puestas de sol de Los Cabos a bordo de nuestros lujosos veleros y catamaranes franceses. Relájate y desconéctate mientras disfrutas de deliciosos aperitivos, barra libre premium y el excepcional servicio de nuestra tripulación.",
                 799.99,
-                3,
+                5,
                 "Calle Digital House 123, Certified Tech Developer",
                 2,
                 Set.of(
@@ -624,6 +622,30 @@ public class DataInitializer implements CommandLineRunner {
                         new Image(
                                 null,
                                 "https://cdn.sanity.io/images/esqfj3od/production/c039f07cac8a32ccc39e375a5ca2a9dbc195b443-2132x1200.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/c039f07cac8a32ccc39e375a5ca2a9dbc195b443-2132x1200.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/38350d4b42d2309d2c1aa69532a8d4ee91c1cba7-1080x1630.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/8a2743bb194801ecd04c687b6c4d68a38a6774eb-2132x1200.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/8a2743bb194801ecd04c687b6c4d68a38a6774eb-2132x1200.webp",
                                 null,
                                 null
                         )
@@ -652,7 +674,7 @@ public class DataInitializer implements CommandLineRunner {
                 99.99,
                 20,
                 "Calle Digital House 123, Certified Tech Developer",
-                2,
+                8,
                 Set.of(
                         new Image(
                                 null,
@@ -683,6 +705,18 @@ public class DataInitializer implements CommandLineRunner {
                                 "https://www.peruhop.com/wp-content/uploads/1-day-pic-1.jpg",
                                 null,
                                 null
+                        ),
+                        new Image(
+                                null,
+                                "https://www.huacachina.com/wp-content/uploads/2020/03/huacachina-header.png",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://www.huacachina.com/wp-content/uploads/2023/04/huacachina-oasis.jpg",
+                                null,
+                                null
                         )
                 ),
                 4L,
@@ -705,11 +739,11 @@ public class DataInitializer implements CommandLineRunner {
 
         ProductRequestDto productRequestDto9 = new ProductRequestDto(
                 "Excursión al Taj Mahal el mismo día en coche desde Delhi",
-                "adssdsaddasdas",
+                "Ninguna visita a la India está completa sin ver el Taj Mahal, una de las Siete Maravillas del Mundo, pero a veces el tiempo limitado puede hacer que una excursión de un día desde Delhi parezca imposible.",
                 120.55,
                 20,
                 "Calle Digital House 123, Certified Tech Developer",
-                2,
+                7,
                 Set.of(
                         new Image(
                                 null,

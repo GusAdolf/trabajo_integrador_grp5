@@ -14,7 +14,7 @@ import {
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import { jsPDF } from 'jspdf';
-import { sendBookingEmail } from '../../services/emailService';
+/*import { sendBookingEmail } from '../../services/emailService';*/
 import { useNavigate } from 'react-router-dom';
 
 const ReservaConfirmada = ({ reserva, onClose }) => {
@@ -64,9 +64,10 @@ const ReservaConfirmada = ({ reserva, onClose }) => {
         doc.save(`Reserva_${confirmationNumber}.pdf`);
     };
 
-    // Función para enviar el correo de confirmación, esperar 2 segundos, cerrar el modal y redirigir al home
-    const handleConfirm = async () => {
-        setLoadingEmail(true);
+    const handleConfirm = () => {
+        onClose();
+        navigate('/booking');
+        /*setLoadingEmail(true);
         try {
             const token = localStorage.getItem('token');
             await sendBookingEmail(reserva.id, token);
@@ -84,7 +85,7 @@ const ReservaConfirmada = ({ reserva, onClose }) => {
             }, 2000);
         } finally {
             setLoadingEmail(false);
-        }
+        }*/
     };
 
     // Función para cancelar y cerrar el modal sin enviar correo
@@ -102,10 +103,10 @@ const ReservaConfirmada = ({ reserva, onClose }) => {
             {/* Contenido principal */}
             <DialogContent sx={{ textAlign: 'center' }}>
                 <Typography variant="h6" gutterBottom>
-                    ¿Confirmar esta reservación?
+                    ¡Tu reservación ha sido procesada con éxito!
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    Verifica que tus datos sean correctos antes de continuar.
+                    Te hemos enviado un correo con los detalles de tu reserva. No olvides de revisar tu carpeta de spam.
                 </Typography>
                 <Typography variant="body2" gutterBottom>
                     Número de proceso: {processNumber}
