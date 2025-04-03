@@ -20,7 +20,7 @@ const Favorites = () => {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ p: 4, height: "44%" }}>
+    <Box sx={{ p: 4, height: "auto", display: "flex", flexDirection: "column" }}>
       <Typography variant="h4" gutterBottom>
         Mis Favoritos
       </Typography>
@@ -35,10 +35,7 @@ const Favorites = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            border: "3px solid #00CED1",
-            flexWrap: "wrap",
-            width: "100%",
-            height: "auto",
+            height: "100%",
           }}
         >
           {/* Contenedor de tarjetas */}
@@ -50,6 +47,7 @@ const Favorites = () => {
               width: "100%",
               justifyContent: "center",
               padding: "10px",
+              flexWrap: "wrap",
             }}
           >
             {favorites.map((product) => {
