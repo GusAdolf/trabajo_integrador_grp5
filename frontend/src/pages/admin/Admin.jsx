@@ -488,7 +488,7 @@ export const AdminPage = () => {
 
     {/* {console.log(houseLightTheme.components.RaAppBar.styleOverrides.root.color)} */}
       {/* <Resource
-        name="products"
+        name="productss"
         list={PostList}
         edit={PostEdit}
         create={PostCreate}

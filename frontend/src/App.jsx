@@ -17,8 +17,7 @@ import { SearchPage } from "./pages/search/SearchPage";
 import Favorites from "./pages/favorite/favorites";
 import BookingReview from "./pages/bookingReview/BookingReview";
 import Booking from "./pages/booking/booking";
-
-// Importacion el botón de WhatsApp
+import MyReviews from "./pages/myReviews/MyReviews";
 import WhatsAppButton from "./components/WhatsAppButton";
 
 function App() {
@@ -49,6 +48,7 @@ function App() {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/booking-review" element={<BookingReview />} />
+        <Route path="/my-reviews" element={<MyReviews />} />
       </Routes>
 
       {/*Botón flotante de WhatsApp */}

@@ -198,7 +198,7 @@ const MyToolbar = () => (
     justifyContent: "space-evenly",
     alignItems: "center",
   }}>
-    <SaveButton label="Guardar" />
+    <SaveButton label="GUARDAR" />
     <DeleteButton label="ELIMINAR" sx={{
             backgroundColor: "#d33",
             color: "#ffffff",

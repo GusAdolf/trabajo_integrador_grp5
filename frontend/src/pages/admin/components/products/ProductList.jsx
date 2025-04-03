@@ -17,6 +17,7 @@ import {
   SimpleForm, 
   ReferenceArrayField, 
   ReferenceField, 
+  FunctionField, 
 } from 'react-admin';
 import { 
   Box, 
@@ -83,11 +84,16 @@ const EditableCategoryField = ({ source, reference }) => {
 
 const Actions = ({ label }) => {
   return (
-    <Box display="flex" gap={1} label={label} >
+    <Box gap={2} label={label} sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
       <EditButton label={false}
         sx={{
             color: "white",
             backgroundColor: "#00CED1",
+            color: "white",
             borderRadius: "10px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
             padding: "10px 10px 10px 20px",
@@ -107,7 +113,6 @@ const Actions = ({ label }) => {
           padding: "10px 10px 10px 20px",
           fontWeight: "bold",
           textTransform: "none",
-          width: "100%",
           "&:hover": {
             backgroundColor: "#a00",
           },
@@ -128,9 +133,9 @@ const ListActions = () => (
 const ImageModal = ({ open, onClose, selectProduct, images, selectedImage, handleThumbnailClick }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xl" fullWidth={true} >
-      <DialogTitle sx={{ textAlign: 'center' }} >{selectProduct}</DialogTitle>
+      <DialogTitle sx={{ textAlign: 'center', backgroundColor: "black", color: "white" }} >{selectProduct}</DialogTitle>
       <DialogContent >
-        <Grid container spacing={2} >
+        <Grid container spacing={2} sx={{marginTop:'10px'}} >
           <Grid item xs={10} 
             sx={{ 
               display: 'flex', 
@@ -143,7 +148,7 @@ const ImageModal = ({ open, onClose, selectProduct, images, selectedImage, handl
               src={selectedImage}
               alt="Imagen Grande"
               style={{ 
-                maxWidth: '100%', 
+                minWidth: '100%', 
                 maxHeight: '100%', 
                 borderRadius: '8px', 
                 objectFit: 'contain', 
@@ -157,15 +162,16 @@ const ImageModal = ({ open, onClose, selectProduct, images, selectedImage, handl
               overflowY: 'auto',
             }}
           >
-            <Grid container direction="column" spacing={0}>
+            <Grid container direction="column" spacing={1} >
               {images.map((image, index) => (
-                <Grid item key={index}>
+                <Grid item key={index} >
                   <Box
                     sx={{
                       width: '100%',
                       cursor: 'pointer',
                       borderRadius: '8px',
                       overflow: 'hidden',
+                      padding: '0px 10px 0px 0px',
                     }}
                     onClick={() => handleThumbnailClick(image)}
                   >
@@ -222,13 +228,9 @@ export const ProductList = () => {
 
   return (
     <>
-      <List title="Productos" actions={<ListActions />} /* filters={productFilters} */
+      <List title="PRODUCTOS" actions={<ListActions />} /* filters={productFilters} */
         sx={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          paddingTop: "40px",
+          margin: "20px",
         }}
       >
         <DatagridConfigurable rowClick={false} bulkActionButtons={false} 
@@ -241,15 +243,28 @@ export const ProductList = () => {
               Aún no se ha registrado ningún producto.
             </div>
           }
+          sx={{
+            "& .RaDatagrid-headerCell": {
+              fontWeight: "bold",
+              backgroundColor: "#000000",
+              color: "white",
+              textAlign: "center",
+              minWidth: "200px"
+            },
+            '& .column-id': { 
+              minWidth: '100px' 
+            },
+            '& .column-description': { 
+              minWidth: '400px'
+            },
+            "& .RaDatagrid-rowCell": {
+              textAlign: "center"
+            }
+          }}
         >
-          <TextField source="id" label="Id" />
-          <DateField source="createdAt" label="Fecha creación" showTime />
-          <DateField source="updatedAt" label="Fecha edición" showTime />
+          <TextField source="id" label="ID" sortable={false} />
 
-          <TextField source="name" label="Nombre" />
-          <TextField source="description" label="Descripción" />
-
-          <WithRecord label="Imágenes" 
+          <WithRecord label="IMÁGENES" 
             render={record => {
               return (
                 <>
@@ -269,16 +284,15 @@ export const ProductList = () => {
                         width: "200px",
                         height: "130px",
                         objectFit: "cover",
-                        borderRadius: "7px 7px 0px 0px",
+                        borderRadius: "7px",
                       }}
                     />
                     <Button label="Ver más"
                       onClick={() => handleOpenModal(record.name, record.imageSet)}
                       sx={{
-                        backgroundColor: "#000000",
                         color: "#ffffff",
-                        width: "200px",
-                        borderRadius: "0px 0px 7px 7px",
+                        width: "180px",
+                        borderRadius: "7px",
                         boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
                         padding: "5px 20px",
                         fontWeight: "bold",
@@ -286,6 +300,10 @@ export const ProductList = () => {
                         "&:hover": {
                           backgroundColor: "#FD346E",
                         },
+                        position: "absolute",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        transform: "translateY(140%)",
+                        /* bottom: "10px",  */
                       }}
                     />
                   </Box>
@@ -294,31 +312,43 @@ export const ProductList = () => {
             }}
           />
 
-          <NumberField source="price" label="Precio" 
+          <TextField source="name" label="NOMBRE" sortable={false} />
+          <FunctionField source="description" sortable={false} 
+            label="DESCRIPCIÓN"
+            render={(record) => {
+              const desc = record.description || "";
+              return desc.length > 250 ? `${desc.slice(0, 250)}...` : desc;
+            }}
+          />
+
+          <NumberField source="price" label="PRECIO" sortable={false} 
             options={{ 
               style: "currency", 
               currency: "USD" 
             }}
           />
 
-          <TextField source="address" label="Dirección" />
-          <ReferenceField source="city_id" reference="cities" label="Ciudad" >
+          <TextField source="address" label="DIRECCIÓN" sortable={false} />
+          <ReferenceField source="city_id" reference="cities" label="CIUDAD" sortable={false} >
             <TextField source="name" />
           </ReferenceField>
-          <ReferenceField source="city_id" reference="cities" label="País" >
+          <ReferenceField source="city_id" reference="cities" label="PAÍS" sortable={false} >
             <TextField source="country" />
           </ReferenceField>
 
-          <NumberField source="capacity" label="Capacidad" />
-          <AvailabilityField source="availabilitySet" label="Disponibilidad (Cupo)" />
+          <NumberField source="capacity" label="CAPACIDAD" sortable={false} />
+          <AvailabilityField source="availabilitySet" label="DISPONIBILIDAD (CUPO)" sortable={false} />
           
-          <EditableCategoryField source="category_id" reference="categories" label="Categoría" />
-          <ReferenceArrayField source="features_ids" reference="features" label="Características" />
+          <EditableCategoryField source="category_id" reference="categories" label="CATEGORÍA" sortable={false} />
+          <ReferenceArrayField source="features_ids" reference="features" label="CARACTERÍSTICAS" sortable={false} />
             
-          <NumberField source="countScores" label="Cantidad de puntuaciones" />
-          <NumberField source="averageScore" label="Puntuación promedio" />
+          <NumberField source="countScores" label="CANT. DE PUNTUACIONES" sortable={false} />
+          <NumberField source="averageScore" label="PUNTUACIÓN PROMEDIO" sortable={false} />
 
-          <Actions label="Acciones" />
+          <DateField source="createdAt" label="FECHA CREACIÓN" showTime sortable={false} />
+          <DateField source="updatedAt" label="FECHA EDICIÓN" showTime sortable={false} />
+
+          <Actions label="ACCIONES"/>
         </DatagridConfigurable>
 
         <ImageModal 
