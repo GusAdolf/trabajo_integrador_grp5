@@ -128,7 +128,7 @@ export const Footer = () => {
             Trabaja con nosotros
           </Typography>
 
-          <Box>
+          <Box sx={{textAlign: "center"}}>
             <Typography
               variant="subtitle1"
               fontWeight="regular"
