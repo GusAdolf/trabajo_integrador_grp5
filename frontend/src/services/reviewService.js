@@ -1,16 +1,6 @@
 import Swal from "sweetalert2";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
-<<<<<<< HEAD
-const API_URL = `${BASE_URL}/reviews`;
-
-export const getReviewsByProduct = async (productId) => {
-  try {
-    const response = await fetch(`${API_URL}/product/${productId}`);
-
-    if (!response.ok) {
-      throw new Error("Error al obtener las reseñas del producto");
-=======
 
 /**
  * Obtiene todas las reseñas de un producto por su ID
@@ -55,25 +45,15 @@ export const createReview = async (bookingId, reviewData) => {
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "No se pudo crear la reseña.");
->>>>>>> 09c2f901b8fa8807ab4c0f6037c25609120a1e4b
     }
 
     return await response.json();
   } catch (error) {
-<<<<<<< HEAD
-    console.error(error);
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "No se pudieron obtener las reseñas del producto",
-    });
-=======
     Swal.fire({
       icon: "error",
       title: "Error al crear la reseña",
       text: error.message || "Ha ocurrido un error"
     });
     throw error;
->>>>>>> 09c2f901b8fa8807ab4c0f6037c25609120a1e4b
   }
 };
