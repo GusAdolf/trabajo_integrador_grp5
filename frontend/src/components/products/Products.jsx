@@ -32,10 +32,6 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
     setPage(1);
   }, [selectedCategory, products]);
 
-  /*   useEffect(() => {
-    fetchFavorites();
-  }, [user]); */
-
   const handleCardClick = (id) => {
     navigate(`/product/${id}`);
   };

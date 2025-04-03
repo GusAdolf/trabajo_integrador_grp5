@@ -28,10 +28,6 @@ export const Explore = () => {
   const itemsPerPage = 6;
   const navigate = useNavigate();
 
-  /*   useEffect(() => {
-    fetchFavorites();
-  }, [user]); */
-
   useEffect(() => {
     setFilteredProducts(products);
   }, [products]);
