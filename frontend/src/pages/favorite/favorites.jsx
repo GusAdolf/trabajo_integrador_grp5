@@ -20,7 +20,15 @@ const Favorites = () => {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ p: 4, height: "auto", display: "flex", flexDirection: "column" }}>
+    <Box
+      sx={{
+        p: 4,
+        height: "auto",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "42vh",
+      }}
+    >
       <Typography variant="h4" gutterBottom>
         Mis Favoritos
       </Typography>
