@@ -113,7 +113,7 @@ export const ProductDetail = () => {
   }, [id]);
 
   //Verificar si el usuario tiene booking para este producto
-  useEffect(() => {
+/*   useEffect(() => {
     const checkUserBooking = async () => {
       try {
         const bookingList = await getBookings();
@@ -133,7 +133,7 @@ export const ProductDetail = () => {
       }
     };
     checkUserBooking();
-  }, [id]);
+  }, [id]); */
 
   if (loading) {
     return (

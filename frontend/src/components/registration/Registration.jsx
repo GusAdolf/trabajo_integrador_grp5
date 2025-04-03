@@ -73,7 +73,7 @@ export const Registration = ({ open, setOpen }) => {
             }}
           >
             <img
-              src="assets/logo-xplora.png"
+              src="/assets/logo-xplora.png"
               alt="logo xplora+"
               style={{ width: "150px", height: "auto" }}
             />

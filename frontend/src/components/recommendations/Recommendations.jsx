@@ -244,7 +244,7 @@ export const Recommendations = () => {
                     sx={{ mt: 2, backgroundColor: "#00CED1" }}
                     onClick={() => navigate(`/product/${product.id}`)}
                   >
-                    Reservar
+                    Ver detalles
                   </Button>
                 </CardContent>
               </Card>
