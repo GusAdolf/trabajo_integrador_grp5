@@ -91,6 +91,7 @@ const Actions = ({ label }) => {
     }}>
       <EditButton label={false}
         sx={{
+            color: "white",
             backgroundColor: "#00CED1",
             color: "white",
             borderRadius: "10px",
