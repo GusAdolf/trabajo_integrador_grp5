@@ -14,27 +14,8 @@ import { Favorite, FavoriteBorder } from "@mui/icons-material";
 
 const Favorites = () => {
   const { user } = useAuth();
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const [favorites, setFavorites] = useState([]);
+  const { isFavorite, toggleFavorite, favorites } = useFavorites();
   const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      const data = await getFavorites(token);
-      setFavorites(data);
-    };
-    fetchFavorites();
-  }, []);
-
-  const handleRemoveFavorite = async (favoriteId) => {
-    const response = await removeFavorite(favoriteId);
-
-    if (response) {
-      setFavorites((prevFavorites) =>
-        prevFavorites.filter((fav) => fav.id !== favoriteId)
-      );
-    }
-  };
 
   return (
     <Box sx={{ p: 4, height: "44%" }}>
@@ -70,9 +51,11 @@ const Favorites = () => {
             }}
           >
             {favorites.map((product) => {
+              const productDetail = product.product;
+
               return (
                 <Card
-                  key={product.id}
+                  key={productDetail.id}
                   sx={{
                     width: { xs: "100%", sm: "48%", md: "30%" },
                     borderRadius: "16px",
@@ -86,10 +69,10 @@ const Favorites = () => {
                   <Box sx={{ position: "relative" }}>
                     <img
                       src={
-                        product.product.imageSet?.[0]?.imageUrl ||
+                        productDetail.imageSet?.[0]?.imageUrl ||
                         "https://via.placeholder.com/300"
                       }
-                      alt={product.name}
+                      alt={productDetail.name}
                       style={{
                         width: "100%",
                         height: 220,
@@ -101,7 +84,7 @@ const Favorites = () => {
                       title={
                         !user
                           ? "Primero inicia sesión"
-                          : isFavorite(product.id)
+                          : isFavorite(productDetail.id)
                           ? "Quitar de favoritos"
                           : "Agregar a favoritos"
                       }
@@ -123,10 +106,10 @@ const Favorites = () => {
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (user) toggleFavorite(product.product.id);
+                          if (user) toggleFavorite(productDetail.id);
                         }}
                       >
-                        {user && isFavorite(product.product.id) ? (
+                        {user && isFavorite(productDetail.id) ? (
                           <Favorite sx={{ color: "red" }} />
                         ) : (
                           <FavoriteBorder sx={{ color: "gray" }} />
@@ -147,7 +130,7 @@ const Favorites = () => {
                     {/* Título y descripción */}
                     <Box>
                       <Typography variant="h6" align="center">
-                        {product.product.name}
+                        {productDetail.name}
                       </Typography>
                       <Typography
                         variant="body2"
@@ -160,9 +143,9 @@ const Favorites = () => {
                           maxWidth: "100%",
                         }}
                       >
-                        {product.product.description.length > 30
-                          ? `${product.product.description.slice(0, 30)}...`
-                          : product.product.description}
+                        {productDetail.description.length > 30
+                          ? `${productDetail.description.slice(0, 30)}...`
+                          : productDetail.description}
                       </Typography>
                     </Box>
 
@@ -175,10 +158,10 @@ const Favorites = () => {
                       }}
                     >
                       <Typography variant="body2">
-                        📍 {product.product.city.name || "No encontrada"}
+                        📍 {productDetail.city.name || "No encontrada"}
                       </Typography>
                       <Typography variant="h6" fontWeight="bold">
-                        {product.price}
+                        {productDetail.price}
                       </Typography>
                     </Box>
 
@@ -187,7 +170,7 @@ const Favorites = () => {
                       variant="contained"
                       fullWidth
                       sx={{ mt: 2, backgroundColor: "#00CED1" }}
-                      onClick={() => navigate(`/product/${product.id}`)}
+                      onClick={() => navigate(`/product/${productDetail.id}`)}
                     >
                       Reservar
                     </Button>
