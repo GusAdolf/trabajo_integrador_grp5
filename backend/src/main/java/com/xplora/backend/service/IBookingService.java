@@ -12,7 +12,4 @@ public interface IBookingService {
     BookingResponseDto saveBooking(BookingRequestDto bookingRequestDto, User user) throws MessagingException;
     List<BookingResponseDto> getBookingsByUserId(Long userId);
     Booking findById(Long id);
-    BookingResponseDto getBookingResponseById(Long bookingId);
-
-
 }

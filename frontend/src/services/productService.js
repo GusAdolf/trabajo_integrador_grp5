@@ -185,7 +185,14 @@ export const loginUser = async (user) => {
       },
       body: JSON.stringify(user),
     });
-    if (response.status === 400) {
+    if (response.status === 401) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Correo o contraseña incorrectos.",
+      });
+      return;
+    } else if (response.status === 400) {
       const responseText = await response.text();
       Swal.fire({
         icon: "error",

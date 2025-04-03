@@ -23,10 +23,6 @@ export const Recommendations = () => {
   const [visibleCards, setVisibleCards] = useState(3);
   const navigate = useNavigate();
 
-  /*       useEffect(() => {
-        fetchFavorites();
-      }, [user]); */
-
   useEffect(() => {
     // Prepara los productos con la primera imagen o un placeholder
     const processedProducts = allProducts.map((product) => ({

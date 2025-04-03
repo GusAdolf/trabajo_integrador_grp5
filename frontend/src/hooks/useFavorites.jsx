@@ -47,7 +47,7 @@ const useFavorites = () => {
     }
   };
 
-  return { isFavorite, toggleFavorite };
+  return { isFavorite, toggleFavorite, favorites };
 };
 
 export default useFavorites;

@@ -64,7 +64,7 @@ public class BookingServiceImpl implements IBookingService  {
         Booking bookingDB = bookingRepository.save(booking);
 
         BookingResponseDto bookingResponseDto = bookingToResponse(bookingDB);
-        //emailService.sendMailBooking(bookingResponseDto);
+        emailService.sendMailBooking(bookingResponseDto);
         return bookingResponseDto;
     }
 
@@ -96,11 +96,5 @@ public class BookingServiceImpl implements IBookingService  {
         bookingResponseDto.setAvailability(modelMapper.map(booking.getAvailability(), AvailabilityResponseDto.class));
         bookingResponseDto.setUser(modelMapper.map(booking.getUser(), UserResponseDto.class));
         return bookingResponseDto;
-    }
-
-    @Override
-    public BookingResponseDto getBookingResponseById(Long bookingId) {
-        Booking booking = findById(bookingId);
-        return bookingToResponse(booking);
     }
 }

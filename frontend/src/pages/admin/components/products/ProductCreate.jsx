@@ -225,12 +225,12 @@ export const ProductCreate = () => {
           display: "flex",
           alignItems: "initial",
           justifyContent: "center",
-          gap: "20px",
+          gap: "50px",
         }} >
           <Grid sx={{ width: "50%" }}>
         <Stack direction="row" gap={2} >
           <TextInput source="price" label="Precio (USD)" /* fullWidth */ />
-          <NumberInput source="capacity" label="Capacidad Máxima (global)"
+          <NumberInput source="capacity" label="Capacidad (global)"
             /* fullWidth */
             min={1}
           />
@@ -254,10 +254,10 @@ export const ProductCreate = () => {
           }}
           >
         <Typography variant="subtitle1"  fontWeight="bold">
-          Disponibilidad
+          Disponibilidad (mínimo 1)
         </Typography>
         <Typography variant="body2" sx={{ mb: 1 }}>
-          Seleccione las fechas en las que estará disponible el
+          Fechas en las que estará disponible el
           producto.
         </Typography>
         <ArrayInput source="availabilitySet" label="" >
@@ -277,12 +277,8 @@ export const ProductCreate = () => {
             minWidth: '36rem'
           }}
         >
-        <Typography
-          variant="subtitle1"
-          fontWeight="bold"
-          sx={{ mb: 1 }}
-        >
-          Ingrese al menos 5 imágenes
+        <Typography variant="subtitle1"  fontWeight="bold">
+          Imágenes (mínimo 5)
         </Typography>
         <ArrayInput source="imageSet" label="" >
           {/* initialCount={5} para 5 campos por defecto, 

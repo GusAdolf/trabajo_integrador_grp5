@@ -73,6 +73,8 @@ public class DataInitializer implements CommandLineRunner {
         City city4 = new City(null, "Cuzco", "Perú", null);
         City city5 = new City(null, "Mar de Cortés", "Océano Pacífico", null);
         City city6 = new City(null, "Tokyo", "Japón", null);
+        City city7 = new City(null, "Agra", "India", null);
+        City city8 = new City(null, "Ica", "Perú", null);
 
         cityRepository.save(city1);
         cityRepository.save(city2);
@@ -80,6 +82,8 @@ public class DataInitializer implements CommandLineRunner {
         cityRepository.save(city4);
         cityRepository.save(city5);
         cityRepository.save(city6);
+        cityRepository.save(city7);
+        cityRepository.save(city8);
     }
 
     void insertCategories() {
@@ -200,7 +204,13 @@ public class DataInitializer implements CommandLineRunner {
                 List.of(1L, 4L),
                 Set.of(
                         new AvailabilityRequestDto(
-                                LocalDate.of(2025,3, 22)
+                                LocalDate.of(2025,4, 1)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 3)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 5)
                         )
                 )
         );
@@ -248,31 +258,19 @@ public class DataInitializer implements CommandLineRunner {
                                 "https://cdn.getyourguide.com/img/tour/ab0d23a20d3b189aba0595b406eb3c6cf209f5d69092096233170224ffc4fc26.jpg/146.jpg",
                                 null,
                                 null
-                        ),
-                        new Image(
-                                null,
-                                "https://cdn.getyourguide.com/img/tour/959443350a3f56822b46a389b71ea314a04f2d2cfb22c7d32bb8c1396c2b7961.jpg/145.jpg",
-                                null,
-                                null
-                        ),
-                        new Image(
-                                null,
-                                "https://cdn.getyourguide.com/img/tour/29b7fb07fa33b693de1bec15e0135307232b4119c2238376d6c4ff9a91e15a25.jpeg/145.jpg",
-                                null,
-                                null
-                        ),
-                        new Image(
-                                null,
-                                "https://cdn.getyourguide.com/img/tour/ce5e7ee5006b4bb92d024c3ea069fb7115d08b7b92a4e4df316ca20939baa979.jpeg/145.jpg",
-                                null,
-                                null
                         )
                 ),
                 1L,
                 List.of(1L, 4L),
                 Set.of(
                         new AvailabilityRequestDto(
-                                LocalDate.of(2025,3, 25)
+                                LocalDate.of(2025,4, 2)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 4)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 8)
                         )
                 )
         );
@@ -344,19 +342,22 @@ public class DataInitializer implements CommandLineRunner {
                                 "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/0f/40/75/e3.jpg",
                                 null,
                                 null
-                        ),
-                        new Image(
-                                null,
-                                "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/10/74/db/f9.jpg",
-                                null,
-                                null
                         )
                 ),
                 2L,
                 List.of(5L),
                 Set.of(
                         new AvailabilityRequestDto(
-                                LocalDate.of(2025,3, 21)
+                                LocalDate.of(2025,4, 1)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 2)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 3)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 6)
                         )
                 )
         );
@@ -401,12 +402,6 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new Image(
                                 null,
-                                "https://cdn.sanity.io/images/esqfj3od/production/18c315daeb2ec97c91d1d78e500998b1165d2d7e-1080x1630.webp",
-                                null,
-                                null
-                        ),
-                        new Image(
-                                null,
                                 "https://cdn.sanity.io/images/esqfj3od/production/76365353ee15691499f4568b6f348410c93f616b-2132x1200.webp",
                                 null,
                                 null
@@ -428,7 +423,16 @@ public class DataInitializer implements CommandLineRunner {
                 List.of(2L, 3L),
                 Set.of(
                         new AvailabilityRequestDto(
-                                LocalDate.of(2025,3, 28)
+                                LocalDate.of(2025,4, 1)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 4)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 8)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 12)
                         )
                 )
         );
@@ -485,12 +489,6 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new Image(
                                 null,
-                                "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/a0/f2/df/20180402-162713-largejpg.jpg",
-                                null,
-                                null
-                        ),
-                        new Image(
-                                null,
                                 "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/89/1f/53/caption.jpg",
                                 null,
                                 null
@@ -507,6 +505,15 @@ public class DataInitializer implements CommandLineRunner {
                 Set.of(
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 2)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 5)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 6)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 10)
                         )
                 )
         );
@@ -563,12 +570,6 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new Image(
                                 null,
-                                "https://cdn.getyourguide.com/img/tour/642ad6dab2d26.jpeg/145.jpg",
-                                null,
-                                null
-                        ),
-                        new Image(
-                                null,
                                 "https://cdn.getyourguide.com/img/review/47914883aacbacc765411f8ef6e0be2ad0a903f81138756e5a27f11b7d79675c.jpg/145.jpg",
                                 null,
                                 null
@@ -576,12 +577,6 @@ public class DataInitializer implements CommandLineRunner {
                         new Image(
                                 null,
                                 "https://cdn.getyourguide.com/img/review/5b9038dceed78db9d95e8416c31967b835c082a9ff3c5cb5a1f8034cf67a3444.jpg/145.jpg",
-                                null,
-                                null
-                        ),
-                        new Image(
-                                null,
-                                "https://cdn.getyourguide.com/img/review/fe64d21cb185b6d46ab06a58688c969b131538ef9f89308bb7cd5a60f6512e1c.jpg/145.jpg",
                                 null,
                                 null
                         )
@@ -594,6 +589,225 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 4)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 6)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 7)
+                        )
+                )
+        );
+
+        ProductRequestDto productRequestDto7 = new ProductRequestDto(
+                "Velero de Lujo al Atardecer en Los Cabos",
+                "Disfruta de una de las impresionantes puestas de sol de Los Cabos a bordo de nuestros lujosos veleros y catamaranes franceses. Relájate y desconéctate mientras disfrutas de deliciosos aperitivos, barra libre premium y el excepcional servicio de nuestra tripulación.",
+                799.99,
+                5,
+                "Calle Digital House 123, Certified Tech Developer",
+                2,
+                Set.of(
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/8a2743bb194801ecd04c687b6c4d68a38a6774eb-2132x1200.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/38350d4b42d2309d2c1aa69532a8d4ee91c1cba7-1080x1630.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/c039f07cac8a32ccc39e375a5ca2a9dbc195b443-2132x1200.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/c039f07cac8a32ccc39e375a5ca2a9dbc195b443-2132x1200.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/38350d4b42d2309d2c1aa69532a8d4ee91c1cba7-1080x1630.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/8a2743bb194801ecd04c687b6c4d68a38a6774eb-2132x1200.webp",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://cdn.sanity.io/images/esqfj3od/production/8a2743bb194801ecd04c687b6c4d68a38a6774eb-2132x1200.webp",
+                                null,
+                                null
+                        )
+                ),
+                4L,
+                List.of(1L, 5L),
+                Set.of(
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 1)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 4)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 6)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 7)
+                        )
+                )
+        );
+
+        ProductRequestDto productRequestDto8 = new ProductRequestDto(
+                "Oasis de Huacachina",
+                "No te puedes perder el tour de areneros y sandboarding. La visita a un viñedo de Pisco también es recomendada para los viajeros.",
+                99.99,
+                20,
+                "Calle Digital House 123, Certified Tech Developer",
+                8,
+                Set.of(
+                        new Image(
+                                null,
+                                "https://www.huacachina.com/wp-content/uploads/2020/03/huacachina-header.png",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://www.huacachina.com/wp-content/uploads/2023/04/huacachina-oasis.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://www.huacachina.com/wp-content/uploads/2023/04/how-to-get-to-huacachina.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://www.huacachina.com/wp-content/uploads/2023/04/dunebuggy-sandboarding.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://www.peruhop.com/wp-content/uploads/1-day-pic-1.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://www.huacachina.com/wp-content/uploads/2020/03/huacachina-header.png",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://www.huacachina.com/wp-content/uploads/2023/04/huacachina-oasis.jpg",
+                                null,
+                                null
+                        )
+                ),
+                4L,
+                List.of(1L, 5L),
+                Set.of(
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 1)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 2)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 5)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 7)
+                        )
+                )
+        );
+
+        ProductRequestDto productRequestDto9 = new ProductRequestDto(
+                "Excursión al Taj Mahal el mismo día en coche desde Delhi",
+                "Ninguna visita a la India está completa sin ver el Taj Mahal, una de las Siete Maravillas del Mundo, pero a veces el tiempo limitado puede hacer que una excursión de un día desde Delhi parezca imposible.",
+                120.55,
+                20,
+                "Calle Digital House 123, Certified Tech Developer",
+                7,
+                Set.of(
+                        new Image(
+                                null,
+                                "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/12/65/2a/c3.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/12/65/2a/d0.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/12/65/2a/d1.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/12/5c/af/78.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/12/5c/af/7a.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/12/65/2a/d7.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/6a/2b/74/caption.jpg",
+                                null,
+                                null
+                        ),
+                        new Image(
+                                null,
+                                "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/0e/4d/0a/0c.jpg",
+                                null,
+                                null
+                        )
+                ),
+                4L,
+                List.of(1L, 5L),
+                Set.of(
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 1)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 2)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 4)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 8)
                         )
                 )
         );
@@ -604,5 +818,8 @@ public class DataInitializer implements CommandLineRunner {
         productService.saveProduct(productRequestDto4);
         productService.saveProduct(productRequestDto5);
         productService.saveProduct(productRequestDto6);
+        productService.saveProduct(productRequestDto7);
+        productService.saveProduct(productRequestDto8);
+        productService.saveProduct(productRequestDto9);
     }
 }
