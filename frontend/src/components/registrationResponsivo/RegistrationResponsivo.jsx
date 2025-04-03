@@ -252,14 +252,14 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
             >
               Regístrate
             </Button>
-            <Box sx={{ display: "flex", gap: 1 }}>
+            {/* <Box sx={{ display: "flex", gap: 1 }}>
               <Typography sx={{ mt: 1, color: "white", fontSize: "12px" }}>
                 ¿Ya tienes una cuenta?
               </Typography>
               <Typography sx={{ mt: 1, fontSize: "12px" }}>
                 Inicia Sesión
               </Typography>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       </Modal>
