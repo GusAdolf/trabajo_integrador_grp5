@@ -93,7 +93,6 @@ const Actions = ({ label }) => {
         sx={{
             color: "white",
             backgroundColor: "#00CED1",
-            color: "white",
             borderRadius: "10px",
             boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)",
             padding: "10px 10px 10px 20px",
