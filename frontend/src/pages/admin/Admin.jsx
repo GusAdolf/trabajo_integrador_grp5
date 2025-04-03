@@ -418,8 +418,8 @@ const theme = createTheme({
       main: '#4caf50', // Cambia el color principal (verde en este caso)
     }, */
     secondary: {
-      light: '#f44336',
-      main: '#000000', // Cambia el color secundario (rojo en este caso)
+      light: '#FD346E',
+      main: '#FD346E', // Cambia el color secundario (rojo en este caso)
     },
   },
   /* typography: {
@@ -476,7 +476,7 @@ export const AdminPage = () => {
 
     {/* {console.log(houseLightTheme.components.RaAppBar.styleOverrides.root.color)} */}
       {/* <Resource
-        name="products"
+        name="productss"
         list={PostList}
         edit={PostEdit}
         create={PostCreate}

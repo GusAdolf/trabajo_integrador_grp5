@@ -7,6 +7,9 @@ import {
   SaveButton, 
 } from 'react-admin';
 import { useState } from "react";
+import {
+  Box, 
+} from '@mui/material'
 
 const ImageFieldWithPreview = ({ source, label }) => {
   const [imageUrl, setImageUrl] = useState('');
@@ -18,37 +21,67 @@ const ImageFieldWithPreview = ({ source, label }) => {
 
   return (
     <>
-      <TextInput 
-        source={source} 
-        label={label} 
-        validate={required()} 
-        onChange={handleImageUrlChange} 
-      />
-
+    <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "30px",
+      minWidth: "500px",
+    }}>
       {imageUrl && (
-        <div style={{ marginTop: '20px' }}>
-          <h4>Vista previa:</h4>
+        <div>
           <img
             src={imageUrl}
             alt="Vista previa"
-            style={{ maxWidth: '100%', height: 'auto' }}
+            style={{ maxHeight: '35px', maWidth: '35px', margin: "0px 0px 10px 10px"}}
           />
         </div>
       )}
+
+      <TextInput source={source} label={label} 
+        validate={required()} 
+        onChange={handleImageUrlChange} 
+      />
+      </Box>
     </>
   );
 };
 
 const MyToolbar = () => (
-  <Toolbar>
-    <SaveButton label="Guardar" />
+  <Toolbar sx={{
+    margin: "5px",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  }}>
+    <SaveButton label="GUARDAR" />
   </Toolbar>
 );
 
 export const FeatureCreate = () => (
-  <Create title="Añadir característica" >
-    <SimpleForm toolbar={<MyToolbar />} >
+  <Create title="Añadir característica" sx={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "30vh",
+  }}>
+    <SimpleForm toolbar={<MyToolbar />} sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "30px",
+      minWidth: "500px",
+      margin: "20px 20px 0px 20px",
+    }}>
+      <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "30px",
+      minWidth: "500px",
+    }}>
       <TextInput source="name" label="Nombre" />
+      </Box>
       <ImageFieldWithPreview source="iconUrl" label="URL de ícono" />
     </SimpleForm>
   </Create>
