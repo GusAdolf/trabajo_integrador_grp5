@@ -30,7 +30,7 @@ export const Footer = () => {
       sx={{
         bgcolor: "#1C274C",
         color: "white",
-        mt:8,
+        mt:"auto",
       }}
     >
       <Grid

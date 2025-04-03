@@ -22,15 +22,18 @@ import useRegister from "../../hooks/useRegister";
 const namespace = "registration";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  // position: "absolute",
+  // top: "50%",
+  // left: "50%",
+  // transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 0,
-  width: "600px",
-  minHeight: "auto",
+  width: { xs: "95%", lg:"400px",xl: "600px" },
+  my:"auto",
+  // minHeight: "auto",
+  // maxHeight: "90vh",
+  // overflowY: "auto",
   borderRadius: "10px",
 };
 
@@ -63,6 +66,7 @@ export const Registration = ({ open, setOpen }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        <Box sx={{ position:"absolute",inset:0, display: "flex", justifyContent: "center", height: "100dvh", overflowY: "auto", my:"auto"}}>
         <Box sx={style}>
           <Box
             sx={{
@@ -100,7 +104,7 @@ export const Registration = ({ open, setOpen }) => {
                 id="modal-modal-title"
                 variant="h5"
                 component="h2"
-                sx={{ color: "white", fontWeight: "bold", fontSize: "40px", fontFamily:"Outfit", textAlign: "center" }}
+                sx={{ color: "white", fontWeight: "bold", fontSize: { md:"30px",xl:"40px"}, fontFamily:"Outfit", textAlign: "center" }}
               >
                 Hola, crea tu cuenta de Xplora+
               </Typography>
@@ -247,17 +251,19 @@ export const Registration = ({ open, setOpen }) => {
               onClick={handleSubmit}
             >
             
-              {submitting ? <><SyncIcon size={24} className="spinner"/> Registrandote</> : "Registrate"} 
+              {submitting ? <><SyncIcon size={24} className="spinner"/> Registrándote</> : "Registrate"} 
 
             </Button>
-            <Box sx={{ display: "flex", gap: 2 }}>
+            {/* <Box sx={{ display: "flex", gap: 2 }}>
               <Typography sx={{ mt: 2, color: "white" }}>
                 ¿Ya tienes una cuenta?
               </Typography>
               <Typography sx={{ mt: 2, fontWeight:"Bold" }}>Inicia Sesión</Typography>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
+        </Box>
+      
       </Modal>
 
       {/* Modal de EmailConfirmTimer */}
