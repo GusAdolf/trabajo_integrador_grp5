@@ -13,8 +13,12 @@ const Booking = () => {
     setIsLoading(true)
     const data = await getBookings();
     if (data) {
-      setBookings(data);
-      setIsLoading(false)
+      const sortedBookings = data.sort((a, b) => 
+        new Date(a.availability.date) - new Date(b.availability.date)
+      );
+
+      setBookings(sortedBookings);
+      setIsLoading(false);
     }
   };
 
