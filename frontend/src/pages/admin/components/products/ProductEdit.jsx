@@ -316,7 +316,8 @@ export const ProductEdit = () => {
           }}
         >
         {/* <SimpleForm > */}
-          <ArrayInput source="imageSet" label="Imágenes" >
+          <ArrayInput source="imageSet" label="Imágenes" > {/* El producto debe terner 5 imgs, en error poner tbn, lo mismo con disponibilidad */}
+            {/* los productos se quedan pegados en home */}
             <SimpleFormIterator disableReordering getItemLabel={index => `#${index + 1}`} >
               <ImageFieldWithPreview source="imageUrl" label="URL" />
               {/* <TextInput source="id" /> */}
