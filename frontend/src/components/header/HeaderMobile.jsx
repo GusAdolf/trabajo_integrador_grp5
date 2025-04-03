@@ -78,7 +78,7 @@ export const HeaderMobile = () => {
             <Box sx={{ flexGrow: 1 }}>
               <a href="/">
                 <img
-                  src="assets/logo.svg"
+                  src="assets/logo-xplora.png"
                   alt="logo xplora+"
                   style={{ width: "150px", height: "auto" }}
                 />

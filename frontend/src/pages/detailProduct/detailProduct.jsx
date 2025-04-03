@@ -416,39 +416,8 @@ export const ProductDetail = () => {
                     <Typography variant="h6" fontWeight="bold" sx={{ mt: 2, color: "#1C274C"}}>
                         Detalles
                     </Typography>
-
-                    {/* Aquí unimos la parte dinámica de features con la parte fija de Adriana */}
-                    <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 2 }}>
-                        {/* Mapeo de features dinámicas */}
-                        {product.features?.map((feature) => (
-                            <Box 
-                                key={feature.id} 
-                                sx={{ 
-                                    display: "flex", 
-                                    alignItems: "center", 
-                                    gap: 1, 
-                                    pb: 1,
-                                    borderBottom: "1px solid #FD346E", 
-                                    width: "100%",
-                                }}
-                            >
-                                <Avatar 
-                                    src={feature.iconUrl} 
-                                    alt={feature.name} 
-                                    sx={{ 
-                                        width: 18, 
-                                        height: 18, 
-                                        bgcolor: "#FFD1DC",
-                                        p: 1,
-                                    }} 
-                                />
-                                <Typography variant="body1" fontWeight="bold">
-                                    {feature.name}
-                                </Typography>
-                            </Box>
-                        ))}
-
-                        {/* Detalles fijos (duración, cupo, precio, etc.) */}
+                    <Box sx={{ mt: 2 }}>
+                        <Box sx={{ mt: 2 }}>
                         {[
                             {
                                 icon: <HourglassBottomIcon sx={{ color: "#FD346E" }} />,
@@ -463,44 +432,57 @@ export const ProductDetail = () => {
                             {
                                 icon: <MonetizationOnIcon sx={{ color: "#FD346E" }} />,
                                 label: "Precio por persona:",
-                                value: `$${price.toFixed(2)}`
+                                value:  `$${price.toFixed(2)}`
                             },
                             {
                                 icon: <InfoIcon sx={{ color: "#FD346E" }} />,
                                 label: "Incluido:",
-                                value: "Consultar detalles"
+                                value: product.features.length > 0 ? null : "Consultar detalles"
                             }
                         ].map((detail, index) => (
-
                             <Box
-                                key={feature.id}
+                                key={index}
                                 sx={{
                                     display: "flex",
                                     alignItems: "center",
                                     gap: 1,
-
                                     mb: 1,
                                     borderBottom: "2px solid #FD346E",
-                                    pb: 1,
-                                    width: "100%"
-
+                                    pb: 1
                                 }}
                             >
-                                <Avatar
-                                    src={feature.iconUrl}
-                                    alt={feature.name}
-                                    sx={{
-                                        width: 18,
-                                        height: 18,
-                                        bgcolor: "#FFD1DC",
-                                        p: 1,
-                                    }}
-                                />
-                                <Typography variant="body1" fontWeight="bold">
-                                    {feature.name}
-                                </Typography>
+                                {detail.icon}
+                                <Typography fontWeight="bold">{detail.label}</Typography>
+                                {detail.value ? (
+                                    <Typography color="textSecondary">{detail.value}</Typography>
+                                ) : (
+                                    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                                    {product.features.map((feature) => (
+                                        <Box
+                                        key={feature.id}
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 1
+                                        }}
+                                        >
+                                            <Avatar
+                                                src={feature.iconUrl}
+                                                alt={feature.name}
+                                                sx={{
+                                                width: 18,
+                                                height: 18,
+                                                bgcolor: "transparent"
+                                                }}
+                                            />
+                                            <Typography variant="body2">{feature.name}</Typography>
+                                        </Box>
+                                    ))}
+                                    </Box>
+                                )}
                             </Box>
                         ))}
+                    </Box>
                     </Box>
                 </Grid>
 
