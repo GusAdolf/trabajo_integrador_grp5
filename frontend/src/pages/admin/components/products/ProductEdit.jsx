@@ -10,14 +10,12 @@ import {
   ReferenceArrayInput,
   SelectArrayInput,
   SelectInput, 
-  TabbedForm, 
-  required, 
-  useRecordContext, 
   Button, 
   useNotify, 
   Toolbar, 
   SaveButton, 
-  DeleteButton
+  DeleteButton, 
+  FormDataConsumer, 
 } from 'react-admin';
 import { useState } from "react";
 import { 
@@ -27,18 +25,21 @@ import {
   DialogTitle, 
   Grid, 
   Stack, 
+  Typography, 
 } from '@mui/material'
 import { createCity } from "../../../../services/citiesService";
 import { ProductSidebar } from "../index";
 
-const ImageFieldWithPreview = ({ source, label }) => {
-  const record = useRecordContext();
-  const [imageUrl, setImageUrl] = useState(record[source]);
+const ImageFieldWithPreview = ({ record } /*{ source, label }*/) => {
+  /*const record = useRecordContext();*/
+  /*console.log(record)*/
+  /*const [imageUrl, setImageUrl] = useState(record[source]);*/
   console.log("ImageFieldWithPreview")
 
-  const handleImageUrlChange = (event) => {
+  /*const handleImageUrlChange = (event) => {
+    console.log(event.target.value)
     setImageUrl(event.target.value);
-  };
+  };*/
   
   if (!record) {
     return null;
@@ -46,12 +47,12 @@ const ImageFieldWithPreview = ({ source, label }) => {
 
   return (
     <>
-      {imageUrl && (
+      {record.imageUrl && (
         <div style={{ 
           marginTop: '15px' 
           }}
         >
-          <img src={imageUrl} alt="Vista previa"
+          <img src={record.imageUrl} alt="Vista previa"
             style={{ 
               maxWidth: '100%', 
               height: 'auto' 
@@ -59,9 +60,9 @@ const ImageFieldWithPreview = ({ source, label }) => {
           />
         </div>
       )}
-      <TextInput source={source} label={label} validate={required()} 
+      {/*<TextInput source={source} label={label} validate={required()} 
         onChange={handleImageUrlChange} 
-      />
+      />*/}
     </>
   );
 };
@@ -259,12 +260,12 @@ export const ProductEdit = () => {
           display: "flex",
           alignItems: "initial",
           justifyContent: "center",
-          gap: "20px",
+          gap: "50px",
         }} >
           <Grid sx={{ width: "50%" }}>
             <Stack direction="row" gap={2} >
               <NumberInput source="price" label="Precio (USD)" />
-              <NumberInput source="capacity" label="Capacidad" />
+              <NumberInput source="capacity" label="Capacidad (global)" />
             </Stack>
             
             <ReferenceInput source="category_id" reference="categories" >
@@ -284,7 +285,14 @@ export const ProductEdit = () => {
             padding: '5px 0px',
           }}
           >
-            <ArrayInput source="availabilitySet" label="Disponibilidad" >
+            <Typography variant="subtitle1"  fontWeight="bold">
+          Disponibilidad (mínimo 1)
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 1 }}>
+          Fechas en las que estará disponible el
+          producto.
+        </Typography>
+            <ArrayInput source="availabilitySet" label="" >
               <SimpleFormIterator disableReordering getItemLabel={index => `#${index + 1}`} >
                 <DateInput source="date" label="Fecha" />
                 {/* <NumberInput source="remainingCapacity" label="Capacidad restante" readOnly /> */}
@@ -316,15 +324,21 @@ export const ProductEdit = () => {
           }}
         >
         {/* <SimpleForm > */}
-          <ArrayInput source="imageSet" label="Imágenes" >
+        <Typography variant="subtitle1"  fontWeight="bold">
+          Imágenes (mínimo 5)
+        </Typography>
+          <ArrayInput source="imageSet" label="" >
             <SimpleFormIterator disableReordering getItemLabel={index => `#${index + 1}`} >
-              <ImageFieldWithPreview source="imageUrl" label="URL" />
-              {/* <TextInput source="id" /> */}
-              {/* <TextInput source="imageUrl" label="URL" />
-              <ImageField 
-                source="imageUrl"
-              /> */}
+              {/*<ImageFieldWithPreview source="imageUrl" label="URL" />*/}
+              {/*<TextInput source="id" />*/}
+              {/*<ImageField source="imageUrl" /> */}
               {/* <TextInput source="displayOrder" /> */}
+              <FormDataConsumer>
+                {({ scopedFormData }) => (
+                  <ImageFieldWithPreview record={scopedFormData} />
+                )}
+              </FormDataConsumer>
+              <TextInput source="imageUrl" label="URL" />
             </SimpleFormIterator>
           </ArrayInput>
         </Grid>

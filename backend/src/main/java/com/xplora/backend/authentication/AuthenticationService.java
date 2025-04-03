@@ -46,17 +46,12 @@ public class AuthenticationService {
 
     public AuthenticationResponse login(AuthenticationRequest request) {
         logger.info("login - Login de usuario: " + request);
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
-        } catch (Exception ex) {
-            // Si las credenciales son incorrectas, lanzamos un 401 controlado
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Correo o contraseña incorrectos.");
-        }
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
 
         User user = iUserRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found."));
