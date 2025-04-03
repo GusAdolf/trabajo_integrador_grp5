@@ -52,7 +52,10 @@ const Favorites = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            border: "3px solid #00CED1",
+            flexWrap: "wrap",
             width: "100%",
+            height: "auto",
           }}
         >
           {/* Contenedor de tarjetas */}
@@ -66,127 +69,132 @@ const Favorites = () => {
               padding: "10px",
             }}
           >
-            {favorites.map((product) => (
-              <Card
-                key={product.id}
-                sx={{
-                  width: { xs: "100%", sm: "48%", md: "30%" },
-                  borderRadius: "16px",
-                  boxShadow: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  minHeight: "350px",
-                  flex: "0 0 auto",
-                }}
-              >
-                <Box sx={{ position: "relative" }}>
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    style={{
-                      width: "100%",
-                      height: 220,
-                      objectFit: "cover",
-                      display: "block",
-                    }}
-                  />
-                  <Tooltip
-                    title={
-                      !user
-                        ? "Primero inicia sesión"
-                        : isFavorite(product.id)
-                        ? "Quitar de favoritos"
-                        : "Agregar a favoritos"
-                    }
-                    arrow
-                    placement="top"
-                  >
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 8,
-                        right: 8,
-                        zIndex: 2,
-                        backgroundColor: "white",
-                        borderRadius: "50%",
-                        padding: "6px",
-                        boxShadow: 2,
-                        opacity: user ? 1 : 0.6,
-                        cursor: user ? "pointer" : "not-allowed",
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (user) toggleFavorite(product.id);
-                      }}
-                    >
-                      {user && isFavorite(product.id) ? (
-                        <Favorite sx={{ color: "red" }} />
-                      ) : (
-                        <FavoriteBorder sx={{ color: "gray" }} />
-                      )}
-                    </Box>
-                  </Tooltip>
-                </Box>
-
-                <CardContent
+            {favorites.map((product) => {
+              return (
+                <Card
+                  key={product.id}
                   sx={{
-                    flex: 1,
+                    width: { xs: "100%", sm: "48%", md: "30%" },
+                    borderRadius: "16px",
+                    boxShadow: 3,
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "space-between",
-                    padding: "20px",
+                    minHeight: "350px",
+                    flex: "0 0 auto",
                   }}
                 >
-                  {/* Título y descripción */}
-                  <Box>
-                    <Typography variant="h6" align="center">
-                      {product.product.name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="textSecondary"
-                      align="center"
-                      sx={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        maxWidth: "100%",
+                  <Box sx={{ position: "relative" }}>
+                    <img
+                      src={
+                        product.product.imageSet?.[0]?.imageUrl ||
+                        "https://via.placeholder.com/300"
+                      }
+                      alt={product.name}
+                      style={{
+                        width: "100%",
+                        height: 220,
+                        objectFit: "cover",
+                        display: "block",
                       }}
+                    />
+                    <Tooltip
+                      title={
+                        !user
+                          ? "Primero inicia sesión"
+                          : isFavorite(product.id)
+                          ? "Quitar de favoritos"
+                          : "Agregar a favoritos"
+                      }
+                      arrow
+                      placement="top"
                     >
-                      {product.product.description.length > 30
-                        ? `${product.product.description.slice(0, 30)}...`
-                        : product.product.description}
-                    </Typography>
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: 8,
+                          right: 8,
+                          zIndex: 2,
+                          backgroundColor: "white",
+                          borderRadius: "50%",
+                          padding: "6px",
+                          boxShadow: 2,
+                          opacity: user ? 1 : 0.6,
+                          cursor: user ? "pointer" : "not-allowed",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (user) toggleFavorite(product.product.id);
+                        }}
+                      >
+                        {user && isFavorite(product.product.id) ? (
+                          <Favorite sx={{ color: "red" }} />
+                        ) : (
+                          <FavoriteBorder sx={{ color: "gray" }} />
+                        )}
+                      </Box>
+                    </Tooltip>
                   </Box>
 
-                  {/* Ciudad + País y precio */}
-                  <Box
+                  <CardContent
                     sx={{
+                      flex: 1,
                       display: "flex",
+                      flexDirection: "column",
                       justifyContent: "space-between",
-                      mt: 1,
+                      padding: "20px",
                     }}
                   >
-                    <Typography variant="body2">
-                      📍 {product.product.city.name || "No encontrada"}
-                    </Typography>
-                    <Typography variant="h6" fontWeight="bold">
-                      {product.price}
-                    </Typography>
-                  </Box>
+                    {/* Título y descripción */}
+                    <Box>
+                      <Typography variant="h6" align="center">
+                        {product.product.name}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        align="center"
+                        sx={{
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          maxWidth: "100%",
+                        }}
+                      >
+                        {product.product.description.length > 30
+                          ? `${product.product.description.slice(0, 30)}...`
+                          : product.product.description}
+                      </Typography>
+                    </Box>
 
-                  {/* Botón de reserva */}
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    sx={{ mt: 2, backgroundColor: "#00CED1" }}
-                    onClick={() => navigate(`/product/${product.id}`)}
-                  >
-                    Reservar
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                    {/* Ciudad + País y precio */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        mt: 1,
+                      }}
+                    >
+                      <Typography variant="body2">
+                        📍 {product.product.city.name || "No encontrada"}
+                      </Typography>
+                      <Typography variant="h6" fontWeight="bold">
+                        {product.price}
+                      </Typography>
+                    </Box>
+
+                    {/* Botón de reserva */}
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      sx={{ mt: 2, backgroundColor: "#00CED1" }}
+                      onClick={() => navigate(`/product/${product.id}`)}
+                    >
+                      Reservar
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Box>
         </Box>
       )}
