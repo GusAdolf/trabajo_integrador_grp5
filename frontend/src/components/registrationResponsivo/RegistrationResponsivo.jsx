@@ -68,7 +68,7 @@ export const RegistrationResponsivo = ({ open, setOpen }) => {
             }}
           >
             <img
-              src="assets/logo.svg"
+              src="assets/logo-xplora.png"
               alt="logo xplora+"
               style={{ width: "150px", height: "auto" }}
             />

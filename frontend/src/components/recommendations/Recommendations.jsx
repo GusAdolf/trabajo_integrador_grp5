@@ -59,7 +59,7 @@ export const Recommendations = () => {
   };
 
   return (
-    <Box sx={{ mt: 4, width: "100%", margin: "0 auto", padding: "20px" }}>
+    <Box sx={{ mt: 4, width: "100%", margin: "0 auto", padding: "20px", mb: 3 }}>
       <Typography
         variant="h4"
         sx={{
@@ -83,8 +83,8 @@ export const Recommendations = () => {
         }}
       >
         {/* Flecha anterior */}
-        <IconButton onClick={prevSlide} disabled={index === 0}>
-          <ArrowBackIos />
+        <IconButton onClick={prevSlide} disabled={index === 0} >
+          <ArrowBackIos  />
         </IconButton>
 
         {/* Contenedor de tarjetas */}

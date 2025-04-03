@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -24,6 +24,7 @@ import {
 } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { createBooking } from '../../services/bookingService';
+import { getProfile } from '../../services/productService';
 import Login from "../../components/login/Login";
 import ReservaConfirmada from "../../components/reservaConfirmada/ReservaConfirmada";
 
@@ -31,35 +32,38 @@ const BookingReview = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Obtenemos los datos necesarios desde el estado de la navegación
+  // Datos que vienen desde ProductDetail
   const { product, selectedDate, selectedPeople, totalPrice } = location.state || {};
 
-  // Estados para los campos del usuario (sin localStorage, inician vacíos)
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [user, setUser] = useState(null);
+
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname]   = useState('');
+  const [email, setEmail]         = useState('');
+  const [phone, setPhone]         = useState('');
 
   // Estados para errores
   const [errors, setErrors] = useState({});
 
   // Método de pago y datos de tarjeta
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCvv] = useState('');
+  const [cardNumber, setCardNumber]       = useState('');
+  const [expiryDate, setExpiryDate]       = useState('');
+  const [cvv, setCvv]                     = useState('');
 
-  // Control del modal de Login
+  // Control modal de Login
   const [openLogin, setOpenLogin] = useState(false);
   const handleCloseLogin = () => {
     setOpenLogin(false);
   };
   const handleLogin = (emailValue, passwordValue) => {
-    // Lógica real de login
+    // Lógica de login
     setOpenLogin(false);
+    // Recargar datos de usuario aquí
+    // loadUserData();
   };
 
-  // Control del modal de confirmación de reserva
+  // Modal de confirmación de reserva
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [reservaConfirmada, setReservaConfirmada] = useState(null);
 
@@ -80,20 +84,45 @@ const BookingReview = () => {
     });
   };
 
-  // Validación de formulario
+  // Cargar datos del usuario (si hay token)
+  const loadUserData = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const userData = await getProfile(token);
+        if (userData) {
+          setUser(userData);
+
+          // Ajusta estos campos segun backend:
+          setFirstname(userData.firstname || '');
+          setLastname(userData.lastname || '');
+          setEmail(userData.email || '');
+          setPhone(userData.phone || '');
+        }
+      } catch (error) {
+        console.error('Error al cargar perfil:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
+
+  // Validación del formulario
   const validateForm = () => {
     const newErrors = {};
 
-    if (!firstName.trim()) {
-      newErrors.firstName = 'El nombre es requerido.';
-    } else if (firstName.trim().length < 5) {
-      newErrors.firstName = 'El nombre debe tener al menos 5 caracteres.';
+    if (!firstname.trim()) {
+      newErrors.firstname = 'El nombre es requerido.';
+    } else if (firstname.trim().length < 5) {
+      newErrors.firstname = 'El nombre debe tener al menos 5 caracteres.';
     }
 
-    if (!lastName.trim()) {
-      newErrors.lastName = 'El apellido es requerido.';
-    } else if (lastName.trim().length < 5) {
-      newErrors.lastName = 'El apellido debe tener al menos 5 caracteres.';
+    if (!lastname.trim()) {
+      newErrors.lastname = 'El apellido es requerido.';
+    } else if (lastname.trim().length < 5) {
+      newErrors.lastname = 'El apellido debe tener al menos 5 caracteres.';
     }
 
     if (!email.trim()) {
@@ -229,7 +258,7 @@ const BookingReview = () => {
       </Box>
 
       <Grid container spacing={2}>
-        {/* Columna Izquierda: Info producto */}
+        {/* Info producto */}
         <Grid item xs={12} md={8}>
           <Card sx={{ position: 'relative', p: 2 }}>
             <CardMedia
@@ -301,7 +330,7 @@ const BookingReview = () => {
           </Card>
         </Grid>
 
-        {/* Columna Derecha: Datos usuario + Pago */}
+        {/* Datos del usuario + Pago */}
         <Grid item xs={12} md={4}>
           <Box
             sx={{
@@ -316,36 +345,39 @@ const BookingReview = () => {
               Datos de la información del usuario
             </Typography>
 
+            {/* firstname */}
             <Typography sx={{ fontWeight: 'bold' }}>Nombres</Typography>
             <TextField
               fullWidth
               variant="outlined"
               placeholder="Ingresa tus nombres"
-              value={firstName}
+              value={firstname}
               onChange={(e) => {
-                setFirstName(e.target.value);
-                setErrors({ ...errors, firstName: '' });
+                setFirstname(e.target.value);
+                setErrors({ ...errors, firstname: '' });
               }}
-              error={Boolean(errors.firstName)}
-              helperText={errors.firstName}
+              error={Boolean(errors.firstname)}
+              helperText={errors.firstname}
               sx={{ mb: 2 }}
             />
 
+            {/* lastname */}
             <Typography sx={{ fontWeight: 'bold' }}>Apellidos</Typography>
             <TextField
               fullWidth
               variant="outlined"
               placeholder="Ingresa tus apellidos"
-              value={lastName}
+              value={lastname}
               onChange={(e) => {
-                setLastName(e.target.value);
-                setErrors({ ...errors, lastName: '' });
+                setLastname(e.target.value);
+                setErrors({ ...errors, lastname: '' });
               }}
-              error={Boolean(errors.lastName)}
-              helperText={errors.lastName}
+              error={Boolean(errors.lastname)}
+              helperText={errors.lastname}
               sx={{ mb: 2 }}
             />
 
+            {/* email */}
             <Typography sx={{ fontWeight: 'bold' }}>Correo Electrónico</Typography>
             <TextField
               fullWidth
@@ -361,6 +393,7 @@ const BookingReview = () => {
               sx={{ mb: 2 }}
             />
 
+            {/* phone */}
             <Typography sx={{ fontWeight: 'bold' }}>Teléfono móvil</Typography>
             <TextField
               fullWidth
@@ -378,6 +411,7 @@ const BookingReview = () => {
             />
           </Box>
 
+          {/* Métodos de pago */}
           <Box
             sx={{
               p: 2,
@@ -391,7 +425,7 @@ const BookingReview = () => {
               id="payment-method-label"
               sx={{ fontWeight: 'bold', mb: 1, color: '#00CED1' }}
             >
-              Selecciona un método de pago
+               Selecciona un método de pago
             </FormLabel>
             <RadioGroup
               aria-labelledby="payment-method-label"
@@ -405,7 +439,7 @@ const BookingReview = () => {
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     {/* Ícono Tarjeta de Crédito */}
                     <img
-                      src="https://cdn-icons-png.freepik.com/512/5552/5552677.png?ga=GA1.1.1251921206.1743563784"
+                      src="https://cdn-icons-png.freepik.com/512/14082/14082959.png?ga=GA1.1.1251921206.1743563784"
                       alt="Tarjeta"
                       style={{ width: 24, height: 24 }}
                     />
@@ -480,6 +514,7 @@ const BookingReview = () => {
             )}
           </Box>
 
+          {/* Resumen final */}
           <Box
             sx={{
               p: 2,

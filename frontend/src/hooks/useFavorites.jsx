@@ -15,7 +15,7 @@ const useFavorites = () => {
     if (user) {
       fetchFavorites();
     }
-  }, [user, favorites]);
+  }, [user]);
 
   const isFavorite = (productId) =>
     favorites.some((fav) => fav.product.id == productId);

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { 
-    Box, 
-    Typography, 
-    Grid, 
-    Button, 
-    IconButton, 
-    Popover, 
+import {
+    Box,
+    Typography,
+    Grid,
+    Button,
+    IconButton,
+    Popover,
     CircularProgress,
     TextField, 
     Avatar,
@@ -19,6 +19,7 @@ import {
     CardHeader,
     CardContent,
     Pagination
+
 } from "@mui/material";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -36,8 +37,13 @@ import {
 
 import Swal from "sweetalert2";
 import RedesSociales from "../../components/redesSociales/RedesSociales";
+
+import { useAuth } from "../../context/AuthContext"; // Para obtener la sesión del usuario
+import Login from "../../components/login/Login"; // Importa el modal de login
+
 import { getBookings } from "../../services/bookingService";
 import { getReviewsByProduct, createReview } from "../../services/reviewService";
+
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 const PLACEHOLDER_IMAGE = "https://picsum.photos/600/400";
@@ -45,6 +51,7 @@ const PLACEHOLDER_IMAGE = "https://picsum.photos/600/400";
 export const ProductDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth(); // Obtenemos la información del usuario
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -52,8 +59,11 @@ export const ProductDetail = () => {
     // -- Estados para la reserva --
     const [selectedPeople, setSelectedPeople] = useState(1);
     const [selectedDate, setSelectedDate] = useState(null);
+
     const [dateError, setDateError] = useState(null);
+
     const [anchorEl, setAnchorEl] = useState(null);
+    const [loginOpen, setLoginOpen] = useState(false); // Controla la apertura del modal de login
 
     // -- Estados para reseñas --
     const [reviews, setReviews] = useState([]);
@@ -198,7 +208,17 @@ export const ProductDetail = () => {
         }
     };
 
+
+
+    // Validar fecha seleccionada
+
     const handleGoToReview = () => {
+
+        if (!user) {
+            setLoginOpen(true);
+            return;
+        }
+      
         if (!selectedDate || dateError) {
             Swal.fire({
                 icon: "error",
@@ -327,11 +347,11 @@ export const ProductDetail = () => {
                     <img
                         src={product.imageSet?.[0]?.imageUrl || PLACEHOLDER_IMAGE}
                         alt="Principal"
-                        style={{ 
+                        style={{
                             width: "100%",
                             height: 400,
                             objectFit: "cover",
-                            borderRadius: "8px" 
+                            borderRadius: "8px"
                         }}
                     />
                 </Grid>
@@ -396,39 +416,8 @@ export const ProductDetail = () => {
                     <Typography variant="h6" fontWeight="bold" sx={{ mt: 2, color: "#1C274C"}}>
                         Detalles
                     </Typography>
-
-                    {/* Aquí unimos la parte dinámica de features con la parte fija de Adriana */}
-                    <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 2 }}>
-                        {/* Mapeo de features dinámicas */}
-                        {product.features?.map((feature) => (
-                            <Box 
-                                key={feature.id} 
-                                sx={{ 
-                                    display: "flex", 
-                                    alignItems: "center", 
-                                    gap: 1, 
-                                    pb: 1,
-                                    borderBottom: "1px solid #FD346E", 
-                                    width: "100%",
-                                }}
-                            >
-                                <Avatar 
-                                    src={feature.iconUrl} 
-                                    alt={feature.name} 
-                                    sx={{ 
-                                        width: 18, 
-                                        height: 18, 
-                                        bgcolor: "#FFD1DC",
-                                        p: 1,
-                                    }} 
-                                />
-                                <Typography variant="body1" fontWeight="bold">
-                                    {feature.name}
-                                </Typography>
-                            </Box>
-                        ))}
-
-                        {/* Detalles fijos (duración, cupo, precio, etc.) */}
+                    <Box sx={{ mt: 2 }}>
+                        <Box sx={{ mt: 2 }}>
                         {[
                             {
                                 icon: <HourglassBottomIcon sx={{ color: "#FD346E" }} />,
@@ -443,12 +432,12 @@ export const ProductDetail = () => {
                             {
                                 icon: <MonetizationOnIcon sx={{ color: "#FD346E" }} />,
                                 label: "Precio por persona:",
-                                value: `$${price.toFixed(2)}`
+                                value:  `$${price.toFixed(2)}`
                             },
                             {
                                 icon: <InfoIcon sx={{ color: "#FD346E" }} />,
                                 label: "Incluido:",
-                                value: "Consultar detalles"
+                                value: product.features.length > 0 ? null : "Consultar detalles"
                             }
                         ].map((detail, index) => (
                             <Box
@@ -459,15 +448,41 @@ export const ProductDetail = () => {
                                     gap: 1,
                                     mb: 1,
                                     borderBottom: "2px solid #FD346E",
-                                    pb: 1,
-                                    width: "100%"
+                                    pb: 1
                                 }}
                             >
                                 {detail.icon}
                                 <Typography fontWeight="bold">{detail.label}</Typography>
-                                <Typography color="textSecondary">{detail.value}</Typography>
+                                {detail.value ? (
+                                    <Typography color="textSecondary">{detail.value}</Typography>
+                                ) : (
+                                    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                                    {product.features.map((feature) => (
+                                        <Box
+                                        key={feature.id}
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 1
+                                        }}
+                                        >
+                                            <Avatar
+                                                src={feature.iconUrl}
+                                                alt={feature.name}
+                                                sx={{
+                                                width: 18,
+                                                height: 18,
+                                                bgcolor: "transparent"
+                                                }}
+                                            />
+                                            <Typography variant="body2">{feature.name}</Typography>
+                                        </Box>
+                                    ))}
+                                    </Box>
+                                )}
                             </Box>
                         ))}
+                    </Box>
                     </Box>
                 </Grid>
 
@@ -576,21 +591,27 @@ export const ProductDetail = () => {
                             Reservar
                         </Button>
 
+
                         {/* Estilos para fechas disponibles/no disponibles */}
+
                         <style>
                             {`
-                                .available-date {
-                                    color: #FD346E !important;
-                                }
-                                .unavailable-date {
-                                    text-decoration: line-through !important;
-                                    color: #D3D3D3 !important;
-                                }
-                            `}
+                .available-date {
+                  color: #FD346E !important;
+                }
+                .unavailable-date {
+                  text-decoration: line-through !important;
+                  color: #D3D3D3 !important;
+                }
+              `}
                         </style>
                     </Box>
                 </Grid>
             </Grid>
+
+            {/* Modal de Login */}
+            <Login open={loginOpen} handleClose={() => setLoginOpen(false)} />
+
 
             {/* SECCIÓN de Reseñas */}
             <Box sx={{ mt: 6 }}>
@@ -819,130 +840,7 @@ export const ProductDetail = () => {
                     </Button>
                 </Box>
             </Modal>
+
         </Box>
     );
 };
-
-
-
-// import { useState } from "react";
-// import { useParams } from "react-router-dom";
-// import { Box, Typography, Grid, Select, MenuItem, Button, IconButton, FormControl, InputLabel, Dialog } from "@mui/material";
-// import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-// import PeopleIcon from "@mui/icons-material/People";
-// import InfoIcon from "@mui/icons-material/Info";
-// import AddIcon from "@mui/icons-material/Add";
-// import RemoveIcon from "@mui/icons-material/Remove";
-// import CloseIcon from "@mui/icons-material/Close";
-// import WindowIcon from '@mui/icons-material/Window';
-
-// const dummyProduct = {
-//     id: 1,
-//     name: "Aventura en la Montaña",
-//     description: "Disfruta de una experiencia única explorando montañas y disfrutando de la naturaleza.",
-//     duration: "4 horas",
-//     capacity: "10 personas",
-//     included: ["Guía turístico", "Equipo de seguridad", "Transporte ida y vuelta"],
-//     pricePerPerson: 50,
-//     images: [
-//         "https://picsum.photos/600/400?random=1",
-//         "https://picsum.photos/200/400?random=2",
-//         "https://picsum.photos/200/400?random=3",
-//         "https://picsum.photos/200/400?random=4",
-//         "https://picsum.photos/200/400?random=5",
-//         "https://picsum.photos/600/400?random=6"
-//     ]
-// };
-
-// export const ProductDetail = () => {
-//     const [selectedDate, setSelectedDate] = useState();
-//     const [selectedPeople, setSelectedPeople] = useState();
-//     const [openGallery, setOpenGallery] = useState(false);
-//     const { id } = useParams();
-//     const product = dummyProduct;
-
-//     const handleDateChange = (event) => {
-//         setSelectedDate(event.target.value);
-//     };
-
-//     const handlePeopleChange = (event) => {
-//         setSelectedPeople(event.target.value);
-//     };
-
-//     return (
-//         <Box sx={{ width: "90%", margin: "0 auto", mt: 4 }}>
-//             <Grid container spacing={2}>
-//                 <Grid item xs={12} md={8} sx={{ mt: 6 }}>
-//                     <img src={product.images[0]} alt="Principal" style={{ width: "100%", height: 400, objectFit: "cover", borderRadius: "8px" }} />
-//                 </Grid>
-//                 <Grid item xs={12} md={4}>
-//                     <Grid container spacing={1} sx={{ mt: 5, position: "relative" }}>
-//                         {product.images.slice(1, 5).map((img, index) => (
-//                             <Grid item xs={6} key={index} sx={{ position: "relative" }}>
-//                                 <img src={img} alt={`random ${index + 1}`} style={{ width: "100%", height: 194, objectFit: "cover", borderRadius: "8px" }} />
-//                                 {index === 3 && (
-//                                     <Button
-//                                         variant="contained"
-                                        
-//                                         startIcon={<WindowIcon/>}
-//                                         onClick={() => setOpenGallery(true)}
-//                                         sx={{
-//                                             position: "absolute",
-//                                             bottom: 10,
-//                                             right: 10,
-//                                             fontSize: "0.8rem",
-//                                             padding: "5px 10px",
-//                                             backgroundColor: 
-//                                         }}
-//                                     >
-//                                         Ver Más
-//                                     </Button>
-//                                 )}
-//                             </Grid>
-//                         ))}
-//                     </Grid>
-//                 </Grid>
-//             </Grid>
-//             <Typography variant="h4" fontWeight="bold" sx={{ mt: 2 }}>{product.name}</Typography>
-//             <Grid container spacing={3} sx={{ mt: 2 }}>
-//                 <Grid item xs={12} md={8}>
-//                     <Typography variant="h6" fontWeight="bold">Descripción</Typography>
-//                     <Typography>{product.description}</Typography>
-//                     <Typography variant="h6" fontWeight="bold" sx={{ mt: 2 }}>Detalles</Typography>
-//                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-//                         <CalendarMonthIcon />
-//                         <Typography variant="body1">Duración:</Typography>
-//                         <Typography color="textSecondary">{product.duration}</Typography>
-//                     </Box>
-//                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-//                         <PeopleIcon />
-//                         <Typography variant="body1">Cupo:</Typography>
-//                         <Typography color="textSecondary">{product.capacity}</Typography>
-//                     </Box>
-//                     <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-//                         <InfoIcon />
-//                         <Typography variant="body1">Incluido:</Typography>
-//                         <Typography color="textSecondary">{product.included.join(", ")}</Typography>
-//                     </Box>
-//                 </Grid>
-//             </Grid>
-
-//             {/* Diálogo de la galería de imágenes */}
-//             <Dialog open={openGallery} onClose={() => setOpenGallery(false)} fullWidth maxWidth="md">
-//                 <Box sx={{ p: 3 }}>
-//                     <IconButton onClick={() => setOpenGallery(false)} sx={{ position: "absolute", top: 10, right: 10 }}>
-//                         <CloseIcon />
-//                     </IconButton>
-//                     <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>Galería de imágenes</Typography>
-//                     <Grid container spacing={2}>
-//                         {product.images.map((img, index) => (
-//                             <Grid item xs={12} sm={6} md={4} key={index}>
-//                                 <img src={img} alt={`Imagen ${index + 1}`} style={{ width: "100%", height: "auto", borderRadius: "8px" }} />
-//                             </Grid>
-//                         ))}
-//                     </Grid>
-//                 </Box>
-//             </Dialog>
-//         </Box>
-//     );
-// };
