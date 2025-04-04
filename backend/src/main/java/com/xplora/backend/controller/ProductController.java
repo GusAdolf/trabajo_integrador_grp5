@@ -64,4 +64,9 @@ public class ProductController {
     public List<Product> getProductsByCategory(@PathVariable Long categoryId) {
         return productService.getProductsByCategory(categoryId);
     }
+
+    @GetMapping("/feature/{featureId}")
+    public List<Product> getProductsByFeatureId(@PathVariable Long featureId) {
+        return productService.getProductsByFeatureId(featureId);
+    }
 }

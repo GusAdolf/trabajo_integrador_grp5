@@ -3,12 +3,11 @@ import {
   Typography 
 } from "@mui/material";
 import { 
-  ReferenceField, 
   ReferenceManyField, 
   SingleFieldList, 
   TextField, 
 } from "react-admin"
-import { UserView } from "../users/UserView";
+/* import { UserView } from "../users/UserView"; */
 
 export const ProductSidebar = () => {
   return (

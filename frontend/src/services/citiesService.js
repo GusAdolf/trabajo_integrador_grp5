@@ -37,25 +37,26 @@ export const createCity = async (city) => {
           text: "La ciudad se creó correctamente.",
         });
       } else {
-        const responseText = await response.text();
-        let errorMessage = JSON.parse(responseText).message 
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: errorMessage,
-        });
+        if (response.status === 400) {
+          const responseText = await response.text();
+          let errorMessage = JSON.parse(responseText).message 
+          let errors = JSON.parse(responseText).errors 
+          Swal.fire({
+            icon: "error",
+            title: errorMessage,
+            text: errors
+          });
+          return;
+        } else {
+          const responseText = await response.text();
+          let errorMessage = JSON.parse(responseText).message 
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorMessage,
+          });
+        }
       }
-      /* const responseText = await response.json();
-      console.log(responseText)
-      if (response.status === 400) {
-        const responseText = await response.text();
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: responseText,
-        });
-        return;
-      } */
       return await response.json();
     } catch (error) {
       console.error(error);

@@ -17,6 +17,19 @@ export const getProducts = async () => {
   }
 };
 
+// get products by feature
+export const getProductsByFeature = async (featureId) => {
+  try {
+    const response = await fetch(`${URL}/products/feature/${featureId}`);
+    if (!response.ok) {
+      throw new Error("Error al obtener productos por característica");
+    }
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
+};
+
 // Create product
 export const createProduct = async (product) => {
   try {
@@ -36,23 +49,26 @@ export const createProduct = async (product) => {
         text: "El producto se creó correctamente.",
       });
     } else {
-      const responseText = await response.text();
-      let errorMessage = JSON.parse(responseText).message 
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: errorMessage,
-      });
+      if (response.status === 400) {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        let errors = JSON.parse(responseText).errors 
+        Swal.fire({
+          icon: "error",
+          title: errorMessage,
+          text: errors
+        });
+        return;
+      } else {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
+        });
+      }
     }
-    /* if (response.status === 400) {
-      const responseText = await response.text();
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: responseText,
-      });
-      return;
-    } */
     return await response.json();
   } catch (error) {
     console.error(error);
@@ -92,14 +108,36 @@ export const deleteProduct = async (id) => {
       });
       return true;
     } else {
-      const responseText = await response.text();
-      let errorMessage = JSON.parse(responseText).message 
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: errorMessage,
-      });
-      return false;
+      if (response.status === 400) {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        let errors = JSON.parse(responseText).errors 
+        Swal.fire({
+          icon: "error",
+          title: errorMessage,
+          text: errors
+        });
+        return;
+      } else if (response.status === 409) {
+        const responseText = await response.text();
+        console.log(responseText)
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No puedes eliminar un producto que tiene reservaciones"
+        });
+        return;
+      } else {
+        const responseText = await response.text();
+        console.log(responseText)
+        let errorMessage = JSON.parse(responseText).message 
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
+        });
+        return false;
+      }
     }
   } catch (error) {
     console.error(error);
@@ -126,24 +164,26 @@ export const updateProduct = async (product, id) => {
         text: `El producto con id: ${id} se actualizó correctamente.`,
       });
     } else {
-      const responseText = await response.text();
-      let errorMessage = JSON.parse(responseText).message 
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: errorMessage,
-      });
+      if (response.status === 400) {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        let errors = JSON.parse(responseText).errors 
+        Swal.fire({
+          icon: "error",
+          title: errorMessage,
+          text: errors
+        });
+        return;
+      } else {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
+        });
+      }
     }
-
-    /* if (response.status === 400) {
-      const responseText = await response.text();
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: responseText,
-      });
-      return;
-    } */
     return await response.json();
   } catch (error) {
     console.error(error);

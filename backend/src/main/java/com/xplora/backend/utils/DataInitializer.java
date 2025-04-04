@@ -211,6 +211,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 5)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 8)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 10)
                         )
                 )
         );
@@ -271,6 +277,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 8)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 10)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 13)
                         )
                 )
         );
@@ -358,6 +370,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 6)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 8)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 10)
                         )
                 )
         );
@@ -433,6 +451,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 12)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 15)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 17)
                         )
                 )
         );
@@ -514,6 +538,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 10)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 15)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 17)
                         )
                 )
         );
@@ -573,12 +603,6 @@ public class DataInitializer implements CommandLineRunner {
                                 "https://cdn.getyourguide.com/img/review/47914883aacbacc765411f8ef6e0be2ad0a903f81138756e5a27f11b7d79675c.jpg/145.jpg",
                                 null,
                                 null
-                        ),
-                        new Image(
-                                null,
-                                "https://cdn.getyourguide.com/img/review/5b9038dceed78db9d95e8416c31967b835c082a9ff3c5cb5a1f8034cf67a3444.jpg/145.jpg",
-                                null,
-                                null
                         )
                 ),
                 4L,
@@ -595,6 +619,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 7)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 9)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 11)
                         )
                 )
         );
@@ -664,6 +694,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 7)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 10)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 13)
                         )
                 )
         );
@@ -733,6 +769,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 7)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 9)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 12)
                         )
                 )
         );
@@ -808,6 +850,12 @@ public class DataInitializer implements CommandLineRunner {
                         ),
                         new AvailabilityRequestDto(
                                 LocalDate.of(2025,4, 8)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 10)
+                        ),
+                        new AvailabilityRequestDto(
+                                LocalDate.of(2025,4, 12)
                         )
                 )
         );

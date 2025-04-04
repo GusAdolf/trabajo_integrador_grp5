@@ -4,7 +4,6 @@ import {
   Menu,
   Layout,
   houseLightTheme, 
-  houseDarkTheme 
 } from "react-admin";
 import { useState, useEffect } from "react";
 /* import fakeDataProvider from "ra-data-fakerest"; */
@@ -23,7 +22,7 @@ import {
 /* import LabelIcon from "@mui/icons-material/Label";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded"; */
 import AutoAwesomeMotionRoundedIcon from "@mui/icons-material/AutoAwesomeMotionRounded";
-import { createProduct, getProduct, getProducts, updateProduct, deleteProduct } from "../../services/productService";
+import { createProduct, getProduct, getProducts, getProductsByFeature, updateProduct, deleteProduct } from "../../services/productService";
 import { getCities } from "../../services/citiesService";
 /* import jsonServerProvider from "ra-data-json-server"; */
 import GroupIcon from "@mui/icons-material/Group";
@@ -45,6 +44,7 @@ import { getUsers } from "../../services/productService";
 } from "../../components/header/Header"; */
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getReviewsByProduct } from "../../services/reviewService";
+import { getBookingsByProduct } from "../../services/bookingService";
 
 const FRONT_URL = import.meta.env.VITE_FRONT_DOMAIN || "http://localhost:5173";
 
@@ -190,7 +190,7 @@ const dataProvider = {
       return {
         data: response,
         }*/
-     return Promise.reject(); // falta endpoint
+     return Promise.reject(); // endpoint opcional
     } else if (resource === "features") {
       console.log("update feature")
       const response = await updateFeature(params.id, params.data);
@@ -291,12 +291,19 @@ const dataProvider = {
       }
     } else if (resource == "products" && params.target === "feature_id") {
       console.log("getManyReference getProductsByFeature")
-      /* const response = await getProductsByFeature(params.id);
+      const response = await getProductsByFeature(params.id);
       return {
         data: response,
         total: response.length
-      } */
-      return Promise.reject(); // falta endpoint
+      }
+      /*return Promise.reject();*/ // endpoint opcional
+    } else if (resource === "bookings") {
+      console.log("getManyReference getBookingsByProduct")
+      const response = await getBookingsByProduct(params.id);
+      return {
+        data: response,
+        total: response.length
+      }
     } else if (resource === "reviews") {
       console.log("getManyReference getReviewsByProduct")
       const response = await getReviewsByProduct(params.id);

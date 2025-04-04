@@ -11,10 +11,10 @@ import lombok.*;
 @ToString
 public class CityRequestDto {
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 100, message = "El nombre de la ciudad es mínimo 3 caracteres y máximo 100")
     private String name;
 
     @NotBlank
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 100, message = "El país es mínimo 3 caracteres y máximo 100")
     private String country;
 }
