@@ -28,7 +28,7 @@ import {
   Typography, 
 } from '@mui/material'
 import { createCity } from "../../../../services/citiesService";
-import { ProductSidebar } from "../index";
+/* import { ProductSidebar } from "../index"; */
 
 const ImageFieldWithPreview = ({ record } /*{ source, label }*/) => {
   /*const record = useRecordContext();*/

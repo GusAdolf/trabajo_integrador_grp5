@@ -47,7 +47,7 @@ export const createBooking = async (bookingData) => {
  * Obtiene las reservas del usuario autenticado
  * @returns {Promise<Array>} - Lista de reservas (BookingResponseDto)
  */
-export const getBookings = async () => {
+export const getBookings = async () => { // byUser
   try {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -71,6 +71,35 @@ export const getBookings = async () => {
       icon: "error",
       title: "Error",
       text: error.message || "No se pudieron obtener las reservas",
+    });
+    return [];
+  }
+};
+
+export const getBookingsByProduct = async (productId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No estás autenticado. Por favor inicia sesión.");
+    }
+
+    const response = await fetch(`${API_URL}/product/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "No se pudieron obtener las reservas del producto.");
+    }
+
+    return await response.json();
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: error.message || "No se pudieron obtener las reservas del producto",
     });
     return [];
   }

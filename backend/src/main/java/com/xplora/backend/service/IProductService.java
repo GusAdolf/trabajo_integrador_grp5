@@ -13,6 +13,7 @@ public interface IProductService {
     ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto);
     void deleteProductById(Long id);
     List<Product> getProductsByCategory(Long categoryId);
+    List<Product> getProductsByFeatureId(Long featureId);
     void updateAverageScore(Long id, Integer score);
     boolean existsById(Long id);
     Product findById(Long id);

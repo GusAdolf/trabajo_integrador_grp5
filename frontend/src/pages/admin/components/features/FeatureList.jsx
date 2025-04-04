@@ -7,7 +7,8 @@ import {
   DeleteWithConfirmButton, 
   TopToolbar, 
   SelectColumnsButton, 
-  CreateButton,
+  CreateButton, 
+  ReferenceManyCount, 
 } from 'react-admin';
 import { Box } from "@mui/material";
 
@@ -48,7 +49,7 @@ const Actions = ({ label }) => {
         }}
       />
       <DeleteWithConfirmButton label={false} 
-        confirmContent="¿Estás seguro?" 
+        confirmContent="¿Seguro? Esta acción no se puede deshacer" 
         sx={{
           backgroundColor: "#d33",
           color: "white",
@@ -109,7 +110,7 @@ export const FeatureList = () => (
       <TextField source="id" label="ID" sortable={false} />
       <IconFeatureField source="iconUrl" label="ÍCONO" sortable={false} />
       <TextField source="name" label="NOMBRE" sortable={false} />
-      {/* <ReferenceManyCount label="Productos" reference="products" target="feature_id" /> */}
+      <ReferenceManyCount label="CANT. PRODUCTOS ASIGNADOS" reference="products" target="feature_id" sortable={false} />
       <Actions label="ACCIONES" />
     </DatagridConfigurable>
   </List>

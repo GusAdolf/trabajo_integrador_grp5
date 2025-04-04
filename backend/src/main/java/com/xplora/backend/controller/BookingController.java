@@ -43,4 +43,11 @@ public class BookingController {
         return ResponseEntity
                 .ok(bookingService.getBookingsByUserId(user.getId()));
     }
+
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<BookingResponseDto>> getBookingsByProductId(@PathVariable Long productId) {
+        return ResponseEntity
+                .ok(bookingService.getBookingsByProductId(productId));
+    }
 }
