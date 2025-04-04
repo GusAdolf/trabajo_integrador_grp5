@@ -180,7 +180,7 @@ const Favorites = () => {
                       sx={{ mt: 2, backgroundColor: "#00CED1" }}
                       onClick={() => navigate(`/product/${productDetail.id}`)}
                     >
-                      Reservar
+                      Ver detalles
                     </Button>
                   </CardContent>
                 </Card>
