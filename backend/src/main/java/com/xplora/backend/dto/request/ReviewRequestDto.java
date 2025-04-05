@@ -17,6 +17,6 @@ public class ReviewRequestDto {
     @Min(value = 1, message = "Mínimo 1 estrella")
     private Integer score;
 
-    @Size(max = 1000)
+    @Size(max = 1000, message = "El comentario es de máximo 1000 caracteres")
     private String comment;
 }

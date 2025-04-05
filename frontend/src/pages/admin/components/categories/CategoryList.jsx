@@ -69,7 +69,7 @@ const Actions = ({ label }) => {
             },
         }}
       /> */}
-      <DeleteWithConfirmButton confirmContent="¿Estás seguro?" label={false} 
+      <DeleteWithConfirmButton confirmContent="¿Seguro? Esta acción no se puede deshacer" label={false} 
         sx={{
           backgroundColor: "#d33",
           color: "white",

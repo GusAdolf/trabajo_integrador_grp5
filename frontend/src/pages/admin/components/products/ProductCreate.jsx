@@ -158,6 +158,7 @@ const CityInput = ({ source, reference }) => {
                 <Grid sx={{ width: "80%" }}>
               <ReferenceInput source={source} reference={reference}>
                 <SelectInput label="Ciudad" 
+                  validate={required()}
                   optionText={(record) => `${record.name}, ${record.country}`}
                 />
                 {/* <AutocompleteInput label="Ciudad" optionText={(record) => `${record.name} - ${record.country}`} /> */}
@@ -202,17 +203,16 @@ export const ProductCreate = () => {
       <Grid sx={{
             minWidth: '55rem',
           }}>
-        <TextInput source="name" label="Nombre" fullWidth />
+        <TextInput source="name" label="Nombre" validate={required()} />
         <TextInput source="description" label="Descripción"
           multiline
           rows={5}
-          /* fullWidth */
         />
 
         <TextInput source="address" label="Dirección"
           multiline
           rows={2}
-          /* fullWidth */
+          validate={required()}
         />
         {/* <ReferenceInput source="city_id" reference="cities" >
           <SelectInput label="Ciudad" 
@@ -229,19 +229,19 @@ export const ProductCreate = () => {
         }} >
           <Grid sx={{ width: "50%" }}>
         <Stack direction="row" gap={2} >
-          <TextInput source="price" label="Precio (USD)" /* fullWidth */ />
+          <TextInput source="price" label="Precio (USD)" validate={required()} />
           <NumberInput source="capacity" label="Capacidad (global)"
-            /* fullWidth */
+            validate={required()}
             min={1}
           />
         </Stack>
         
         <ReferenceInput source="category_id" reference="categories" >
-          <SelectInput label="Categoría" />
+          <SelectInput label="Categoría" validate={required()} />
         </ReferenceInput>
 
         <ReferenceArrayInput source="features_ids" reference="features" label="Características" >
-          <SelectArrayInput label="Características"/>
+          <SelectArrayInput label="Características" validate={required()} />
           {/* <AutocompleteArrayInput label="code" /> */}
         </ReferenceArrayInput>
         </Grid>
@@ -261,8 +261,8 @@ export const ProductCreate = () => {
           producto.
         </Typography>
         <ArrayInput source="availabilitySet" label="" >
-          <SimpleFormIterator disableReordering getItemLabel={index => `#${index + 1}`} >
-            <DateInput label="Fecha" source="date" />
+          <SimpleFormIterator disableReordering getItemLabel={index => `#${index + 1}`} initialCount={1} >
+            <DateInput label="Fecha" source="date" validate={required()} />
           </SimpleFormIterator>
         </ArrayInput>
         </Grid>

@@ -15,10 +15,10 @@ import java.util.Set;
 @ToString
 public class ProductRequestDto {
     @NotBlank
-    @Size(min = 3)
+    @Size(min = 3, message = "El nombre es de mínimo 3 caracteres")
     private String name;
 
-    @Size(max = 1000)
+    @Size(max = 1000, message = "La descripción es de máximo 1000 caracteres")
     private String description;
 
     @NotNull
@@ -26,10 +26,11 @@ public class ProductRequestDto {
     private Double price;
 
     @NotNull
-    @Min(value = 1)
+    @Min(value = 1, message = "La capacidad es de mínimo 1 persona")
     private Integer capacity;
 
     @NotBlank
+    @Size(min = 3, message = "El dirección es de mínimo 3 caracteres")
     private String address;
 
     @NotNull

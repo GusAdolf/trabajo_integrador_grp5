@@ -18,6 +18,7 @@ import {
   ReferenceArrayField, 
   ReferenceField, 
   FunctionField, 
+  ReferenceManyCount, 
 } from 'react-admin';
 import { 
   Box, 
@@ -27,6 +28,9 @@ import {
   DialogTitle, 
   Grid,
 } from '@mui/material';
+import {
+  Window as WindowIcon, 
+} from "@mui/icons-material";
 import { assignCategory } from '../../../../services/productService';
 import { useState } from 'react';
 
@@ -103,7 +107,7 @@ const Actions = ({ label }) => {
             },
         }}
       />
-      <DeleteWithConfirmButton confirmContent="¿Estás seguro?" label={false}
+      <DeleteWithConfirmButton confirmContent="¿Seguro? Esta acción no se puede deshacer" label={false}
         sx={{
           backgroundColor: "#d33",
           color: "white",
@@ -286,7 +290,7 @@ export const ProductList = () => {
                         borderRadius: "7px",
                       }}
                     />
-                    <Button label="Ver más"
+                    <Button label="VER MÁS" startIcon={<WindowIcon />}
                       onClick={() => handleOpenModal(record.name, record.imageSet)}
                       sx={{
                         color: "#ffffff",
@@ -340,7 +344,8 @@ export const ProductList = () => {
           
           <EditableCategoryField source="category_id" reference="categories" label="CATEGORÍA" sortable={false} />
           <ReferenceArrayField source="features_ids" reference="features" label="CARACTERÍSTICAS" sortable={false} />
-            
+
+          <ReferenceManyCount label="CANT. RESERVAS" reference="bookings" target="product_id" sortable={false} />
           <NumberField source="countScores" label="CANT. DE PUNTUACIONES" sortable={false} />
           <NumberField source="averageScore" label="PUNTUACIÓN PROMEDIO" sortable={false} />
 

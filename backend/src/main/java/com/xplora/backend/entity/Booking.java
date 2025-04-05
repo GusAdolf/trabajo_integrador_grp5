@@ -3,6 +3,8 @@ package com.xplora.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "bookings")
 @Getter
@@ -17,9 +19,8 @@ public class Booking extends Timestamp {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDING;
 
-    @ManyToOne
     @JoinColumn(nullable = false)
-    private Availability availability;
+    private LocalDate date;
 
     @Column(nullable = false)
     private Integer quantity;

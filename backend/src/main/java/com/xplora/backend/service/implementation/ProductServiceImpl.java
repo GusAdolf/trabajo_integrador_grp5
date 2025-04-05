@@ -145,6 +145,12 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
+    public List<Product> getProductsByFeatureId(Long featureId) {
+        Feature feature = featureService.findById(featureId)
+                .orElseThrow(() -> new RuntimeException("Característica no encontrada"));
+        return feature.getProducts();
+    }
+
     @Override
     public void updateAverageScore(Long id, Integer score) {
         logger.info("updateAverageScore - Actualizando el puntaje promedio del producto con id: " + id);

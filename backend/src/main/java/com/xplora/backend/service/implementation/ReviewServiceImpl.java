@@ -81,7 +81,7 @@ public class ReviewServiceImpl implements IReviewService {
         List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
         for (Review review : reviewsDB) {
             String firstname = review.getBooking().getUser().getFirstname();
-            String lastname = review.getBooking().getUser().getFirstname();
+            String lastname = review.getBooking().getUser().getLastname();
 
             ReviewResponseDto reviewResponseDto = modelMapper.map(review, ReviewResponseDto.class);
             reviewResponseDto.setUserFullName(firstname + " " + lastname);
