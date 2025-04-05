@@ -46,9 +46,9 @@ public class BookingServiceImpl implements IBookingService  {
         Product product = productService.findById(bookingRequestDto.getProduct_id());
         Availability availability = availabilityService.findByIdInProduct(bookingRequestDto.getAvailability_id(), product);
 
-        if (!availability.getDate().isAfter(LocalDate.now())) {
+        /*if (!availability.getDate().isAfter(LocalDate.now())) {
             throw new BadRequestException("La fecha disponible a reservar debe ser posterior a hoy");
-        }
+        }*/
 
         int newRemainingCapacity = availability.getRemainingCapacity() - bookingRequestDto.getQuantity();
         if (newRemainingCapacity < 0) {
