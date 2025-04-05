@@ -1,5 +1,4 @@
 import { useAuth } from "../../context/AuthContext";
-import { useState } from "react";
 import "./Profile.css";
 
 export const Profile = () => {
@@ -210,7 +209,7 @@ export const Profile = () => {
         </a>
 
         {/* Card: Mis Reseñas */}
-        <a href="/MyReviews" className="card-link">
+        <a href="/my-reviews" className="card-link">
           <div className="card">
             <img
               src="https://cdn-icons-png.freepik.com/512/8937/8937558.png"

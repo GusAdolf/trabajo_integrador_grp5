@@ -28,6 +28,9 @@ import {
   DialogTitle, 
   Grid,
 } from '@mui/material';
+import {
+  Window as WindowIcon, 
+} from "@mui/icons-material";
 import { assignCategory } from '../../../../services/productService';
 import { useState } from 'react';
 
@@ -287,7 +290,7 @@ export const ProductList = () => {
                         borderRadius: "7px",
                       }}
                     />
-                    <Button label="Ver más"
+                    <Button label="VER MÁS" startIcon={<WindowIcon />}
                       onClick={() => handleOpenModal(record.name, record.imageSet)}
                       sx={{
                         color: "#ffffff",

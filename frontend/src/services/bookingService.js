@@ -51,7 +51,8 @@ export const getBookings = async () => { // byUser
   try {
     const token = localStorage.getItem("token");
     if (!token) {
-      throw new Error("No estás autenticado. Por favor inicia sesión.");
+      return [];
+      //throw new Error("No estás autenticadohhh. Por favor inicia sesión.");
     }
 
     const response = await fetch(`${API_URL}/user`, {
