@@ -230,7 +230,6 @@ const dataProvider = {
     if (resource === "products") {
       console.log("delete product")
       const response = await deleteProduct(params.id);
-      console.log(response)
       return {
         data: response,
       }

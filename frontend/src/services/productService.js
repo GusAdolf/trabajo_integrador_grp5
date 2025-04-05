@@ -129,14 +129,23 @@ export const deleteProduct = async (id) => {
         return;
       } else {
         const responseText = await response.text();
-        console.log(responseText)
-        let errorMessage = JSON.parse(responseText).message 
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: errorMessage,
-        });
-        return false;
+        const message = JSON.parse(responseText).message;
+        if (message.substring(0, 13) == "org.hibernate") {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No puedes eliminar un producto que tiene reservaciones"
+          });
+          return;
+        } else {
+          let errorMessage = JSON.parse(responseText).message 
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorMessage,
+          });
+          return false;
+        }
       }
     }
   } catch (error) {
