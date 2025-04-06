@@ -75,7 +75,7 @@ Xplora+ es una aplicación web que permite descubrir, reservar y administrar exp
   - **Deploy en Railway** utilizando pipelines desde **GitHub Actions**.
   - **Railway** para alojar el backend y frontend en la nube, proporcionando un entorno de producción completo.
 
-#### Testing:
+### Testing:
 - **Selenium**: Herramienta para la automatización de pruebas funcionales en el frontend.
 - **Postman**: Herramienta para probar y documentar APIs.
 
