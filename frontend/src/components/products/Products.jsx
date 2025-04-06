@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
-import { Box, Button, Typography, Rating, Pagination, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Rating,
+  Pagination,
+  Tooltip,
+} from "@mui/material";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useNavigate } from "react-router-dom";
-import { getFavorites, addFavorite, removeFavorite } from "../../services/favoriteService";
 import { useAuth } from "../../context/AuthContext";
+import useFavorites from "../../hooks/useFavorites";
 
 const Products = ({ categories, products, itemsPerPage = 6 }) => {
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [filteredProducts, setFilteredProducts] = useState(products);
-  const [favorites, setFavorites] = useState([]);
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -25,44 +32,10 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
     setPage(1);
   }, [selectedCategory, products]);
 
-  const fetchFavorites = async () => {
-    if (!user) return;
-    
-    try {
-      const favorites = await getFavorites();
-      setFavorites(favorites);
-    } catch (error) {
-      console.error("Error al obtener favoritos:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchFavorites();
-  }, [user]);
-
-
   const handleCardClick = (id) => {
     navigate(`/product/${id}`);
   };
 
-  const toggleFavorite = async (productId) => {
-    if (!user) return;
-
-    try {
-      const favorite = favorites.find((fav) => fav.product.id === productId);
-      if (favorite) {
-        await removeFavorite(favorite.id);
-      } else {
-        await addFavorite(productId);
-      }
-      fetchFavorites()
-    } catch (error) {
-      console.error("Error al modificar favorito:", error);
-    }
-  };
-  
-  const isFavorite = (productId) => favorites.some(fav => fav.product.id === productId);
-  
   const getImageUrl = (product) => {
     if (product.imageSet && product.imageSet.length > 0) {
       return product.imageSet[0].imageUrl;
@@ -118,13 +91,13 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
       </Box>
 
       {filteredProducts.length === 0 ? (
-        <Box 
-          sx={{ 
-            textAlign: "center", 
-            py: 5, 
-            bgcolor: "#f5f5f5", 
+        <Box
+          sx={{
+            textAlign: "center",
+            py: 5,
+            bgcolor: "#f5f5f5",
             borderRadius: 2,
-            mt: 2
+            mt: 2,
           }}
         >
           <Typography variant="h5" color="textSecondary">
@@ -163,15 +136,15 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
                     "&:hover": { transform: "scale(1.05)" },
                   }}
                 >
-                  <Tooltip 
+                  <Tooltip
                     title={
-                      !user 
-                        ? "Primero inicia sesión" 
-                        : isFavorite(product.id) 
-                          ? "Quitar de favoritos" 
-                          : "Agregar a favoritos"
-                    } 
-                    arrow 
+                      !user
+                        ? "Primero inicia sesión"
+                        : isFavorite(product.id)
+                        ? "Quitar de favoritos"
+                        : "Agregar a favoritos"
+                    }
+                    arrow
                     placement="top"
                   >
                     <Box
@@ -213,24 +186,33 @@ const Products = ({ categories, products, itemsPerPage = 6 }) => {
                         mb: 1,
                       }}
                     >
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <CalendarMonthIcon sx={{ fontSize: 16, color: "gray" }} />
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
+                        <CalendarMonthIcon
+                          sx={{ fontSize: 16, color: "gray" }}
+                        />
                         <Typography variant="body2" color="textSecondary">
                           {formatDate(product)}
                         </Typography>
                       </Box>
-                      <Rating
-                        value={product.averageScore || 0}
-                        precision={0.1}
-                        readOnly
-                        size="small"
-                      />
+
+                      {/* Rating o averageScore */}
+                      <Typography variant="body2" sx={{ mt: 1 }}>
+                      ⭐ {product.averageScore?.toFixed(1) ?? "N/A"}
+                      </Typography>
+
                     </Box>
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                       {product.name}
                     </Typography>
                     <Box
-                      sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mt: 1,
+                      }}
                     >
                       <LocationOnIcon sx={{ fontSize: 16, color: "gray" }} />
                       <Typography variant="body2" color="textSecondary">

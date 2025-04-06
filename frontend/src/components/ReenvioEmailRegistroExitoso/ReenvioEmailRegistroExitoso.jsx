@@ -5,6 +5,9 @@ import {Modal, Box, Typography, Button, IconButton} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
+import { resendRegistrationEmail } from "../../services/resendRegistrationEmail";
+import Swal from "sweetalert2";
+import SyncIcon from '@mui/icons-material/Sync';
 
 const modalStyle = {
     position: "absolute",
@@ -22,16 +25,35 @@ const modalStyle = {
 
 
 export const ReenvioEmailRegistroExitoso = ({ open, onClose }) => {
+    const [sending, setSending] = useState(false);
     const navigate = useNavigate();
 
 
-    const handleResend = () => {
-        // Aquí se debería llamar a un servicio API para reenviar el correo
-        // Ejemplo:
-        // await resendRegistrationEmail();
-        // Por el momento, queda comentado.
-        onClose();
-        navigate("/");
+    const handleResend = async() => {
+        setSending(true);
+        try {
+            await resendRegistrationEmail();
+            Swal.fire({
+                icon: "success",
+                title: "Correo reenviado",
+                text: "El correo de registro exitoso ha sido reenviado.",
+            });
+
+            onClose();
+
+
+        }catch (error) {
+           
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error.message,
+            });
+
+        }
+        
+        setSending(false);
+    
     };
 
     return (
@@ -85,6 +107,7 @@ export const ReenvioEmailRegistroExitoso = ({ open, onClose }) => {
                         ¡Hola! en unos momentos llegará un correo de tu registro exitoso.
                     </Typography>
                     <Button
+                        disabled={sending}
                         variant="contained"
                         sx={{
                             backgroundColor: "#1C274C",
@@ -93,10 +116,13 @@ export const ReenvioEmailRegistroExitoso = ({ open, onClose }) => {
                             height: "62px",
                             mt: 2,
                             textTransform: "none",
+
                         }}
                         onClick={handleResend}
+                        
                     >
-                        Reenviar el correo de registro exitoso
+                        {sending ? <><SyncIcon size={24} className="spinner"/> Enviando</> : "Reenviar el correo de registro exitoso"}
+                        
                     </Button>
                 </Box>
             </Box>

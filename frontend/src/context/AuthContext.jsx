@@ -10,21 +10,21 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
-  const [cities, setCities] = useState([])
-  const [features, setFeatures] = useState([])
+  const [cities, setCities] = useState([]);
+  const [features, setFeatures] = useState([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-    
-    fetchProducts(); // Obtener productos siempre
-    fetchCategories(); // Obtener categorías siempre
+
+    fetchProducts();
+    fetchCategories();
 
     const token = localStorage.getItem("token");
-    if (token ) {
-      fetchProducts()
+    if (token) {
+      fetchProducts();
       fetchUserProfile(token);
       fetchCities();
     }
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
     if (data) {
       setCities(data);
     }
-  }
+  };
 
   const fetchProducts = async () => {
     const data = await getProducts();
@@ -84,17 +84,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const response = await loginUser({ email, password });
-    if (!response) {
-      return;
-    }
+    try {
+      const response = await loginUser({ email, password });
 
-    let token;
-    if (response?.token) {
-      token = response.token;
+      if (!response || !response.token) {
+        throw new Error("Correo o contraseña incorrectos");
+      }
+
+      const token = response.token;
       localStorage.setItem("token", token);
-      await fetchUserProfile(token); // Obtener perfil después de loguearse
-      window.location.href = "/profile";
+      await fetchUserProfile(token);
+      window.location.href = "/";
+    } catch (err) {
+      throw new Error(err.message || "Error al iniciar sesión");
     }
   };
 
@@ -103,12 +105,24 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     setUser(null);
     setCategories([]);
-    setProducts([]); // Limpiar productos al cerrar sesión
+    setProducts([]);
     window.location.href = "/";
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, categories, products, features,cities,  refreshFeatures, deleteFeatureById }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        categories,
+        products,
+        features,
+        cities,
+        refreshFeatures,
+        deleteFeatureById,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

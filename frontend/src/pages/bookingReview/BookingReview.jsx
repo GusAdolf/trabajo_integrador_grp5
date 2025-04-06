@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -24,48 +24,50 @@ import {
 } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { createBooking } from '../../services/bookingService';
+import { getProfile } from '../../services/productService';
 import Login from "../../components/login/Login";
-
-// Obtener datos del usuario almacenados en localStorage
-const getUserData = () => {
-  const user = JSON.parse(localStorage.getItem('userData')) || {};
-  return user;
-};
+import ReservaConfirmada from "../../components/reservaConfirmada/ReservaConfirmada";
 
 const BookingReview = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Datos que vienen desde ProductDetail
   const { product, selectedDate, selectedPeople, totalPrice } = location.state || {};
-  const userStorage = getUserData();
 
-  // Estados para datos del usuario editables
-  const [firstName, setFirstName] = useState(userStorage.firstName || '');
-  const [lastName, setLastName] = useState(userStorage.lastName || '');
-  const [email, setEmail] = useState(userStorage.email || '');
-  const [phone, setPhone] = useState('');
+  const [user, setUser] = useState(null);
 
-  // Manejo de errores básicos
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname]   = useState('');
+  const [email, setEmail]         = useState('');
+  const [phone, setPhone]         = useState('');
+
+  // Estados para errores
   const [errors, setErrors] = useState({});
 
-  // Método de pago
+  // Método de pago y datos de tarjeta
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCvv] = useState('');
+  const [cardNumber, setCardNumber]       = useState('');
+  const [expiryDate, setExpiryDate]       = useState('');
+  const [cvv, setCvv]                     = useState('');
 
-  // Controlar la apertura del modal de Login
+  // Control modal de Login
   const [openLogin, setOpenLogin] = useState(false);
   const handleCloseLogin = () => {
     setOpenLogin(false);
   };
-
-  // Eliminamos la simulación de usuario logueado; esta función ahora no guarda token ni datos en localStorage.
   const handleLogin = (emailValue, passwordValue) => {
-    // Aquí puedes implementar la lógica real de login, si lo deseas
+    // Lógica de login
     setOpenLogin(false);
+    // Recargar datos de usuario aquí
+    // loadUserData();
   };
 
-  // ELIMINAR PRODUCTO
+  // Modal de confirmación de reserva
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [reservaConfirmada, setReservaConfirmada] = useState(null);
+
+  // Función para eliminar el producto de la reserva (regresa a la página anterior)
   const handleRemoveProduct = () => {
     Swal.fire({
       title: '¿Deseas eliminar este producto de la reserva?',
@@ -82,25 +84,47 @@ const BookingReview = () => {
     });
   };
 
-  // VALIDACIONES
+  // Cargar datos del usuario (si hay token)
+  const loadUserData = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const userData = await getProfile(token);
+        if (userData) {
+          setUser(userData);
+
+          // Ajusta estos campos segun backend:
+          setFirstname(userData.firstname || '');
+          setLastname(userData.lastname || '');
+          setEmail(userData.email || '');
+          setPhone(userData.phone || '');
+        }
+      } catch (error) {
+        console.error('Error al cargar perfil:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    loadUserData();
+  }, []);
+
+  // Validación del formulario
   const validateForm = () => {
     const newErrors = {};
 
-    // Nombres: min 5 caracteres
-    if (!firstName.trim()) {
-      newErrors.firstName = 'El nombre es requerido.';
-    } else if (firstName.trim().length < 5) {
-      newErrors.firstName = 'El nombre debe tener al menos 5 caracteres.';
+    if (!firstname.trim()) {
+      newErrors.firstname = 'El nombre es requerido.';
+    } else if (firstname.trim().length < 5) {
+      newErrors.firstname = 'El nombre debe tener al menos 5 caracteres.';
     }
 
-    // Apellidos: min 5 caracteres
-    if (!lastName.trim()) {
-      newErrors.lastName = 'El apellido es requerido.';
-    } else if (lastName.trim().length < 5) {
-      newErrors.lastName = 'El apellido debe tener al menos 5 caracteres.';
+    if (!lastname.trim()) {
+      newErrors.lastname = 'El apellido es requerido.';
+    } else if (lastname.trim().length < 5) {
+      newErrors.lastname = 'El apellido debe tener al menos 5 caracteres.';
     }
 
-    // Email
     if (!email.trim()) {
       newErrors.email = 'El correo es requerido.';
     } else {
@@ -110,7 +134,6 @@ const BookingReview = () => {
       }
     }
 
-    // Teléfono: solo números
     if (!phone.trim()) {
       newErrors.phone = 'El teléfono es requerido.';
     } else {
@@ -120,7 +143,6 @@ const BookingReview = () => {
       }
     }
 
-    // Si se selecciona método tarjeta, validar campos
     if (paymentMethod === 'tarjeta') {
       if (!cardNumber.trim()) {
         newErrors.cardNumber = 'Número de tarjeta requerido.';
@@ -137,14 +159,12 @@ const BookingReview = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // CONFIRMAR RESERVA
+  // Confirmar reserva
   const handleConfirmBooking = async () => {
-    // Validar formulario
     if (!validateForm()) {
       return;
     }
 
-    // Cuadro de confirmación de la reservación
     Swal.fire({
       title: '¿Confirmar esta reservación?',
       text: 'Verifica que tus datos sean correctos antes de continuar.',
@@ -156,59 +176,59 @@ const BookingReview = () => {
       cancelButtonText: 'Cancelar',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          // Verificar token (sesión)
-          const token = localStorage.getItem('token');
-          if (!token) {
-            // Si NO hay token, abrimos el modal de login
-            setOpenLogin(true);
-            return;
+        const swalInstance = Swal.fire({
+          title: 'Procesando reserva',
+          text: 'Por favor espera...',
+          icon: 'info',
+          showConfirmButton: false,
+          didOpen: async () => {
+            // Revisar si hay token
+            const token = localStorage.getItem('token');
+            if (!token) {
+              setOpenLogin(true);
+              return;
+            }
+
+            // Buscar disponibilidad según fecha
+            const formattedSelectedDate = new Date(selectedDate).toISOString().split('T')[0];
+            const selectedAvailability = product.availabilitySet?.find(
+              (a) => a.date === formattedSelectedDate
+            );
+
+            if (!selectedAvailability) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error de disponibilidad',
+                text: 'No se encontró disponibilidad para la fecha elegida.'
+              });
+              return;
+            }
+
+            // Armar payload
+            const bookingData = {
+              product_id: product.id,
+              availability_id: selectedAvailability.id,
+              quantity: selectedPeople
+            };
+
+            try {
+              /// Crear la reserva
+              const bookingResponse = await createBooking(bookingData);
+              if (bookingResponse) {
+                swalInstance.close();
+                // Mostramos modal de reserva confirmada
+                setReservaConfirmada(bookingResponse);
+                setOpenConfirmModal(true);
+              }
+            } catch (error) {
+              Swal.fire('Error', error.message, 'error');
+            }
           }
-
-          // Buscar la disponibilidad que coincida con la fecha
-          const formattedSelectedDate = new Date(selectedDate).toISOString().split('T')[0];
-          const selectedAvailability = product.availabilitySet?.find(
-            (a) => a.date === formattedSelectedDate
-          );
-
-          if (!selectedAvailability) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error de disponibilidad',
-              text: 'No se encontró disponibilidad para la fecha elegida.'
-            });
-            return;
-          }
-
-          // Armar payload
-          const bookingData = {
-            product_id: product.id,
-            availability_id: selectedAvailability.id,
-            quantity: selectedPeople
-          };
-
-          // Llamar al servicio
-          const bookingResponse = await createBooking(bookingData);
-
-          if (bookingResponse) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Reserva confirmada',
-              text: 'Tu reserva se ha realizado con éxito.',
-              confirmButtonColor: '#FD346E',
-            }).then(() => {
-              // Redirigir A PAGINA DE CONFIRMACIÓN POR AGREGAR
-              navigate('/');
-            });
-          }
-        } catch (error) {
-          console.error(error);
-        }
+        })
       }
     });
   };
 
-  // Si no hay producto, mostramos un aviso
   if (!product) {
     return (
       <Box sx={{ textAlign: 'center', mt: 5 }}>
@@ -228,6 +248,14 @@ const BookingReview = () => {
         handleLogin={handleLogin}
       />
 
+      {/* Modal de confirmación de reserva */}
+      {openConfirmModal && reservaConfirmada && (
+        <ReservaConfirmada
+          reserva={reservaConfirmada}
+          onClose={() => setOpenConfirmModal(false)}
+        />
+      )}
+
       {/* Encabezado */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
         <IconButton onClick={() => navigate(-1)}>
@@ -239,10 +267,9 @@ const BookingReview = () => {
       </Box>
 
       <Grid container spacing={2}>
-        {/* COLUMNA IZQUIERDA */}
+        {/* Info producto */}
         <Grid item xs={12} md={8}>
           <Card sx={{ position: 'relative', p: 2 }}>
-            {/* Imagen principal */}
             <CardMedia
               component="img"
               height="300"
@@ -253,10 +280,7 @@ const BookingReview = () => {
               }
               alt={product.name}
             />
-
-            {/* Contenido debajo de la imagen */}
             <CardContent sx={{ position: 'relative' }}>
-              {/* Título del producto */}
               <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
                 {product.name}
               </Typography>
@@ -269,7 +293,7 @@ const BookingReview = () => {
                 </Typography>
               </Box>
 
-              {/* Ciudad, País */}
+              {/* Ciudad */}
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <LocationOnIcon sx={{ color: '#00A8A8', mr: 1 }} />
                 <Typography>
@@ -277,7 +301,7 @@ const BookingReview = () => {
                 </Typography>
               </Box>
 
-              {/* Cantidad de personas */}
+              {/* Personas */}
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <GroupIcon sx={{ color: '#00A8A8', mr: 1 }} />
                 <Typography>
@@ -285,7 +309,7 @@ const BookingReview = () => {
                 </Typography>
               </Box>
 
-              {/* Icono de basurero */}
+              {/* Botón eliminar */}
               <IconButton
                 onClick={handleRemoveProduct}
                 sx={{
@@ -298,7 +322,7 @@ const BookingReview = () => {
                 <DeleteIcon />
               </IconButton>
 
-              {/* Total en esquina inferior derecha */}
+              {/* Total */}
               <Typography
                 variant="h6"
                 sx={{
@@ -315,9 +339,8 @@ const BookingReview = () => {
           </Card>
         </Grid>
 
-        {/* COLUMNA DERECHA */}
+        {/* Datos del usuario + Pago */}
         <Grid item xs={12} md={4}>
-          {/* BOX DATOS DEL USUARIO */}
           <Box
             sx={{
               p: 2,
@@ -331,39 +354,39 @@ const BookingReview = () => {
               Datos de la información del usuario
             </Typography>
 
-            {/* Nombres */}
+            {/* firstname */}
             <Typography sx={{ fontWeight: 'bold' }}>Nombres</Typography>
             <TextField
               fullWidth
               variant="outlined"
               placeholder="Ingresa tus nombres"
-              value={firstName}
+              value={firstname}
               onChange={(e) => {
-                setFirstName(e.target.value);
-                setErrors({ ...errors, firstName: '' });
+                setFirstname(e.target.value);
+                setErrors({ ...errors, firstname: '' });
               }}
-              error={Boolean(errors.firstName)}
-              helperText={errors.firstName}
+              error={Boolean(errors.firstname)}
+              helperText={errors.firstname}
               sx={{ mb: 2 }}
             />
 
-            {/* Apellidos */}
+            {/* lastname */}
             <Typography sx={{ fontWeight: 'bold' }}>Apellidos</Typography>
             <TextField
               fullWidth
               variant="outlined"
               placeholder="Ingresa tus apellidos"
-              value={lastName}
+              value={lastname}
               onChange={(e) => {
-                setLastName(e.target.value);
-                setErrors({ ...errors, lastName: '' });
+                setLastname(e.target.value);
+                setErrors({ ...errors, lastname: '' });
               }}
-              error={Boolean(errors.lastName)}
-              helperText={errors.lastName}
+              error={Boolean(errors.lastname)}
+              helperText={errors.lastname}
               sx={{ mb: 2 }}
             />
 
-            {/* Correo */}
+            {/* email */}
             <Typography sx={{ fontWeight: 'bold' }}>Correo Electrónico</Typography>
             <TextField
               fullWidth
@@ -379,7 +402,7 @@ const BookingReview = () => {
               sx={{ mb: 2 }}
             />
 
-            {/* Teléfono */}
+            {/* phone */}
             <Typography sx={{ fontWeight: 'bold' }}>Teléfono móvil</Typography>
             <TextField
               fullWidth
@@ -387,7 +410,6 @@ const BookingReview = () => {
               placeholder="0991234567"
               value={phone}
               onChange={(e) => {
-                // Filtramos para que solo acepte dígitos
                 const onlyNums = e.target.value.replace(/\D/g, '');
                 setPhone(onlyNums);
                 setErrors({ ...errors, phone: '' });
@@ -398,7 +420,7 @@ const BookingReview = () => {
             />
           </Box>
 
-          {/* BOX MÉTODO DE PAGO */}
+          {/* Métodos de pago */}
           <Box
             sx={{
               p: 2,
@@ -408,8 +430,11 @@ const BookingReview = () => {
               mb: 2
             }}
           >
-            <FormLabel id="payment-method-label" sx={{ fontWeight: 'bold', mb: 1, color: '#00CED1' }}>
-              Selecciona un método de pago
+            <FormLabel
+              id="payment-method-label"
+              sx={{ fontWeight: 'bold', mb: 1, color: '#00CED1' }}
+            >
+               Selecciona un método de pago
             </FormLabel>
             <RadioGroup
               aria-labelledby="payment-method-label"
@@ -419,12 +444,32 @@ const BookingReview = () => {
               <FormControlLabel
                 value="tarjeta"
                 control={<Radio />}
-                label={<Typography>Tarjeta de crédito</Typography>}
+                label={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {/* Ícono Tarjeta de Crédito */}
+                    <img
+                      src="https://cdn-icons-png.freepik.com/512/14082/14082959.png?ga=GA1.1.1251921206.1743563784"
+                      alt="Tarjeta"
+                      style={{ width: 24, height: 24 }}
+                    />
+                    <Typography>Tarjeta de crédito</Typography>
+                  </Box>
+                }
               />
               <FormControlLabel
                 value="googlepay"
                 control={<Radio />}
-                label={<Typography>Google Pay</Typography>}
+                label={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {/* Ícono Google Pay */}
+                    <img
+                      src="https://cdn-icons-png.freepik.com/512/6124/6124998.png?ga=GA1.1.1251921206.1743563784"
+                      alt="Google Pay"
+                      style={{ width: 24, height: 24 }}
+                    />
+                    <Typography>Google Pay</Typography>
+                  </Box>
+                }
               />
             </RadioGroup>
 
@@ -478,7 +523,7 @@ const BookingReview = () => {
             )}
           </Box>
 
-          {/* TOTAL A PAGAR */}
+          {/* Resumen final */}
           <Box
             sx={{
               p: 2,
@@ -496,7 +541,6 @@ const BookingReview = () => {
             </Typography>
           </Box>
 
-          {/* BOTÓN PARA CONFIRMAR RESERVA */}
           <Button
             variant="contained"
             fullWidth

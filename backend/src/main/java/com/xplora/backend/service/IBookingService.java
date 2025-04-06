@@ -11,5 +11,6 @@ import java.util.List;
 public interface IBookingService {
     BookingResponseDto saveBooking(BookingRequestDto bookingRequestDto, User user) throws MessagingException;
     List<BookingResponseDto> getBookingsByUserId(Long userId);
+    List<BookingResponseDto> getBookingsByProductId(Long productId);
     Booking findById(Long id);
 }

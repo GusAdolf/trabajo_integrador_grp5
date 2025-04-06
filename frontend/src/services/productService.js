@@ -17,6 +17,19 @@ export const getProducts = async () => {
   }
 };
 
+// get products by feature
+export const getProductsByFeature = async (featureId) => {
+  try {
+    const response = await fetch(`${URL}/products/feature/${featureId}`);
+    if (!response.ok) {
+      throw new Error("Error al obtener productos por característica");
+    }
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
+};
+
 // Create product
 export const createProduct = async (product) => {
   try {
@@ -29,18 +42,50 @@ export const createProduct = async (product) => {
       },
       body: JSON.stringify(product),
     });
-    if (response.status === 400) {
-      const responseText = await response.text();
+    if (response.ok) {
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: responseText,
+        icon: "success",
+        title: "Producto creado",
+        text: "El producto se creó correctamente.",
       });
-      return;
+    } else {
+      if (response.status === 400) {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        let errors = JSON.parse(responseText).errors 
+        Swal.fire({
+          icon: "error",
+          title: errorMessage,
+          text: errors
+        });
+        return;
+      } else {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
+        });
+      }
     }
     return await response.json();
   } catch (error) {
     console.error(error);
+  }
+};
+
+
+// Get product
+export const getProduct = async (id) => {
+  try {
+    const response = await fetch(`${URL}/products/${id}`);
+    if (!response.ok) {
+      throw new Error("Error al obtener producto");
+    }
+    return await response.json();
+  } catch (error) {
+   return null;
   }
 };
 
@@ -54,32 +99,99 @@ export const deleteProduct = async (id) => {
         Authorization: bearerToken,
       },
     });
-    return await response.json();
+    /* return await response.text(); */
+    if (response.ok) {
+      Swal.fire({
+        icon: "success",
+        title: "Producto eliminado",
+        text: `El producto con id: ${id} se eliminó correctamente.`,
+      });
+      return true;
+    } else {
+      if (response.status === 400) {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        let errors = JSON.parse(responseText).errors 
+        Swal.fire({
+          icon: "error",
+          title: errorMessage,
+          text: errors
+        });
+        return;
+      } else if (response.status === 409) {
+        const responseText = await response.text();
+        console.log(responseText)
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No puedes eliminar un producto que tiene reservaciones"
+        });
+        return;
+      } else {
+        const responseText = await response.text();
+        const message = JSON.parse(responseText).message;
+        if (message.substring(0, 13) == "org.hibernate") {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No puedes eliminar un producto que tiene reservaciones"
+          });
+          return;
+        } else {
+          let errorMessage = JSON.parse(responseText).message 
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorMessage,
+          });
+          return false;
+        }
+      }
+    }
   } catch (error) {
     console.error(error);
   }
 };
 
 // Update product
-export const updateProduct = async (product) => {
+export const updateProduct = async (product, id) => {
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
-    const response = await fetch(`${URL}/products/${product.id}`, {
+    const response = await fetch(`${URL}/products/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: bearerToken,
       },
-      body: JSON.stringify(product ),
+      body: JSON.stringify(product),
     });
-    if (response.status === 400) {
-      const responseText = await response.text();
+
+    if (response.ok) {
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: responseText,
+        icon: "success",
+        title: "Producto actualizado",
+        text: `El producto con id: ${id} se actualizó correctamente.`,
       });
-      return;
+    } else {
+      if (response.status === 400) {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        let errors = JSON.parse(responseText).errors 
+        Swal.fire({
+          icon: "error",
+          title: errorMessage,
+          text: errors
+        });
+        return;
+      } else {
+        const responseText = await response.text();
+        let errorMessage = JSON.parse(responseText).message 
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
+        });
+      }
     }
     return await response.json();
   } catch (error) {
@@ -106,7 +218,10 @@ export const registerUser = async (user) => {
       throw new Error("Error al registrar el usuario");
     }
     
-    return await response.json();
+    const data = await response.json();
+    const token = data.token;
+    localStorage.setItem("resend-token", token);
+    return data;
 };
 
 // Login user
@@ -119,7 +234,14 @@ export const loginUser = async (user) => {
       },
       body: JSON.stringify(user),
     });
-    if (response.status === 400) {
+    if (response.status === 401) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Correo o contraseña incorrectos.",
+      });
+      return;
+    } else if (response.status === 400) {
       const responseText = await response.text();
       Swal.fire({
         icon: "error",
@@ -154,6 +276,9 @@ export const getProfile = async (token) => {
     }
     return await response.json();
   } catch (error) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.assign("/");
     console.error(error);
   }
 };
@@ -185,16 +310,27 @@ export const updateUserRole = async (id, role) => {
       },
       body: JSON.stringify({ role }),
     });
-    if (response.status === 400) {
-      const responseText = await response.text();
+
+    if (!response.ok) {
+      const responseError = await response.json();
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: responseText,
-      });
-
-      return;
+        title: "Error al cambiar rol",
+        text: responseError.message,
+      })/* .then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      }) */;
+       return false;
     }
+
+    Swal.fire({
+      icon: "success",
+      title: "Rol cambiado con éxito",
+      text: `Usuario con id: ${id} cambió su rol`,
+    });
+    return true;
   } catch (error) {
     console.error(error);
   }
@@ -214,7 +350,29 @@ export const assignCategory = async (id, categoryId) => {
         },
       }
     );
-    if (response.status === 400) {
+
+    if (!response.ok) {
+      const responseError = await response.json();
+      Swal.fire({
+        icon: "error",
+        title: "Error al cambiar categoía al producto",
+        text: responseError.message,
+      })/* .then((result) => {
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+      }) */;
+       return false;
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Categoría del producto cambiado con éxito",
+      text: `Producto con id: ${id} cambió su categoría`,
+    });
+    return true;
+
+    /* if (response.status === 400) {
       const responseText = await response.text();
       Swal.fire({
         icon: "error",
@@ -223,7 +381,7 @@ export const assignCategory = async (id, categoryId) => {
       });
 
       return;
-    }
+    } */
   } catch (error) {
     console.error(error);
   }

@@ -62,6 +62,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers(HttpMethod.PUT, "/api/v1/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
                     auth.requestMatchers(HttpMethod.DELETE, "/api/v1/features/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
 
+                    auth.requestMatchers(HttpMethod.GET, "/api/v1/bookings/product/**").hasAnyAuthority("ADMIN", "SUPERADMIN");
+
                     // Todos los demás endpoints requieren autenticación
                     //auth.requestMatchers("/api/v1/users/profile/**").authenticated();
                     auth.anyRequest().authenticated();

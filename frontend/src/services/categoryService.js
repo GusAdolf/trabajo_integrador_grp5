@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_APP_API_URL;
 
 // create category
-export const createCategories = async (category) => {
+export const createCategory = async (category) => {
   console.log("🚀 ~ createCategories ~ category:", category);
   try {
     const bearerToken = `Bearer ${localStorage.getItem("token")}`;
@@ -16,7 +16,28 @@ export const createCategories = async (category) => {
       },
       body: JSON.stringify(category),
     });
-    if (response.status === 400) {
+
+    if (response.ok) {
+      Swal.fire({
+        icon: "success",
+        title: "Categoría creada",
+        text: "La categoría se creó correctamente.",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.assign("/admin/categories")
+        }
+      });
+    } else {
+      const responseText = await response.text();
+      let errorMessage = JSON.parse(responseText).message 
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: errorMessage,
+      });
+    }
+
+    /* if (response.status === 400) {
       const responseText = await response.text();
       Swal.fire({
         icon: "error",
@@ -24,7 +45,7 @@ export const createCategories = async (category) => {
         text: responseText,
       });
       return;
-    }
+    }*/
     return await response.json();
   } catch (error) {
     console.error(error);
@@ -37,6 +58,19 @@ export const getCategories = async () => {
     const response = await fetch(`${BASE_URL}/categories`);
     if (!response.ok) {
       throw new Error("Error al obtener las categorias");
+    }
+    return await response.json();
+  } catch (error) {
+    return null;
+  }
+};
+
+// get products by category
+export const getProductsByCategory = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/categories/${id}/products`);
+    if (!response.ok) {
+      throw new Error("Error al obtener los productos por categoría");
     }
     return await response.json();
   } catch (error) {
@@ -59,7 +93,7 @@ export const deleteCategory = async (id) => {
       Swal.fire({
         icon: "success",
         title: "Categoría eliminada",
-        text: "La categoría se eliminó correctamente.",
+        text: `La categoría con id: ${id} se eliminó correctamente.`,
       });
       return true;
     } else {

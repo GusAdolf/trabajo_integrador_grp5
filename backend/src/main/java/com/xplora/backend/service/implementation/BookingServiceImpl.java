@@ -58,7 +58,7 @@ public class BookingServiceImpl implements IBookingService  {
         availabilityService.updateAvailability(availability);
 
         Booking booking = modelMapper.map(bookingRequestDto, Booking.class);
-        booking.setAvailability(availability);
+        booking.setDate(availability.getDate());
         booking.setUser(user);
         booking.setProduct(product);
         Booking bookingDB = bookingRepository.save(booking);
@@ -75,7 +75,19 @@ public class BookingServiceImpl implements IBookingService  {
 
         List<BookingResponseDto> bookingResponseDtoList = new ArrayList<>();
         for (Booking booking : bookingsDB) {
-            bookingResponseDtoList.add(modelMapper.map(booking, BookingResponseDto.class));
+            bookingResponseDtoList.add(bookingToResponse(booking));
+        }
+        return bookingResponseDtoList;
+    }
+
+    @Override
+    public List<BookingResponseDto> getBookingsByProductId(Long productId) {
+        logger.info("getBookingsByProductId - Obteniendo reservaciones del producto con id: " + productId);
+        List<Booking> bookingsDB = bookingRepository.findByProductId(productId);
+
+        List<BookingResponseDto> bookingResponseDtoList = new ArrayList<>();
+        for (Booking booking : bookingsDB) {
+            bookingResponseDtoList.add(bookingToResponse(booking));
         }
         return bookingResponseDtoList;
     }
@@ -93,7 +105,7 @@ public class BookingServiceImpl implements IBookingService  {
 
         BookingResponseDto bookingResponseDto = modelMapper.map(booking, BookingResponseDto.class);
         bookingResponseDto.setProduct(productResponseDto);
-        bookingResponseDto.setAvailability(modelMapper.map(booking.getAvailability(), AvailabilityResponseDto.class));
+        bookingResponseDto.setAvailability(new AvailabilityResponseDto(null, booking.getDate(), null));
         bookingResponseDto.setUser(modelMapper.map(booking.getUser(), UserResponseDto.class));
         return bookingResponseDto;
     }

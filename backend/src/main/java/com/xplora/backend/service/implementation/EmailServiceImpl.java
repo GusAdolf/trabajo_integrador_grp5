@@ -56,7 +56,7 @@ public class EmailServiceImpl implements IEmailService {
 
     @Override
     public void sendMailBooking(BookingResponseDto booking) throws MessagingException {
-        logger.info("sendMailBooking - Enviando correo de confirmación de reserva: " + booking);
+        logger.info("sendMailBooking - Enviando correo de confirmación de la reserva con id: " + booking.getId());
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
